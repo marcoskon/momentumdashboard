@@ -1,0 +1,38 @@
+name: Procesar archivos y publicar dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'raw/**'          # se activa solo cuando subís archivos xlsx
+  workflow_dispatch:      # también permite correrlo manualmente desde GitHub
+
+permissions:
+  contents: write         # necesario para que el action pueda commitear los JSON
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install -r scripts/requirements.txt
+
+      - name: Parsear xlsx y generar JSON
+        run: python scripts/parse_data.py
+
+      - name: Commitear los JSON generados
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "auto: actualizar datos [$(date '+%Y-%m-%d %H:%M')]"
+          git push
