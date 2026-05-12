@@ -683,16 +683,41 @@ function populateDashboard(data) {
     <td class="prev-col">${fmt.money(mmRows.reduce((s,[,,a]) => s + (a||0), 0))}</td>
     <td></td></tr>`;
 
-  // ── Títulos body (static hasta que el parser extraiga estos datos) ──
-  document.getElementById('carteraTitulosBody').innerHTML = `
-    <tr><td colspan="4" style="font-size:9px;color:var(--muted);padding:10px 0;">
-      Completar referencias en parse_data.py
-    </td></tr>`;
+  // ── Títulos Públicos + ONs + Provincial ──
+  function detRows(items, prevTotal, label) {
+    if (!items || !items.length) return `<tr><td colspan="4" style="font-size:9px;color:var(--muted);padding:6px 0;">Sin datos</td></tr>`;
+    const total = items.reduce((s,i) => s + (i.total||0), 0);
+    return items.map(i => `<tr>
+      <td class="name-col" title="${i.nombre}">${i.nombre.length>32?i.nombre.slice(0,32)+'…':i.nombre}</td>
+      <td class="today-col">${fmt.money(i.total,1)}</td>
+      <td class="prev-col">—</td>
+      <td class="delta-col dneu">—</td>
+    </tr>`).join('') +
+    `<tr class="total-row"><td class="name-col">${label}</td>
+      <td class="today-col">${fmt.money(total,1)}</td>
+      <td class="prev-col">${fmt.money(prevTotal,1)}</td>
+      <td class="delta-col">${fmt.pctDelta(total, prevTotal)}</td>
+    </tr>`;
+  }
 
-  document.getElementById('carteraFFBody').innerHTML = `
-    <tr><td colspan="4" style="font-size:9px;color:var(--muted);padding:10px 0;">
-      Completar referencias en parse_data.py
-    </td></tr>`;
+  const tpItems  = [...(ca.tp_det||[]), ...(ca.prov_det||[])];
+  const tpPrev   = (ca.titulos_publicos_prev||0) + (ca.titulo_provincial_prev||0);
+  const onItems  = ca.on_det || [];
+  const ffItems  = ca.ff_det || [];
+
+  // Insertar sección Provincial al final de TP si hay datos
+  document.getElementById('carteraTitulosBody').innerHTML =
+    (ca.tp_det||[]).length ? `
+      <tr><td colspan="4" style="font-size:8px;color:var(--muted);padding:6px 0 2px;letter-spacing:1px;">TÍTULOS PÚBLICOS</td></tr>
+      ${detRows(ca.tp_det, ca.titulos_publicos_prev, 'Subtotal TP')}
+      <tr><td colspan="4" style="font-size:8px;color:var(--muted);padding:10px 0 2px;letter-spacing:1px;">OBLIGACIONES NEGOCIABLES</td></tr>
+      ${detRows(onItems, ca.obligaciones_neg_prev, 'Subtotal ONs')}
+      <tr><td colspan="4" style="font-size:8px;color:var(--muted);padding:10px 0 2px;letter-spacing:1px;">TÍTULO PROVINCIAL</td></tr>
+      ${detRows(ca.prov_det, ca.titulo_provincial_prev, 'Subtotal Provincial')}
+    ` : `<tr><td colspan="4" style="font-size:9px;color:var(--muted);padding:10px 0;">Sin datos</td></tr>`;
+
+  document.getElementById('carteraFFBody').innerHTML =
+    detRows(ffItems, ca.fideicomisos_prev, 'Total FF');
 
   // ── Futuros ──
   const futuros = data.futuros || [];
@@ -826,26 +851,33 @@ const SEG_COLORS = {
 };
 
 function buildSegsFromCartera(ca) {
-  const pn = ca.cpd_pesos + ca.cpd_usd + ca.pases_cauciones + ca.money_market || 1;
-  const total = pn;
-  // Percentages relative to total assets (approximate)
-  return Object.entries(SEG_COLORS).map(([name]) => {
-    let val = 0;
-    if (name === 'CPD Pesos')    val = ca.cpd_pesos        || 0;
-    if (name === 'CPD USD')      val = ca.cpd_usd          || 0;
-    if (name === 'Pases/Cau.')   val = ca.pases_cauciones  || 0;
-    if (name === 'Money Market') val = ca.money_market      || 0;
-    return { name, pct: total > 0 ? +(val/total*100).toFixed(2) : 0, color: SEG_COLORS[name] };
-  }).filter(s => s.pct > 0);
+  const fields = [
+    { name:'CPD Pesos',    val: ca.cpd_pesos,              color:'#1a56e8' },
+    { name:'CPD USD',      val: ca.cpd_usd,                color:'#7c5cbf' },
+    { name:'Pases/Cau.',   val: ca.pases_cauciones,        color:'#00a887' },
+    { name:'Money Market', val: ca.money_market,           color:'#e07b00' },
+    { name:'FF',           val: ca.fideicomisos,           color:'#d63347' },
+    { name:'ONs',          val: ca.obligaciones_neg,       color:'#ff8c42' },
+    { name:'T. Públicos',  val: ca.titulos_publicos,       color:'#2ec4b6' },
+    { name:'T. Provincial',val: ca.titulo_provincial,      color:'#38b000' },
+  ].filter(s => s.val && s.val > 0);
+  const total = fields.reduce((s,f) => s + f.val, 0);
+  return fields.map(f => ({ ...f, pct: total > 0 ? +(f.val/total*100).toFixed(2) : 0 }));
 }
 
 function buildSegsFromCarteraPrev(ca) {
-  return buildSegsFromCartera({
-    cpd_pesos:       ca.cpd_pesos_prev       || 0,
-    cpd_usd:         ca.cpd_usd_prev         || 0,
-    pases_cauciones: ca.pases_cauciones_prev  || 0,
-    money_market:    ca.money_market_prev     || 0,
-  });
+  const fields = [
+    { name:'CPD Pesos',    val: ca.cpd_pesos_prev,             color:'#1a56e8' },
+    { name:'CPD USD',      val: ca.cpd_usd_prev,               color:'#7c5cbf' },
+    { name:'Pases/Cau.',   val: ca.pases_cauciones_prev,       color:'#00a887' },
+    { name:'Money Market', val: ca.money_market_prev,          color:'#e07b00' },
+    { name:'FF',           val: ca.fideicomisos_prev,          color:'#d63347' },
+    { name:'ONs',          val: ca.obligaciones_neg_prev,      color:'#ff8c42' },
+    { name:'T. Públicos',  val: ca.titulos_publicos_prev,      color:'#2ec4b6' },
+    { name:'T. Provincial',val: ca.titulo_provincial_prev,     color:'#38b000' },
+  ].filter(s => s.val && s.val > 0);
+  const total = fields.reduce((s,f) => s + f.val, 0);
+  return fields.map(f => ({ ...f, pct: total > 0 ? +(f.val/total*100).toFixed(2) : 0 }));
 }
 
 function renderStackedBar(id, segs) {
