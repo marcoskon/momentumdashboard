@@ -24,8 +24,8 @@ jobs:
           python-version: '3.11'
 
       - name: Instalar dependencias
-        run: pip install -r scripts/requirements.txt
-
+        run: pip install pandas openpyxl
+        
       - name: Parsear xlsx y generar JSON
         run: python scripts/parse_data.py
 
