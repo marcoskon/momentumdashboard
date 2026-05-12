@@ -1,0 +1,287 @@
+{
+  "meta": {
+    "fecha_actual": "08/05/2026",
+    "fecha_anterior": "07/05/2026",
+    "duration_dias": 27.0,
+    "participes": 3
+  },
+  "patrimonial": {
+    "activo_total": 37045357588.72,
+    "activo_total_prev": 37014344020.05,
+    "pasivo_total": -264947978.39,
+    "pasivo_total_prev": -258292803.58,
+    "patrimonio_neto": 36780409610.33,
+    "patrimonio_neto_prev": 36756051216.47,
+    "creditos_totales": 2247258693.66,
+    "creditos_totales_prev": 2284941330.34,
+    "liquidez_corriente": 139.8,
+    "liquidez_efectiva": 2005884864.82
+  },
+  "balance_detalle": {
+    "provisiones": -20834682.36,
+    "prov_depositaria": -1208945.4,
+    "prov_gerente": -17841579.05,
+    "prov_gastos": -1784157.91,
+    "rescates": -6000000.0,
+    "prevision_incobrables": -169002716.27,
+    "deudas_pesos": -227855791.74
+  },
+  "cartera": {
+    "cpd_pesos": 31301675333,
+    "cpd_pesos_prev": 28859810853,
+    "cpd_usd": 976800294.37,
+    "cpd_usd_prev": 973531840.23,
+    "pases_cauciones": 582054859.43,
+    "pases_cauciones_prev": 2681452729.64,
+    "money_market": 806000000.0,
+    "money_market_prev": 1610000000.0,
+    "titulos_publicos": 485413048.68,
+    "titulos_publicos_prev": 257792177.17,
+    "obligaciones_neg": 623292240.0,
+    "obligaciones_neg_prev": 622905237.0,
+    "fideicomisos": 964472593.26,
+    "fideicomisos_prev": 963378144.68,
+    "titulo_provincial": 308923374.0,
+    "titulo_provincial_prev": 308748477.0,
+    "money_market_det": [
+      {
+        "nombre": "FCI IEB Ahorro - Clase E",
+        "total": 806000000.0,
+        "cierre": 12.1184
+      }
+    ],
+    "tp_det": [
+      {
+        "nombre": "Lecap S30N6",
+        "total": 227816188.0,
+        "cierre": 1.1391,
+        "cantidad": 200000000.0,
+        "vencimiento": null
+      },
+      {
+        "nombre": "S29Y6 - Lecap S29Y6",
+        "total": 257596860.68,
+        "cierre": 1.3015,
+        "cantidad": 197919126.0,
+        "vencimiento": null
+      }
+    ],
+    "on_det": [
+      {
+        "nombre": "LR7AO - ON Laboratorios Richmond Serie 7 Cl A Vto 10/12/26",
+        "total": 320891931.0,
+        "cierre": 1.0696,
+        "cantidad": 300000000.0,
+        "vencimiento": null
+      },
+      {
+        "nombre": "VBC3O - ON BANCO DE VALORES CL.3 24/10/26 $",
+        "total": 302400309.0,
+        "cierre": 1.008,
+        "cantidad": 300000000.0,
+        "vencimiento": null
+      }
+    ],
+    "ff_det": [
+      {
+        "nombre": "FF AMFAyS S49 Clase A",
+        "total": 40351907.0,
+        "cierre": 0.4035,
+        "cantidad": 100000000.0,
+        "vencimiento": null
+      },
+      {
+        "nombre": "MY50B - VD FF AMFAYS S.50 CL.B $",
+        "total": 133689421.74,
+        "cierre": 1.3112,
+        "cantidad": 101962042.0,
+        "vencimiento": null
+      },
+      {
+        "nombre": "MY50C - VD FF AMFAYS S.50 CL.C $",
+        "total": 408549147.17,
+        "cierre": 1.0685,
+        "cantidad": 382357659.0,
+        "vencimiento": null
+      },
+      {
+        "nombre": "MY51B - VD FF AMFAYS Serie 51 Clase B",
+        "total": 78683557.26,
+        "cierre": 1.041,
+        "cantidad": 75584213.0,
+        "vencimiento": null
+      },
+      {
+        "nombre": "MY51C - VD FF AMFAYS Serie 51 Clase C",
+        "total": 167413413.24,
+        "cierre": 0.9493,
+        "cantidad": 176363163.0,
+        "vencimiento": null
+      },
+      {
+        "nombre": "VD FF SECUBONO 245 CL.A $",
+        "total": 135785146.85,
+        "cierre": 0.4433,
+        "cantidad": 306275000.0,
+        "vencimiento": null
+      }
+    ],
+    "prov_det": [
+      {
+        "nombre": "CO2D7 - Título provincia de Córdoba 05/12/27",
+        "total": 308923374.0,
+        "cierre": 1.0297,
+        "cantidad": 300000000.0
+      }
+    ]
+  },
+  "futuros": [
+    {
+      "contrato": "Fut Rofex DLR052026",
+      "cantidad": -40000.0,
+      "cierre": 1410.5,
+      "total_hoy": -56420000.0,
+      "total_prev": null
+    },
+    {
+      "contrato": "Fut Rofex DLR062026",
+      "cantidad": -314000.0,
+      "cierre": 1436.5,
+      "total_hoy": -451061000.0,
+      "total_prev": null
+    },
+    {
+      "contrato": "Fut Rofex DLR072026",
+      "cantidad": -276000.0,
+      "cierre": 1466.5,
+      "total_hoy": -404754000.0,
+      "total_prev": null
+    },
+    {
+      "contrato": "Fut Rofex DLR082026",
+      "cantidad": -100000.0,
+      "cierre": 1495.5,
+      "total_hoy": -149550000.0,
+      "total_prev": null
+    }
+  ],
+  "cuotapartes": {
+    "A": {
+      "vcp": 1371.505,
+      "vcp_prev": 1370.658,
+      "vcp_abril": null,
+      "vcp_dic": null,
+      "saldo_cp": 3467630407,
+      "saldo_cp_prev": 3466428844,
+      "ingresos_hoy": null,
+      "egresos_hoy": null,
+      "ingresos_prev": null,
+      "egresos_prev": null
+    },
+    "B": {
+      "vcp": 1643.433,
+      "vcp_prev": 1642.418,
+      "vcp_abril": null,
+      "vcp_dic": null,
+      "saldo_cp": 2701838824,
+      "saldo_cp_prev": 2701838824,
+      "ingresos_hoy": null,
+      "egresos_hoy": null,
+      "ingresos_prev": null,
+      "egresos_prev": null
+    },
+    "C": {
+      "vcp": 1655.64,
+      "vcp_prev": 1654.617,
+      "vcp_abril": null,
+      "vcp_dic": null,
+      "saldo_cp": 16660779699,
+      "saldo_cp_prev": 16660779699,
+      "ingresos_hoy": null,
+      "egresos_hoy": null,
+      "ingresos_prev": null,
+      "egresos_prev": null
+    }
+  },
+  "cpd_vencimientos": [
+    {
+      "fecha": "12/05",
+      "dia": "Mar",
+      "monto": 1538860209
+    },
+    {
+      "fecha": "13/05",
+      "dia": "Mié",
+      "monto": 473487131
+    },
+    {
+      "fecha": "14/05",
+      "dia": "Jue",
+      "monto": 270617683
+    },
+    {
+      "fecha": "15/05",
+      "dia": "Vie",
+      "monto": 528641707
+    },
+    {
+      "fecha": "18/05",
+      "dia": "Lun",
+      "monto": 202100077
+    },
+    {
+      "fecha": "19/05",
+      "dia": "Mar",
+      "monto": 271532263
+    },
+    {
+      "fecha": "20/05",
+      "dia": "Mié",
+      "monto": 382200938
+    },
+    {
+      "fecha": "21/05",
+      "dia": "Jue",
+      "monto": 106745868
+    },
+    {
+      "fecha": "22/05",
+      "dia": "Vie",
+      "monto": 560639430
+    },
+    {
+      "fecha": "26/05",
+      "dia": "Mar",
+      "monto": 142468485
+    },
+    {
+      "fecha": "27/05",
+      "dia": "Mié",
+      "monto": 239789964
+    },
+    {
+      "fecha": "28/05",
+      "dia": "Jue",
+      "monto": 996209604
+    },
+    {
+      "fecha": "29/05",
+      "dia": "Vie",
+      "monto": 315570486
+    },
+    {
+      "fecha": "01/06",
+      "dia": "Lun",
+      "monto": 1421594771
+    },
+    {
+      "fecha": "02/06",
+      "dia": "Mar",
+      "monto": 423261393
+    }
+  ],
+  "atribucion": {
+    "delta_total": 0,
+    "items": []
+  }
+}
