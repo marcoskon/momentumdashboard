@@ -3,12 +3,10 @@ name: Procesar archivos y publicar dashboard
 on:
   push:
     branches: [main]
-    paths:
-      - 'raw/**'          # se activa solo cuando subís archivos xlsx
-  workflow_dispatch:      # también permite correrlo manualmente desde GitHub
+  workflow_dispatch:
 
 permissions:
-  contents: write         # necesario para que el action pueda commitear los JSON
+  contents: write
 
 jobs:
   build:
@@ -18,6 +16,9 @@ jobs:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
 
+      - name: Instalar LibreOffice
+        run: sudo apt-get install -y libreoffice --no-install-recommends
+
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
@@ -25,9 +26,14 @@ jobs:
 
       - name: Instalar dependencias
         run: pip install pandas openpyxl
-        
+
       - name: Parsear xlsx y generar JSON
-        run: python scripts/parse_data.py
+        run: |
+          if ls raw/*.xlsx 1> /dev/null 2>&1; then
+            python scripts/parse_data.py
+          else
+            echo "No hay archivos xlsx en raw/ todavía"
+          fi
 
       - name: Commitear los JSON generados
         run: |
