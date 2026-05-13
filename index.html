@@ -653,10 +653,44 @@ function populateDashboard(data) {
 
   // ── Pasivo table (static from xlsx — se puede extender) ──
   // Por ahora mostramos un mensaje hasta que el parser complete este bloque
-  document.getElementById('pasivoBody').innerHTML = `
-    <tr><td colspan="4" style="font-size:9px;color:var(--muted);padding:10px 0;">
-      Detalle disponible cuando el parser mapee las celdas de pasivo.
-    </td></tr>`;
+  // ── Pasivo detalle ──
+  const bd  = data.balance_detalle || {};
+  const pat = data.patrimonial || {};
+  const prevBD  = {};  // se llena desde el JSON del día anterior vía vcp_data
+
+  function pasRow(label, hoy, ayer, indent=false) {
+    const v = hoy  != null ? Math.abs(hoy)  : null;
+    const a = ayer != null ? Math.abs(ayer) : null;
+    const lbl = indent
+      ? `<span style="padding-left:12px;color:var(--muted);font-size:9px;">· ${label}</span>`
+      : label;
+    return `<tr>
+      <td class="name-col">${lbl}</td>
+      <td class="today-col" style="color:var(--red)">${v != null ? fmt.money(v,1) : '—'}</td>
+      <td class="prev-col">${a != null ? fmt.money(a,1) : '—'}</td>
+      <td class="delta-col">${v != null && a != null ? fmt.pctDelta(v,a) : '<span class="dneu">—</span>'}</td>
+    </tr>`;
+  }
+
+  // Intentar obtener datos del día anterior desde el JSON cargado
+  const prevPat = (window._lastData?.patrimonial) || {};
+
+  document.getElementById('pasivoBody').innerHTML =
+    pasRow('Provisiones',        bd.provisiones,   null) +
+    pasRow('Honor. Depositaria', bd.prov_depositaria, null, true) +
+    pasRow('Honor. Gerente',     bd.prov_gerente,     null, true) +
+    pasRow('Gastos Depositaria', bd.prov_gastos,      null, true) +
+    pasRow('Deudas en Pesos',    bd.deudas_pesos,  null) +
+    pasRow('Rescates',           bd.rescates,          null, true) +
+    pasRow('Prev. Incobrables',  bd.prevision_incobrables, null, true) +
+    `<tr class="total-row">
+      <td class="name-col" style="color:var(--red)">Total Pasivo</td>
+      <td class="today-col" style="color:var(--red)">${p.pasivo_total != null ? fmt.money(Math.abs(p.pasivo_total),1) : '—'}</td>
+      <td class="prev-col">${p.pasivo_total_prev != null ? fmt.money(Math.abs(p.pasivo_total_prev),1) : '—'}</td>
+      <td class="delta-col">${p.pasivo_total != null && p.pasivo_total_prev != null
+        ? fmt.pctDelta(Math.abs(p.pasivo_total), Math.abs(p.pasivo_total_prev))
+        : '<span class="dneu">—</span>'}</td>
+    </tr>`;
 
   // ── Stacked bars ──
   const segsHoy  = buildSegsFromCartera(ca);
@@ -687,12 +721,16 @@ function populateDashboard(data) {
   function detRows(items, prevTotal, label) {
     if (!items || !items.length) return `<tr><td colspan="4" style="font-size:9px;color:var(--muted);padding:6px 0;">Sin datos</td></tr>`;
     const total = items.reduce((s,i) => s + (i.total||0), 0);
-    return items.map(i => `<tr>
-      <td class="name-col" title="${i.nombre}">${i.nombre.length>32?i.nombre.slice(0,32)+'…':i.nombre}</td>
-      <td class="today-col">${fmt.money(i.total,1)}</td>
-      <td class="prev-col">—</td>
-      <td class="delta-col dneu">—</td>
-    </tr>`).join('') +
+    return items.map(i => {
+      const prev = i.total_prev != null ? i.total_prev : null;
+      const n = i.nombre.length > 34 ? i.nombre.slice(0,34)+'…' : i.nombre;
+      return `<tr>
+        <td class="name-col" title="${i.nombre}">${n}</td>
+        <td class="today-col">${fmt.money(i.total,1)}</td>
+        <td class="prev-col">${prev != null ? fmt.money(prev,1) : '<span style="color:var(--muted);font-size:9px;">nuevo</span>'}</td>
+        <td class="delta-col">${prev != null ? fmt.pctDelta(i.total, prev) : '<span class="dneu">—</span>'}</td>
+      </tr>`;
+    }).join('') +
     `<tr class="total-row"><td class="name-col">${label}</td>
       <td class="today-col">${fmt.money(total,1)}</td>
       <td class="prev-col">${fmt.money(prevTotal,1)}</td>
