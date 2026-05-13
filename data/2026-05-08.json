@@ -43,95 +43,97 @@
     "fideicomisos_prev": 963378144.68,
     "titulo_provincial": 308923374.0,
     "titulo_provincial_prev": 308748477.0,
-    "money_market_det": [
-      {
-        "nombre": "FCI IEB Ahorro - Clase E",
-        "total": 806000000.0,
-        "cierre": 12.1184
-      }
-    ],
     "tp_det": [
       {
         "nombre": "Lecap S30N6",
         "total": 227816188.0,
+        "total_prev": null,
         "cierre": 1.1391,
-        "cantidad": 200000000.0,
-        "vencimiento": null
+        "cantidad": 200000000.0
       },
       {
         "nombre": "S29Y6 - Lecap S29Y6",
         "total": 257596860.68,
+        "total_prev": 257792177.17,
         "cierre": 1.3015,
-        "cantidad": 197919126.0,
-        "vencimiento": null
+        "cantidad": 197919126.0
       }
     ],
     "on_det": [
       {
         "nombre": "LR7AO - ON Laboratorios Richmond Serie 7 Cl A Vto 10/12/26",
         "total": 320891931.0,
+        "total_prev": 320675880.0,
         "cierre": 1.0696,
-        "cantidad": 300000000.0,
-        "vencimiento": null
+        "cantidad": 300000000.0
       },
       {
         "nombre": "VBC3O - ON BANCO DE VALORES CL.3 24/10/26 $",
         "total": 302400309.0,
+        "total_prev": 302229357.0,
         "cierre": 1.008,
-        "cantidad": 300000000.0,
-        "vencimiento": null
+        "cantidad": 300000000.0
       }
     ],
     "ff_det": [
       {
         "nombre": "FF AMFAyS S49 Clase A",
         "total": 40351907.0,
+        "total_prev": 40341502.0,
         "cierre": 0.4035,
-        "cantidad": 100000000.0,
-        "vencimiento": null
+        "cantidad": 100000000.0
       },
       {
         "nombre": "MY50B - VD FF AMFAYS S.50 CL.B $",
         "total": 133689421.74,
+        "total_prev": 133726504.32,
         "cierre": 1.3112,
-        "cantidad": 101962042.0,
-        "vencimiento": null
+        "cantidad": 101962042.0
       },
       {
         "nombre": "MY50C - VD FF AMFAYS S.50 CL.C $",
         "total": 408549147.17,
+        "total_prev": 407584860.27,
         "cierre": 1.0685,
-        "cantidad": 382357659.0,
-        "vencimiento": null
+        "cantidad": 382357659.0
       },
       {
         "nombre": "MY51B - VD FF AMFAYS Serie 51 Clase B",
         "total": 78683557.26,
+        "total_prev": 78793230.71,
         "cierre": 1.041,
-        "cantidad": 75584213.0,
-        "vencimiento": null
+        "cantidad": 75584213.0
       },
       {
         "nombre": "MY51C - VD FF AMFAYS Serie 51 Clase C",
         "total": 167413413.24,
+        "total_prev": 167209974.8,
         "cierre": 0.9493,
-        "cantidad": 176363163.0,
-        "vencimiento": null
+        "cantidad": 176363163.0
       },
       {
         "nombre": "VD FF SECUBONO 245 CL.A $",
         "total": 135785146.85,
+        "total_prev": 135722072.57,
         "cierre": 0.4433,
-        "cantidad": 306275000.0,
-        "vencimiento": null
+        "cantidad": 306275000.0
       }
     ],
     "prov_det": [
       {
         "nombre": "CO2D7 - Título provincia de Córdoba 05/12/27",
         "total": 308923374.0,
+        "total_prev": 308748477.0,
         "cierre": 1.0297,
         "cantidad": 300000000.0
+      }
+    ],
+    "money_market_det": [
+      {
+        "nombre": "FCI IEB Ahorro - Clase E",
+        "total": 806000000.0,
+        "total_prev": null,
+        "cierre": 12.1184
       }
     ]
   },
@@ -205,11 +207,6 @@
   },
   "cpd_vencimientos": [
     {
-      "fecha": "12/05",
-      "dia": "Mar",
-      "monto": 1538860209
-    },
-    {
       "fecha": "13/05",
       "dia": "Mié",
       "monto": 473487131
@@ -278,6 +275,11 @@
       "fecha": "02/06",
       "dia": "Mar",
       "monto": 423261393
+    },
+    {
+      "fecha": "03/06",
+      "dia": "Mié",
+      "monto": 297879758
     }
   ],
   "atribucion": {
