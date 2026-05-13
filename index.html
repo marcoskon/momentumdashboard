@@ -663,8 +663,8 @@ function populateDashboard(data) {
     const v = hoy  != null ? Math.abs(hoy)  : null;
     const a = ayer != null ? Math.abs(ayer) : null;
     const lbl = indent
-      ? `<span style="padding-left:14px;color:var(--muted);font-size:12px;">· ${label}</span>`
-      : `<span style="font-size:14px;font-weight:500;">${label}</span>`;
+      ? `<span style="padding-left:14px;color:var(--muted);font-size:17px;">· ${label}</span>`
+      : `<span style="font-size:15px;font-weight:500;">${label}</span>`;
     return `<tr>
       <td class="name-col">${lbl}</td>
       <td class="today-col" style="color:var(--red)">${v != null ? fmt.money(v,1) : '—'}</td>
