@@ -283,7 +283,65 @@
     }
   ],
   "atribucion": {
-    "delta_total": 0,
-    "items": []
+    "delta_total": 4.8166,
+    "pn_prev": 36895693612,
+    "items": [
+      {
+        "n": "Intereses Pesos",
+        "t": "Devengo",
+        "bps": 7.5048,
+        "dp": 27.6897,
+        "det": "Cuenta 4002001002000000000"
+      },
+      {
+        "n": "Resultado CPD USD",
+        "t": "Devengo",
+        "bps": 0.0588,
+        "dp": 0.2171,
+        "det": "Cuenta 4000000000000000010"
+      },
+      {
+        "n": "Resultado Títulos Públicos",
+        "t": "Precio",
+        "bps": 0.2997,
+        "dp": 1.1059,
+        "det": "Cuenta 4000000000000000001"
+      },
+      {
+        "n": "Diferencia Cotización USD",
+        "t": "Precio",
+        "bps": -2.4674,
+        "dp": -9.1037,
+        "det": "Cuenta 4000000000000000009"
+      },
+      {
+        "n": "Resultado por Tenencia",
+        "t": "Precio",
+        "bps": -1.3493,
+        "dp": -4.9785,
+        "det": "Cuenta 4002001004000000000"
+      },
+      {
+        "n": "Resultado Operación Futuro",
+        "t": "MTM",
+        "bps": 1.5856,
+        "dp": 5.85,
+        "det": "Cuenta 4000000000000000013"
+      },
+      {
+        "n": "Gastos Negociación CPD",
+        "t": "Costo",
+        "bps": -0.0826,
+        "dp": -0.3046,
+        "det": "Cuenta 4001001000000000013"
+      },
+      {
+        "n": "Honorarios Administración",
+        "t": "Costo",
+        "bps": -0.7318,
+        "dp": -2.6999,
+        "det": "Cuenta 4001002001000000000"
+      }
+    ]
   }
 }
