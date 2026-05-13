@@ -725,7 +725,7 @@ function populateDashboard(data) {
       return `<tr>
         <td class="name-col" title="${i.nombre}">${n}</td>
         <td class="today-col">${fmt.money(i.total,1)}</td>
-        <td class="prev-col">${prev != null ? fmt.money(prev,1) : '<span style="color:var(--muted);font-size:9px;">nuevo</span>'}</td>
+        <td class="prev-col">${prev != null ? fmt.money(prev,1) : '<span style="color:var(--muted);font-size:17px;">nuevo</span>'}</td>
         <td class="delta-col">${prev != null ? fmt.pctDelta(i.total, prev) : '<span class="dneu">—</span>'}</td>
       </tr>`;
     }).join('') +
@@ -836,7 +836,7 @@ function populateDashboard(data) {
     </div>`;
   }).join('') + `<div class="saldo-row" style="border-top:2px solid var(--border2);margin-top:4px;padding-top:10px;">
     <div class="saldo-left">
-      <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">TOTAL</span>
+      <span style="font-size:17px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">TOTAL</span>
       <div style="font-size:10px;color:var(--muted);margin-top:3px;">Ayer: ${fmt.money(totalAyerCP)}</div>
     </div>
     <div class="saldo-right">
@@ -1017,7 +1017,7 @@ function renderAtribucion(at, cpC, meta) {
     return `<tr>
       <td style="text-align:center;color:${col};font-size:13px;">${arrow}</td>
       <td style="font-size:11px;">${d.n}</td>
-      <td><span style="display:inline-block;background:${bg};color:${col};font-size:8px;letter-spacing:1px;padding:2px 7px;border-radius:3px;white-space:nowrap;">${d.t}</span></td>
+      <td><span style="display:inline-block;background:${bg};color:${col};font-size:17px;letter-spacing:1px;padding:2px 7px;border-radius:3px;white-space:nowrap;">${d.t}</span></td>
       <td style="text-align:right;font-size:10px;color:${col};">${dpStr}</td>
       <td style="text-align:right;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:${col};">${d.bps >= 0 ? '+' : ''}${d.bps.toFixed(2)}</td>
       <td style="text-align:right;font-size:10px;color:${parseFloat(pct)>=0?'#00a887':'#d63347'};">${parseFloat(pct)>=0?'+':''}${pct}%</td>
