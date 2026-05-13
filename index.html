@@ -654,9 +654,8 @@ function populateDashboard(data) {
   // ── Pasivo table (static from xlsx — se puede extender) ──
   // Por ahora mostramos un mensaje hasta que el parser complete este bloque
   // ── Pasivo detalle ──
-  const bd  = data.balance_detalle || {};
-  const pat = data.patrimonial || {};
-  const prevBD  = {};  // se llena desde el JSON del día anterior vía vcp_data
+  const bd     = data.balance_detalle || {};
+  const prevBD = window._prevDayData?.balance_detalle || {};
 
   function pasRow(label, hoy, ayer, indent=false) {
     const v = hoy  != null ? Math.abs(hoy)  : null;
@@ -672,17 +671,14 @@ function populateDashboard(data) {
     </tr>`;
   }
 
-  // Intentar obtener datos del día anterior desde el JSON cargado
-  const prevPat = (window._lastData?.patrimonial) || {};
-
   document.getElementById('pasivoBody').innerHTML =
-    pasRow('Provisiones',        bd.provisiones,   null) +
-    pasRow('Honor. Depositaria', bd.prov_depositaria, null, true) +
-    pasRow('Honor. Gerente',     bd.prov_gerente,     null, true) +
-    pasRow('Gastos Depositaria', bd.prov_gastos,      null, true) +
-    pasRow('Deudas en Pesos',    bd.deudas_pesos,  null) +
-    pasRow('Rescates',           bd.rescates,          null, true) +
-    pasRow('Prev. Incobrables',  bd.prevision_incobrables, null, true) +
+    pasRow('Provisiones',        bd.provisiones,           prevBD.provisiones) +
+    pasRow('Honor. Depositaria', bd.prov_depositaria,      prevBD.prov_depositaria,      true) +
+    pasRow('Honor. Gerente',     bd.prov_gerente,          prevBD.prov_gerente,          true) +
+    pasRow('Gastos Depositaria', bd.prov_gastos,           prevBD.prov_gastos,           true) +
+    pasRow('Deudas en Pesos',    bd.deudas_pesos,          prevBD.deudas_pesos) +
+    pasRow('Rescates',           bd.rescates,              prevBD.rescates,              true) +
+    pasRow('Prev. Incobrables',  bd.prevision_incobrables, prevBD.prevision_incobrables, true) +
     `<tr class="total-row">
       <td class="name-col" style="color:var(--red)">Total Pasivo</td>
       <td class="today-col" style="color:var(--red)">${p.pasivo_total != null ? fmt.money(Math.abs(p.pasivo_total),1) : '—'}</td>
@@ -1124,6 +1120,19 @@ async function loadDate(dateStr) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     window._lastData = data;
+
+    // Cargar JSON del día anterior para cruzar balance_detalle
+    window._prevDayData = null;
+    const fechaAnt = data.meta?.fecha_anterior;
+    if (fechaAnt) {
+      const p = fechaAnt.split('/');
+      const prevIso = `${p[2]}-${p[1]}-${p[0]}`;
+      try {
+        const r2 = await fetch(`data/${prevIso}.json`);
+        if (r2.ok) window._prevDayData = await r2.json();
+      } catch(e2) { /* sin JSON del día anterior */ }
+    }
+
     populateDashboard(data);
   } catch (e) {
     console.error('Error cargando datos:', e);
