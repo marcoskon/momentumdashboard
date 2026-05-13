@@ -16,7 +16,7 @@
     --shadow-sm:0 1px 2px rgba(0,0,0,.06);
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'IBM Plex Mono',monospace;background:var(--bg);color:var(--text);min-height:100vh}
+  body{font-family:'IBM Plex Mono',monospace;background:var(--bg);color:var(--text);min-height:100vh;font-size:13px}
 
   /* ── TOP BAR ── */
   .top-bar{height:4px;background:linear-gradient(90deg,var(--accent) 0%,#4f8aff 50%,var(--accent2) 100%)}
@@ -54,7 +54,7 @@
   .tabs-inner{max-width:1640px;margin:0 auto;padding:0 24px;display:flex;overflow-x:auto;scrollbar-width:none}
   .tabs-inner::-webkit-scrollbar{display:none}
   .tab-btn{display:flex;align-items:center;gap:7px;padding:14px 22px;border:none;background:transparent;
-    cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:var(--muted);
+    cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:500;color:var(--muted);
     border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap;letter-spacing:.3px;
     transition:color .18s,border-color .18s,background .18s}
   .tab-btn:hover{color:var(--text);background:var(--bg)}
@@ -88,7 +88,7 @@
   .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
     background:var(--ka,var(--accent));border-radius:10px 10px 0 0}
   .kpi-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-  .kpi-value{font-family:'Syne',sans-serif;font-size:clamp(20px,2.4vw,28px);font-weight:800;line-height:1.1}
+  .kpi-value{font-family:'Syne',sans-serif;font-size:clamp(24px,2.6vw,32px);font-weight:800;line-height:1.1}
   .kpi-prev{font-size:10px;color:var(--muted);margin-top:4px}
   .kpi-delta{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;
     padding:2px 8px;border-radius:20px;margin-top:6px}
@@ -103,14 +103,14 @@
   @media(max-width:1200px){.three-col{grid-template-columns:1fr 1fr}}
 
   /* ── TABLE ── */
-  .cmp-table{width:100%;border-collapse:collapse;font-size:11px}
-  .cmp-table thead th{text-align:left;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  .cmp-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .cmp-table thead th{text-align:left;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
     color:var(--muted);padding:0 0 8px;border-bottom:1px solid var(--dim);font-weight:400}
   .cmp-table thead th:not(:first-child){text-align:right}
   .cmp-table tbody td{padding:8px 0;border-bottom:1px solid rgba(221,225,236,.6);vertical-align:middle}
   .cmp-table tbody td:not(:first-child){text-align:right}
   .cmp-table tbody tr:last-child td{border-bottom:none}
-  .cmp-table .name-col{color:var(--muted);font-size:10px;max-width:180px;white-space:nowrap;
+  .cmp-table .name-col{color:var(--muted);font-size:11.5px;max-width:180px;white-space:nowrap;
     overflow:hidden;text-overflow:ellipsis}
   .cmp-table .today-col{color:var(--text);font-weight:500}
   .cmp-table .prev-col{color:var(--muted);font-size:10px}
@@ -151,7 +151,7 @@
   .cp-badge{display:inline-flex;align-items:center;background:var(--cb-bg,#eef2ff);
     border:1px solid var(--cb-border,#c5d0fa);border-radius:4px;padding:2px 8px;margin-bottom:8px}
   .cp-badge span{font-size:8px;color:var(--cb-color,var(--accent));letter-spacing:.5px}
-  .cp-valor{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;line-height:1}
+  .cp-valor{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;line-height:1}
   .cp-fecha{font-size:9px;color:var(--muted);margin-top:2px;margin-bottom:12px}
   .cp-rows{display:flex;flex-direction:column}
   .cp-row{display:flex;justify-content:space-between;align-items:baseline;
@@ -171,7 +171,7 @@
   .saldo-bar-track{width:120px;height:4px;background:var(--dim);border-radius:2px;overflow:hidden}
   .saldo-bar-fill{height:100%;border-radius:2px}
   .saldo-right{text-align:right}
-  .saldo-num{font-family:'Syne',sans-serif;font-size:16px;font-weight:700}
+  .saldo-num{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
   .saldo-pct{font-size:9px;color:var(--muted)}
 
   /* ── DURATION ── */
@@ -224,12 +224,9 @@
     </div>
     <div class="header-pill">
       <span class="hl">Duration</span>
-      <span class="hv" id="hDuration">—</span>
+      <span class="hv">58 días</span>
     </div>
-    <div class="header-pill">
-      <span class="hl">Partícipes</span>
-      <span class="hv" id="hParticipes">—</span>
-    </div>
+
     <div class="date-picker-wrap">
       <div>
         <div class="date-label">Seleccionar día</div>
@@ -286,7 +283,7 @@
       <div class="kpi-delta neu" id="kpiPNDelta">—</div>
     </div>
     <div class="kpi-card" style="--ka:#e07b00">
-      <div class="kpi-label">Créditos Totales</div>
+      <div class="kpi-label">Cheques Pendientes</div>
       <div class="kpi-value" id="kpiCreditos">—</div>
       <div class="kpi-prev" id="kpiCreditosPrev">Ayer: —</div>
       <div class="kpi-delta neu" id="kpiCreditosDelta">—</div>
@@ -294,8 +291,8 @@
     <div class="kpi-card" style="--ka:#7c5cbf">
       <div class="kpi-label">Liquidez Corriente</div>
       <div class="kpi-value" style="font-size:clamp(18px,2vw,26px)" id="kpiLC">—</div>
-      <div class="kpi-prev" id="kpiLCDesc">Activo / Pasivo corriente</div>
-      <div class="kpi-delta pos" style="background:#f3eeff;color:#7c5cbf;">▲ Ratio Activo/Pasivo</div>
+      <div class="kpi-prev" id="kpiLCDesc">—</div>
+      <div class="kpi-delta neu" id="kpiLCDelta">—</div>
     </div>
   </div>
 
@@ -579,7 +576,7 @@ const fmt = {
   money(v, dec=3) {
     if (v == null) return '—';
     v = Number(v);
-    if (Math.abs(v) >= 1e9) return `$${(v/1e9).toFixed(dec)} B`;
+    if (Math.abs(v) >= 1e9) return `$${(v/1e9).toFixed(dec)} MM`;
     if (Math.abs(v) >= 1e6) return `$${(v/1e6).toFixed(1)} M`;
     return `$${v.toLocaleString('es-AR')}`;
   },
@@ -621,9 +618,9 @@ function populateDashboard(data) {
   // ── Header ──
   setTxt('hFechaActual',   m.fecha_actual   || '—');
   setTxt('hFechaAnterior', m.fecha_anterior || '—');
-  setTxt('hDuration',      m.duration_dias  ? `${m.duration_dias} días` : '—');
+  
   setTxt('hParticipes',    m.participes     || '—');
-  setTxt('durNum',         m.duration_dias  || '—');
+  setTxt('durNum', '58');
 
   // ── KPIs patrimoniales ──
   setTxt('kpiActivo',   fmt.money(p.activo_total));
@@ -642,11 +639,10 @@ function populateDashboard(data) {
   setTxt('kpiCreditosPrev', `Ayer: ${fmt.money(p.creditos_totales_prev)}`);
   setDelta('kpiCreditosDelta', p.creditos_totales, p.creditos_totales_prev);
 
-  const lc = p.liquidez_corriente;
-  setTxt('kpiLC', lc != null ? `${Number(lc).toFixed(1)}×` : '—');
-  setTxt('kpiLCDesc', lc != null
-    ? `Activo ${fmt.money(p.activo_total, 3)} / Pasivo ${fmt.money(p.pasivo_total, 1)}`
-    : 'Activo / Pasivo corriente');
+  const lc = p.liquidez_efectiva || p.liquidez_corriente;
+  setTxt('kpiLC', lc != null ? fmt.money(lc) : '—');
+  setTxt('kpiLCDesc', `Ayer: ${p.liquidez_efectiva_prev != null ? fmt.money(p.liquidez_efectiva_prev) : '—'}`);
+  setDelta('kpiLCDelta', lc, p.liquidez_efectiva_prev || p.liquidez_corriente_prev);
 
   // ── CPD Maturity Chart ──
   renderCPDChart(data.cpd_vencimientos || []);
@@ -808,9 +804,9 @@ function populateDashboard(data) {
 
   // ── Saldo por clase ──
   const saldos = [
-    { clase:'Clase A', hoy:cp.A?.saldo_cp, ayer:cp.A?.saldo_cp_prev, color:'#1a56e8' },
-    { clase:'Clase B', hoy:cp.B?.saldo_cp, ayer:cp.B?.saldo_cp_prev, color:'#00a887' },
-    { clase:'Clase C', hoy:cp.C?.saldo_cp, ayer:cp.C?.saldo_cp_prev, color:'#e07b00' },
+    { clase:'Clase A', hoy:cp.A?.inversion, ayer:cp.A?.inversion_prev, color:'#1a56e8' },
+    { clase:'Clase B', hoy:cp.B?.inversion, ayer:cp.B?.inversion_prev, color:'#00a887' },
+    { clase:'Clase C', hoy:cp.C?.inversion, ayer:cp.C?.inversion_prev, color:'#e07b00' },
   ];
   const totalHoyCP  = saldos.reduce((s,x) => s + (x.hoy  || 0), 0);
   const totalAyerCP = saldos.reduce((s,x) => s + (x.ayer || 0), 0);
@@ -825,20 +821,20 @@ function populateDashboard(data) {
       <div class="saldo-left">
         <div class="saldo-clase">${s.clase}</div>
         <div class="saldo-bar-track"><div class="saldo-bar-fill" style="width:${pct}%;background:${s.color};"></div></div>
-        <div style="font-size:9px;color:var(--muted);margin-top:2px;">Ayer: $${((s.ayer||0)/1e9).toFixed(3)} B (${pctA}%)</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">Ayer: ${fmt.money(s.ayer||0)} (${pctA}%)</div>
       </div>
       <div class="saldo-right">
-        <div class="saldo-num" style="color:${s.color}">$${((s.hoy||0)/1e9).toFixed(3)} B</div>
+        <div class="saldo-num" style="color:${s.color}">${fmt.money(s.hoy||0)}</div>
         <div class="saldo-pct ${dc}">${dSign}${delta.toFixed(2)}% · ${pct}%</div>
       </div>
     </div>`;
   }).join('') + `<div class="saldo-row" style="border-top:2px solid var(--border2);margin-top:4px;padding-top:10px;">
     <div class="saldo-left">
-      <span style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">TOTAL</span>
-      <div style="font-size:9px;color:var(--muted);margin-top:3px;">Ayer: $${(totalAyerCP/1e9).toFixed(3)} B</div>
+      <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">TOTAL</span>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px;">Ayer: ${fmt.money(totalAyerCP)}</div>
     </div>
     <div class="saldo-right">
-      <div class="saldo-num">$${(totalHoyCP/1e9).toFixed(3)} B</div>
+      <div class="saldo-num">${fmt.money(totalHoyCP)}</div>
       <div class="saldo-pct dpos">${totalAyerCP ? ((totalHoyCP-totalAyerCP)/totalAyerCP*100).toFixed(2) : '—'}%</div>
     </div>
   </div>`;
