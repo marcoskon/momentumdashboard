@@ -292,15 +292,21 @@ def parse_gestion(path):
             continue
         vcp_val  = safe(rows.iloc[0, 8])
         saldo_cp = rows.iloc[:, 3].apply(safe).dropna().sum()
+
+        # Ingresos/egresos/saldo desde hoja principal (busca por nombre)
+        ing_hoy  = find_value(df, f'INGRESOS EN EL DIA Clase {clase}')
+        egr_hoy  = find_value(df, f'EGRESOS EN EL DIA Clase {clase}')
+        saldo_gs = find_value(df, f'SALDO TOTAL DE CUOTAPARTES Clase {clase}')
+
         vcp_data[clase] = {
             'vcp':           round(vcp_val * 1000, 3) if vcp_val else None,
             'vcp_prev':      None,
             'vcp_abril':     None,
             'vcp_dic':       None,
-            'saldo_cp':      round(saldo_cp) if saldo_cp else None,
+            'saldo_cp':      round(saldo_gs) if saldo_gs else (round(saldo_cp) if saldo_cp else None),
             'saldo_cp_prev': None,
-            'ingresos_hoy':  None,
-            'egresos_hoy':   None,
+            'ingresos_hoy':  round(ing_hoy) if ing_hoy else 0,
+            'egresos_hoy':   round(egr_hoy) if egr_hoy else 0,
             'ingresos_prev': None,
             'egresos_prev':  None,
         }
@@ -339,6 +345,8 @@ def parse_gestion(path):
                 vcp_data[clase]['saldo_cp_prev'] = prev_cp[clase].get('saldo_cp')
                 vcp_data[clase]['vcp_abril']     = prev_cp[clase].get('vcp_abril')
                 vcp_data[clase]['vcp_dic']       = prev_cp[clase].get('vcp_dic')
+                vcp_data[clase]['ingresos_prev'] = prev_cp[clase].get('ingresos_hoy')
+                vcp_data[clase]['egresos_prev']  = prev_cp[clase].get('egresos_hoy')
     else:
         prev_ca = {}
 
