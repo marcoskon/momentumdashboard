@@ -1,9 +1,11 @@
 """
 parse_data.py  —  FCI Momentum Pymes
-Parser robusto por nombre de sección, inmune a cambios de fila.
+Parser que lee GESTION MOMENTUM + BALANCE para generar:
+  - Datos patrimoniales, cartera, VCP
+  - Atribución diaria de VCP desde cuentas contables del Balance
 """
 
-import json, re
+import json, re, subprocess
 from pathlib import Path
 from datetime import datetime
 
@@ -15,6 +17,19 @@ DATA_DIR = ROOT / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 DIAS_ES = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
+
+# Cuentas contables para atribución del VCP
+CUENTAS_ATRIB = [
+    ('4002001002000000000', 'Intereses Pesos',            'Devengo'),
+    ('4000000000000000010', 'Resultado CPD USD',           'Devengo'),
+    ('4000000000000000001', 'Resultado Títulos Públicos',  'Precio' ),
+    ('4000000000000000009', 'Diferencia Cotización USD',   'Precio' ),
+    ('4002001004000000000', 'Resultado por Tenencia',      'Precio' ),
+    ('4000000000000000013', 'Resultado Operación Futuro',  'MTM'    ),
+    ('4001001000000000013', 'Gastos Negociación CPD',      'Costo'  ),
+    ('4001002001000000000', 'Honorarios Administración',   'Costo'  ),
+]
+CODIGO_TOTAL = '4000000000'
 
 # ─── UTILIDADES ──────────────────────────────────────────────────────────────
 
@@ -41,7 +56,6 @@ def col_a(df):
     return df.iloc[:, 0].astype(str).str.strip()
 
 def find_row(df, *labels):
-    """Devuelve el índice de la primera fila donde col A coincide con algún label."""
     ca = col_a(df).str.upper()
     for label in labels:
         mask = ca == label.upper()
@@ -50,25 +64,18 @@ def find_row(df, *labels):
     return None
 
 def find_row_contains(df, text):
-    """Devuelve el índice de la primera fila donde col A contiene el texto."""
     ca = col_a(df).str.upper()
     mask = ca.str.contains(text.upper(), na=False)
     return mask.idxmax() if mask.any() else None
 
 def find_value(df, *labels):
-    """Busca label en col A, devuelve col B (índice 1)."""
     idx = find_row(df, *labels)
     return safe(df.iloc[idx, 1]) if idx is not None else None
 
 def section_subtotal(df, section_label, value_col_idx):
-    """
-    Encuentra el header de sección, luego busca el subtotal:
-    la primera fila donde col A está vacía y value_col tiene número.
-    """
     start = find_row_contains(df, section_label)
     if start is None:
         return None
-    # Busca desde start+2 (salteando header de columnas)
     for i in range(start + 2, min(start + 500, len(df))):
         a = str(df.iloc[i, 0]).strip()
         v = safe(df.iloc[i, value_col_idx])
@@ -77,13 +84,6 @@ def section_subtotal(df, section_label, value_col_idx):
     return None
 
 def section_details(df, section_label, name_col, value_col, extra_cols=None):
-    """
-    Extrae filas de detalle de una sección:
-    - name_col: índice de columna con nombre del instrumento
-    - value_col: índice de columna con el valor total
-    - extra_cols: dict {nombre: índice} para columnas adicionales
-    Devuelve lista de dicts.
-    """
     start = find_row_contains(df, section_label)
     if start is None:
         return []
@@ -93,21 +93,115 @@ def section_details(df, section_label, name_col, value_col, extra_cols=None):
         val  = safe(df.iloc[i, value_col])
         if name in ('', 'nan', 'None'):
             if val is not None:
-                break  # subtotal — fin de sección
+                break
             continue
         if val is None:
             continue
-        # Detecta que no es otra sección (evita confundir headers con datos)
-        if name.isupper() and len(name) > 20 and val is None:
-            break
-        row = {'nombre': name, 'total': val}
+        row = {'nombre': name, 'total': val, 'total_prev': None}
         if extra_cols:
             for k, idx in extra_cols.items():
                 row[k] = safe(df.iloc[i, idx])
         rows.append(row)
     return rows
 
-# ─── PARSER ──────────────────────────────────────────────────────────────────
+# ─── BALANCE: LEER CUENTAS CONTABLES ─────────────────────────────────────────
+
+def to_xlsx(path: Path) -> Path:
+    """Convierte .xls a .xlsx usando LibreOffice si es necesario."""
+    if path.suffix.lower() == '.xlsx':
+        return path
+    out = Path('/tmp') / (path.stem + '.xlsx')
+    if not out.exists():
+        subprocess.run(
+            ['libreoffice', '--headless', '--convert-to', 'xlsx',
+             str(path), '--outdir', '/tmp/'],
+            capture_output=True, timeout=60
+        )
+    return out
+
+def read_balance_codes(path: Path) -> dict:
+    """Lee el balance y devuelve {codigo_cuenta: valor}."""
+    try:
+        xlsx = to_xlsx(path)
+        df = pd.read_excel(xlsx, header=None)
+        data = {}
+        for _, row in df.iterrows():
+            code = str(row[1]).strip().replace(' ', '')
+            try:
+                val = float(row[2])
+                if not pd.isna(val):
+                    data[code] = val
+            except Exception:
+                pass
+        return data
+    except Exception as e:
+        print(f"    ⚠️  Error leyendo balance: {e}")
+        return {}
+
+def compute_atribucion(bal_t0: Path, bal_t1: Path, pn_prev: float) -> dict:
+    """
+    Calcula la atribución diaria del VCP comparando dos archivos de balance.
+    bps = −(valor_T0 − valor_T-1) / PN_prev × 10.000
+    El signo negativo porque las cuentas de ingreso tienen saldo negativo.
+    """
+    if not pn_prev:
+        return {'delta_total': 0, 'items': []}
+
+    b0 = read_balance_codes(bal_t0)
+    b1 = read_balance_codes(bal_t1)
+
+    if not b0 or not b1:
+        return {'delta_total': 0, 'items': []}
+
+    def bps(code):
+        v0 = b0.get(code)
+        v1 = b1.get(code)
+        if v0 is None or v1 is None:
+            return None
+        return -(v0 - v1) / pn_prev * 10000
+
+    # Total
+    delta_total = bps(CODIGO_TOTAL)
+    if delta_total is None:
+        return {'delta_total': 0, 'items': []}
+
+    # Detalle por cuenta
+    items = []
+    suma_items = 0.0
+    for code, name, tipo in CUENTAS_ATRIB:
+        b = bps(code)
+        if b is None:
+            continue
+        v0 = b0.get(code, 0)
+        v1 = b1.get(code, 0)
+        delta_abs = -(v0 - v1)          # monto del cambio (positivo = bueno para VCP)
+        items.append({
+            'n':   name,
+            't':   tipo,
+            'bps': round(b, 4),
+            'dp':  round(delta_abs / 1e6, 4),   # en millones
+            'det': f'Cuenta {code}',
+        })
+        suma_items += b
+
+    # Residual (diferencia entre total y suma de items)
+    residual = round(delta_total - suma_items, 4)
+    if abs(residual) > 0.01:
+        items.append({
+            'n':   'Residual / ajustes contables',
+            't':   'Otros',
+            'bps': residual,
+            'dp':  None,
+            'det': 'Diferencia entre RESULTADOS total y cuentas desagregadas',
+        })
+
+    return {
+        'delta_total': round(delta_total, 4),
+        'pn_prev':     round(pn_prev),
+        'items':       items,
+    }
+
+# ─── PARSER GESTIÓN ──────────────────────────────────────────────────────────
 
 def parse_gestion(path):
     xl = pd.ExcelFile(path)
@@ -115,7 +209,7 @@ def parse_gestion(path):
 
     df = pd.read_excel(path, sheet_name='GESTION MOMENTUM', header=None)
 
-    # ── FECHA DEL INFORME ────────────────────────────────────────────────────
+    # Fecha
     fecha_actual = None
     for i in range(10):
         m = re.search(r'(\d{1,2}/\d{1,2}/\d{4})', str(df.iloc[i, 0]))
@@ -124,7 +218,7 @@ def parse_gestion(path):
             fecha_actual = f"{int(p[0]):02d}/{int(p[1]):02d}/{p[2]}"
             break
 
-    # ── BALANCE PRINCIPAL (col A = etiqueta, col B = valor) ─────────────────
+    # Balance
     activo_total    = find_value(df, 'ACTIVO')
     pasivo_total    = find_value(df, 'PASIVO')
     patrimonio_neto = find_value(df, 'Valor Patrimonial del Fondo')
@@ -139,11 +233,9 @@ def parse_gestion(path):
     prevision       = find_value(df, 'PREVISIÓN INCOBRABLES', 'PREVISION INCOBRABLES')
     deudas_pesos    = find_value(df, 'DEUDAS EN PESOS')
 
-    lc_ratio = None
-    if activo_total and pasivo_total and pasivo_total != 0:
-        lc_ratio = round(abs(activo_total) / abs(pasivo_total), 1)
+    lc_ratio = round(abs(activo_total) / abs(pasivo_total), 1) if activo_total and pasivo_total else None
 
-    # ── DURATION ─────────────────────────────────────────────────────────────
+    # Duration
     duration = None
     dur_idx = find_row_contains(df, 'Duration del Fondo')
     if dur_idx is not None:
@@ -151,42 +243,23 @@ def parse_gestion(path):
         if m:
             duration = float(m.group(1).replace(',', '.'))
 
-    # ── INVERSIONES — subtotales por sección ─────────────────────────────────
-    # Columna E (índice 4) = Total para la mayoría de secciones
-    # Columna F (índice 5) = Total para Pases y CPD
-    tp_total   = section_subtotal(df, 'TITULO PUBLICO',          4)
-    on_total   = section_subtotal(df, 'OBLIGACIONES NEGOCIABLES', 4)
-    ff_total   = section_subtotal(df, 'FIDEICOMISOS FINANCIEROS', 4)
-    mm_total   = section_subtotal(df, 'MONEY MARKET',             4)
-    prov_total = section_subtotal(df, 'TITULO PROVINCIAL',        4)
+    # Inversiones por sección
+    tp_total    = section_subtotal(df, 'TITULO PUBLICO',           4)
+    on_total    = section_subtotal(df, 'OBLIGACIONES NEGOCIABLES', 4)
+    ff_total    = section_subtotal(df, 'FIDEICOMISOS FINANCIEROS', 4)
+    mm_total    = section_subtotal(df, 'MONEY MARKET',             4)
+    prov_total  = section_subtotal(df, 'TITULO PROVINCIAL',        4)
     pases_total = section_subtotal(df, 'Aperturas, Pases y Cauciones', 5)
     cpd_usd_total = section_subtotal(df, 'Cheques de Pago Diferido en Dolar', 5)
 
-    # ── INVERSIONES — detalle de instrumentos ────────────────────────────────
-    # Títulos Públicos: col A=nombre, col E=total, col D=cierre, col I=vto
-    tp_det = section_details(df, 'TITULO PUBLICO', 0, 4,
-                             {'cierre': 3, 'cantidad': 2, 'vencimiento': 8})
+    tp_det   = section_details(df, 'TITULO PUBLICO',           0, 4, {'cierre': 3, 'cantidad': 2})
+    on_det   = section_details(df, 'OBLIGACIONES NEGOCIABLES', 0, 4, {'cierre': 3, 'cantidad': 2})
+    ff_det   = section_details(df, 'FIDEICOMISOS FINANCIEROS', 0, 4, {'cierre': 3, 'cantidad': 2})
+    prov_det = section_details(df, 'TITULO PROVINCIAL',        0, 4, {'cierre': 3, 'cantidad': 2})
+    mm_det   = section_details(df, 'MONEY MARKET',             0, 4, {'cierre': 3})
+    fut_det  = section_details(df, 'FUTUROS en Pesos',         0, 4, {'cantidad': 2, 'cierre': 3})
 
-    # ONs: mismo esquema
-    on_det = section_details(df, 'OBLIGACIONES NEGOCIABLES', 0, 4,
-                             {'cierre': 3, 'cantidad': 2, 'vencimiento': 8})
-
-    # Fideicomisos
-    ff_det = section_details(df, 'FIDEICOMISOS FINANCIEROS', 0, 4,
-                             {'cierre': 3, 'cantidad': 2, 'vencimiento': 8})
-
-    # Futuros ROFEX: col A=nombre, col C=cantidad, col D=cierre, col E=total
-    fut_det = section_details(df, 'FUTUROS en Pesos', 0, 4,
-                              {'cantidad': 2, 'cierre': 3, 'vencimiento': 8})
-
-    # Money Market
-    mm_det = section_details(df, 'MONEY MARKET', 0, 4, {'cierre': 3})
-
-    # Provincial
-    prov_det = section_details(df, 'TITULO PROVINCIAL', 0, 4,
-                               {'cierre': 3, 'cantidad': 2})
-
-    # CPD Pesos (desde Reporte de Cheques)
+    # CPD desde Reporte de Cheques
     df_chq = pd.read_excel(path, sheet_name='Reporte de Cheques', header=None)
     chq = df_chq.iloc[3:].reset_index(drop=True)
     chq['fecha_vto'] = pd.to_datetime(chq.iloc[:, 2], errors='coerce')
@@ -197,7 +270,6 @@ def parse_gestion(path):
     por_fecha = validos.groupby('fecha_vto')['monto'].sum().sort_index()
     cpd_pesos_total = round(chq.dropna(subset=['monto'])['monto'].sum())
 
-    # CPD vencimientos próximos 15 días hábiles
     cpd_venc = []
     dias_hab = 0
     for fdt, monto in por_fecha.items():
@@ -209,9 +281,9 @@ def parse_gestion(path):
         cpd_venc.append({'fecha': d.strftime('%d/%m'), 'dia': DIAS_ES[d.weekday()], 'monto': round(monto)})
         dias_hab += 1
 
-    # ── VCP Y SALDOS POR CLASE ────────────────────────────────────────────────
-    df_cp   = pd.read_excel(path, sheet_name='Posicion cuotapartista', header=None)
-    datos   = df_cp.iloc[3:].reset_index(drop=True)
+    # VCP por clase
+    df_cp  = pd.read_excel(path, sheet_name='Posicion cuotapartista', header=None)
+    datos  = df_cp.iloc[3:].reset_index(drop=True)
     vcp_data = {}
     for clase in ['A', 'B', 'C']:
         mask = datos.iloc[:, 2].astype(str).str.strip() == clase
@@ -233,7 +305,7 @@ def parse_gestion(path):
             'egresos_prev':  None,
         }
 
-    # ── CRUZAR CON DÍA ANTERIOR ───────────────────────────────────────────────
+    # Cruzar con día anterior
     prev = find_prev_json(fecha_actual)
     fecha_anterior = None
     activo_prev = pasivo_prev = pn_prev = cred_prev = None
@@ -246,7 +318,21 @@ def parse_gestion(path):
         pn_prev     = pp.get('patrimonio_neto')
         cred_prev   = pp.get('creditos_totales')
         prev_ca     = prev.get('cartera', {})
-        prev_cp = prev.get('cuotapartes', {})
+        prev_cp     = prev.get('cuotapartes', {})
+
+        def match_prev(det_list, prev_list):
+            if not prev_list:
+                return det_list
+            prev_map = {r['nombre']: r['total'] for r in prev_list}
+            for row in det_list:
+                row['total_prev'] = prev_map.get(row['nombre'])
+            return det_list
+
+        tp_det   = match_prev(tp_det,   prev_ca.get('tp_det',   []))
+        on_det   = match_prev(on_det,   prev_ca.get('on_det',   []))
+        ff_det   = match_prev(ff_det,   prev_ca.get('ff_det',   []))
+        prov_det = match_prev(prov_det, prev_ca.get('prov_det', []))
+
         for clase in ['A', 'B', 'C']:
             if clase in vcp_data and clase in prev_cp:
                 vcp_data[clase]['vcp_prev']      = prev_cp[clase].get('vcp')
@@ -256,7 +342,6 @@ def parse_gestion(path):
     else:
         prev_ca = {}
 
-    # ── JSON FINAL ────────────────────────────────────────────────────────────
     return {
         'meta': {
             'fecha_actual':   fecha_actual,
@@ -277,13 +362,10 @@ def parse_gestion(path):
             'liquidez_efectiva':     liq_efectiva,
         },
         'balance_detalle': {
-            'provisiones':           provisiones,
-            'prov_depositaria':      prov_dep,
-            'prov_gerente':          prov_ger,
-            'prov_gastos':           prov_gast,
-            'rescates':              rescates,
-            'prevision_incobrables': prevision,
-            'deudas_pesos':          deudas_pesos,
+            'provisiones': provisiones, 'prov_depositaria': prov_dep,
+            'prov_gerente': prov_ger,   'prov_gastos': prov_gast,
+            'rescates': rescates,       'prevision_incobrables': prevision,
+            'deudas_pesos': deudas_pesos,
         },
         'cartera': {
             'cpd_pesos':              cpd_pesos_total,
@@ -302,25 +384,18 @@ def parse_gestion(path):
             'fideicomisos_prev':      prev_ca.get('fideicomisos'),
             'titulo_provincial':      prov_total,
             'titulo_provincial_prev': prev_ca.get('titulo_provincial'),
-            'money_market_det':       mm_det,
-            'tp_det':                 tp_det,
-            'on_det':                 on_det,
-            'ff_det':                 ff_det,
-            'prov_det':               prov_det,
+            'tp_det': tp_det, 'on_det': on_det,
+            'ff_det': ff_det, 'prov_det': prov_det,
+            'money_market_det': mm_det,
         },
         'futuros': [
-            {
-                'contrato':   f['nombre'],
-                'cantidad':   f.get('cantidad'),
-                'cierre':     f.get('cierre'),
-                'total_hoy':  f['total'],
-                'total_prev': None,
-            }
+            {'contrato': f['nombre'], 'cantidad': f.get('cantidad'),
+             'cierre': f.get('cierre'), 'total_hoy': f['total'], 'total_prev': None}
             for f in fut_det
         ],
         'cuotapartes':      vcp_data,
         'cpd_vencimientos': cpd_venc,
-        'atribucion':       {'delta_total': 0, 'items': []},
+        'atribucion':       {'delta_total': 0, 'items': []},  # se llena después
     }
 
 
@@ -340,47 +415,64 @@ def find_prev_json(fecha_actual):
 # ─── MAIN ────────────────────────────────────────────────────────────────────
 
 def main():
-    archivos = {}
+    gestiones = {}
+    balances  = {}
+
     for f in sorted(RAW_DIR.glob('*')):
         if not f.is_file():
             continue
         nl = f.name.lower()
+        ds = date_from_filename(f.stem)
+        if not ds:
+            continue
         if 'gestion' in nl or 'momentum' in nl:
-            ds = date_from_filename(f.stem)
-            if ds:
-                archivos[ds] = f
-            else:
-                print(f'  ⚠️  Sin fecha en "{f.name}"')
+            gestiones[ds] = f
+        elif 'balance' in nl:
+            balances[ds] = f
 
-    if not archivos:
-        print('No se encontraron archivos en raw/')
+    if not gestiones:
+        print('No se encontraron archivos GESTION en raw/')
         return
 
-    for ds, path in sorted(archivos.items()):
+    print(f"Gestiones: {list(gestiones.keys())}")
+    print(f"Balances:  {list(balances.keys())}")
+
+    for ds, path in sorted(gestiones.items()):
         print(f'\n📅 {ds} — {path.name}')
         try:
             result = parse_gestion(path)
+
+            # Atribución desde balance si hay T0 y T-1 disponibles
+            fecha_actual = result['meta'].get('fecha_actual')   # "DD/MM/YYYY"
+            if fecha_actual:
+                # Convertir "DD/MM/YYYY" → "YYYY-MM-DD" para buscar archivo
+                p = fecha_actual.split('/')
+                fecha_iso = f"{p[2]}-{p[1]}-{p[0]}"
+                # Buscar todos los balances ordenados
+                bal_dates = sorted(balances.keys())
+                # T0 = balance de la misma fecha que el informe
+                # T-1 = balance del día hábil anterior disponible
+                if fecha_iso in balances:
+                    bal_t0 = balances[fecha_iso]
+                    prev_bal = [d for d in bal_dates if d < fecha_iso]
+                    if prev_bal:
+                        bal_t1 = balances[prev_bal[-1]]
+                        pn_prev = result['patrimonial'].get('patrimonio_neto_prev') or \
+                                  result['patrimonial'].get('patrimonio_neto')
+                        print(f"  Balance T0: {bal_t0.name}")
+                        print(f"  Balance T-1: {bal_t1.name}")
+                        result['atribucion'] = compute_atribucion(bal_t0, bal_t1, pn_prev)
+                        dt = result['atribucion']['delta_total']
+                        print(f"  Δ VCP: {dt:+.4f} bps")
+                    else:
+                        print(f"  ⚠️  Sin balance T-1 para {fecha_iso}")
+                else:
+                    print(f"  ⚠️  Sin balance T0 para {fecha_iso} (disponibles: {bal_dates})")
+
             out = DATA_DIR / f'{ds}.json'
             out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
-
-            # Resumen de lo extraído
-            m = result['meta']
             p = result['patrimonial']
-            c = result['cartera']
-            print(f"  Fecha:    {m['fecha_actual']}  |  Anterior: {m['fecha_anterior']}")
-            print(f"  Activo:   {p['activo_total']:,.0f}")
-            print(f"  PN:       {p['patrimonio_neto']:,.0f}")
-            print(f"  Duration: {m['duration_dias']} días")
-            print(f"  CPD $:    {c['cpd_pesos']:,.0f}")
-            print(f"  CPD USD:  {c['cpd_usd']}")
-            print(f"  Pases:    {c['pases_cauciones']}")
-            print(f"  MM:       {c['money_market']}")
-            print(f"  TP:       {c['titulos_publicos']}")
-            print(f"  ONs:      {c['obligaciones_neg']}")
-            print(f"  FF:       {c['fideicomisos']}")
-            print(f"  Futuros:  {len(result['futuros'])} contratos")
-            print(f"  VCP A:    {result['cuotapartes'].get('A', {}).get('vcp')}")
-            print(f"  CPD venc: {len(result['cpd_vencimientos'])} días")
+            print(f"  Activo: {p['activo_total']:,.0f} | PN: {p['patrimonio_neto']:,.0f}")
             print(f"  ✅ data/{ds}.json")
         except Exception as e:
             import traceback
@@ -390,9 +482,7 @@ def main():
     dates = sorted(p.stem for p in DATA_DIR.glob('20??-??-??.json'))
     (DATA_DIR / 'index.json').write_text(
         json.dumps({'dates': dates, 'latest': dates[-1] if dates else None},
-                   ensure_ascii=False, indent=2),
-        encoding='utf-8'
-    )
+                   ensure_ascii=False, indent=2), encoding='utf-8')
     print(f'\n✅ index.json — {len(dates)} días: {dates}')
 
 if __name__ == '__main__':
