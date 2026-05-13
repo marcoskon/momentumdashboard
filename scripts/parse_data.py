@@ -290,8 +290,9 @@ def parse_gestion(path):
         rows = datos[mask]
         if rows.empty:
             continue
-        vcp_val  = safe(rows.iloc[0, 8])
-        saldo_cp = rows.iloc[:, 3].apply(safe).dropna().sum()
+        vcp_val    = safe(rows.iloc[0, 8])
+        saldo_cp   = rows.iloc[:, 3].apply(safe).dropna().sum()   # cantidad cuotapartes
+        inversion  = rows.iloc[:, 4].apply(safe).dropna().sum()   # monto invertido en $
 
         # Ingresos/egresos/saldo desde hoja principal (busca por nombre)
         ing_hoy  = find_value(df, f'INGRESOS EN EL DIA Clase {clase}')
@@ -304,6 +305,8 @@ def parse_gestion(path):
             'vcp_abril':     None,
             'vcp_dic':       None,
             'saldo_cp':      round(saldo_gs) if saldo_gs else (round(saldo_cp) if saldo_cp else None),
+            'inversion':     round(inversion) if inversion else None,   # monto en pesos
+            'inversion_prev':None,
             'saldo_cp_prev': None,
             'ingresos_hoy':  round(ing_hoy) if ing_hoy else 0,
             'egresos_hoy':   round(egr_hoy) if egr_hoy else 0,
@@ -345,8 +348,9 @@ def parse_gestion(path):
                 vcp_data[clase]['saldo_cp_prev'] = prev_cp[clase].get('saldo_cp')
                 vcp_data[clase]['vcp_abril']     = prev_cp[clase].get('vcp_abril')
                 vcp_data[clase]['vcp_dic']       = prev_cp[clase].get('vcp_dic')
-                vcp_data[clase]['ingresos_prev'] = prev_cp[clase].get('ingresos_hoy')
-                vcp_data[clase]['egresos_prev']  = prev_cp[clase].get('egresos_hoy')
+                vcp_data[clase]['ingresos_prev']  = prev_cp[clase].get('ingresos_hoy')
+                vcp_data[clase]['egresos_prev']   = prev_cp[clase].get('egresos_hoy')
+                vcp_data[clase]['inversion_prev'] = prev_cp[clase].get('inversion')
     else:
         prev_ca = {}
 
