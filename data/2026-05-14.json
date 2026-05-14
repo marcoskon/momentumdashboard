@@ -1,0 +1,360 @@
+{
+  "meta": {
+    "fecha_actual": "14/05/2026",
+    "fecha_anterior": "13/05/2026",
+    "duration_dias": 21.0,
+    "participes": 3
+  },
+  "patrimonial": {
+    "activo_total": 38141621530.67,
+    "activo_total_prev": 37823539205.34,
+    "pasivo_total": -273089850.82,
+    "pasivo_total_prev": -280686735.44,
+    "patrimonio_neto": 37868531679.85,
+    "patrimonio_neto_prev": 37542852469.9,
+    "creditos_totales": 2241280693.66,
+    "creditos_totales_prev": 2247576693.66,
+    "liquidez_corriente": 139.7,
+    "liquidez_efectiva": 2008306547.14
+  },
+  "balance_detalle": {
+    "provisiones": -38589333.53,
+    "prov_depositaria": -2239170.06,
+    "prov_gerente": -33045603.15,
+    "prov_gastos": -3304560.32,
+    "rescates": null,
+    "prevision_incobrables": -169002716.27,
+    "deudas_pesos": -221855791.74
+  },
+  "cartera": {
+    "cpd_pesos": 31921339666,
+    "cpd_pesos_prev": 32707533766,
+    "cpd_usd": 977100418.83,
+    "cpd_usd_prev": 974997195.75,
+    "pases_cauciones": 585667638.17,
+    "pases_cauciones_prev": 585065508.38,
+    "money_market": 1475000000.0,
+    "money_market_prev": 1200000000.0,
+    "titulos_publicos": 488602439.05,
+    "titulos_publicos_prev": 487606918.97,
+    "obligaciones_neg": 625364211.0,
+    "obligaciones_neg_prev": 624889428.0,
+    "fideicomisos": 972251224.01,
+    "fideicomisos_prev": 971079796.02,
+    "titulo_provincial": 312449643.0,
+    "titulo_provincial_prev": 309211491.0,
+    "tp_det": [
+      {
+        "nombre": "Lecap S30N6",
+        "total": 229463254.0,
+        "total_prev": 228652246.0,
+        "cierre": 1.1473,
+        "cantidad": 200000000.0
+      },
+      {
+        "nombre": "S29Y6 - Lecap S29Y6",
+        "total": 259139185.05,
+        "total_prev": 258954672.97,
+        "cierre": 1.3093,
+        "cantidad": 197919126.0
+      }
+    ],
+    "on_det": [
+      {
+        "nombre": "LR7AO - ON Laboratorios Richmond Serie 7 Cl A Vto 10/12/26",
+        "total": 321704052.0,
+        "total_prev": 321448962.0,
+        "cierre": 1.0723,
+        "cantidad": 300000000.0
+      },
+      {
+        "nombre": "VBC3O - ON BANCO DE VALORES CL.3 24/10/26 $",
+        "total": 303660159.0,
+        "total_prev": 303440466.0,
+        "cierre": 1.0122,
+        "cantidad": 300000000.0
+      }
+    ],
+    "ff_det": [
+      {
+        "nombre": "FF AMFAyS S49 Clase A",
+        "total": 40506293.0,
+        "total_prev": 40485812.0,
+        "cierre": 0.4051,
+        "cantidad": 100000000.0
+      },
+      {
+        "nombre": "MY50B - VD FF AMFAYS S.50 CL.B $",
+        "total": 134199066.78,
+        "total_prev": 134106381.24,
+        "cierre": 1.3162,
+        "cantidad": 101962042.0
+      },
+      {
+        "nombre": "MY50C - VD FF AMFAYS S.50 CL.C $",
+        "total": 412861334.79,
+        "total_prev": 412183804.67,
+        "cierre": 1.0798,
+        "cantidad": 382357659.0
+      },
+      {
+        "nombre": "MY51B - VD FF AMFAYS Serie 51 Clase B",
+        "total": 79271142.13,
+        "total_prev": 79035201.47,
+        "cierre": 1.0488,
+        "cantidad": 75584213.0
+      },
+      {
+        "nombre": "MY51C - VD FF AMFAYS Serie 51 Clase C",
+        "total": 169079567.19,
+        "total_prev": 169009826.14,
+        "cierre": 0.9587,
+        "cantidad": 176363163.0
+      },
+      {
+        "nombre": "VD FF SECUBONO 245 CL.A $",
+        "total": 136333820.13,
+        "total_prev": 136258770.51,
+        "cierre": 0.4451,
+        "cantidad": 306275000.0
+      }
+    ],
+    "prov_det": [
+      {
+        "nombre": "CO2D7 - Título provincia de Córdoba 05/12/27",
+        "total": 312449643.0,
+        "total_prev": 309211491.0,
+        "cierre": 1.0415,
+        "cantidad": 300000000.0
+      }
+    ],
+    "money_market_det": [
+      {
+        "nombre": "FCI IEB Ahorro - Clase E",
+        "total": 1475000000.0,
+        "total_prev": null,
+        "cierre": 12.1534
+      }
+    ]
+  },
+  "futuros": [
+    {
+      "contrato": "Fut Rofex DLR052026",
+      "cantidad": -40000.0,
+      "cierre": 1403.5,
+      "total_hoy": -56140000.0,
+      "total_prev": null
+    },
+    {
+      "contrato": "Fut Rofex DLR062026",
+      "cantidad": -314000.0,
+      "cierre": 1429.5,
+      "total_hoy": -448863000.0,
+      "total_prev": null
+    },
+    {
+      "contrato": "Fut Rofex DLR072026",
+      "cantidad": -276000.0,
+      "cierre": 1459.5,
+      "total_hoy": -402822000.0,
+      "total_prev": null
+    },
+    {
+      "contrato": "Fut Rofex DLR082026",
+      "cantidad": -100000.0,
+      "cierre": 1490.5,
+      "total_hoy": -149050000.0,
+      "total_prev": null
+    }
+  ],
+  "cuotapartes": {
+    "A": {
+      "vcp": 1377.87,
+      "vcp_prev": 1376.864,
+      "vcp_abril": null,
+      "vcp_dic": null,
+      "saldo_cp": 3614673846,
+      "inversion": 4980550652,
+      "inversion_prev": 4897472334,
+      "saldo_cp_prev": 3556976095,
+      "ingresos_hoy": 79500000,
+      "egresos_hoy": 0,
+      "ingresos_prev": 88000000,
+      "egresos_prev": 0
+    },
+    "B": {
+      "vcp": 1651.06,
+      "vcp_prev": 1649.854,
+      "vcp_abril": null,
+      "vcp_dic": null,
+      "saldo_cp": 2815777165,
+      "inversion": 4649017047,
+      "inversion_prev": 4427029673,
+      "saldo_cp_prev": 2683285717,
+      "ingresos_hoy": 218751331,
+      "egresos_hoy": 0,
+      "ingresos_prev": 0,
+      "egresos_prev": 10000000
+    },
+    "C": {
+      "vcp": 1663.324,
+      "vcp_prev": 1662.109,
+      "vcp_abril": null,
+      "vcp_dic": null,
+      "saldo_cp": 16977433952,
+      "inversion": 28238973350,
+      "inversion_prev": 28218345768,
+      "saldo_cp_prev": 16977433952,
+      "ingresos_hoy": 0,
+      "egresos_hoy": 0,
+      "ingresos_prev": 551387531,
+      "egresos_prev": 0
+    }
+  },
+  "cpd_vencimientos": [
+    {
+      "fecha": "14/05",
+      "dia": "Jue",
+      "monto": 272387482
+    },
+    {
+      "fecha": "15/05",
+      "dia": "Vie",
+      "monto": 532040351
+    },
+    {
+      "fecha": "18/05",
+      "dia": "Lun",
+      "monto": 218914752
+    },
+    {
+      "fecha": "19/05",
+      "dia": "Mar",
+      "monto": 273173589
+    },
+    {
+      "fecha": "20/05",
+      "dia": "Mié",
+      "monto": 384363209
+    },
+    {
+      "fecha": "21/05",
+      "dia": "Jue",
+      "monto": 107371499
+    },
+    {
+      "fecha": "22/05",
+      "dia": "Vie",
+      "monto": 563820100
+    },
+    {
+      "fecha": "26/05",
+      "dia": "Mar",
+      "monto": 143306898
+    },
+    {
+      "fecha": "27/05",
+      "dia": "Mié",
+      "monto": 241198874
+    },
+    {
+      "fecha": "28/05",
+      "dia": "Jue",
+      "monto": 1001504285
+    },
+    {
+      "fecha": "29/05",
+      "dia": "Vie",
+      "monto": 317526203
+    },
+    {
+      "fecha": "01/06",
+      "dia": "Lun",
+      "monto": 1430336408
+    },
+    {
+      "fecha": "02/06",
+      "dia": "Mar",
+      "monto": 425797576
+    },
+    {
+      "fecha": "03/06",
+      "dia": "Mié",
+      "monto": 389172057
+    },
+    {
+      "fecha": "04/06",
+      "dia": "Jue",
+      "monto": 121291601
+    }
+  ],
+  "atribucion": {
+    "delta_total": 7.3058,
+    "pn_prev": 37542852470,
+    "items": [
+      {
+        "n": "Intereses Pesos",
+        "t": "Devengo",
+        "bps": 7.3031,
+        "dp": 27.4178,
+        "det": "Cuenta 4002001002000000000"
+      },
+      {
+        "n": "Resultado CPD USD",
+        "t": "Devengo",
+        "bps": 0.058,
+        "dp": 0.2177,
+        "det": "Cuenta 4000000000000000010"
+      },
+      {
+        "n": "Resultado Títulos Públicos",
+        "t": "Precio",
+        "bps": 0.7037,
+        "dp": 2.6417,
+        "det": "Cuenta 4000000000000000001"
+      },
+      {
+        "n": "Diferencia Cotización USD",
+        "t": "Precio",
+        "bps": 0.5022,
+        "dp": 1.8856,
+        "det": "Cuenta 4000000000000000009"
+      },
+      {
+        "n": "Resultado por Tenencia",
+        "t": "Precio",
+        "bps": 0.8625,
+        "dp": 3.2382,
+        "det": "Cuenta 4002001004000000000"
+      },
+      {
+        "n": "Resultado Operación Futuro",
+        "t": "MTM",
+        "bps": -1.4506,
+        "dp": -5.446,
+        "det": "Cuenta 4000000000000000013"
+      },
+      {
+        "n": "Gastos Negociación CPD",
+        "t": "Costo",
+        "bps": -0.0326,
+        "dp": -0.1223,
+        "det": "Cuenta 4001001000000000013"
+      },
+      {
+        "n": "Honorarios Administración",
+        "t": "Costo",
+        "bps": -0.7319,
+        "dp": -2.7479,
+        "det": "Cuenta 4001002001000000000"
+      },
+      {
+        "n": "Residual / ajustes contables",
+        "t": "Otros",
+        "bps": 0.0914,
+        "dp": null,
+        "det": "Diferencia entre RESULTADOS total y cuentas desagregadas"
+      }
+    ]
+  }
+}
