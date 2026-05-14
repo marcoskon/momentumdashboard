@@ -349,14 +349,16 @@
     <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
 
       <!-- Pie charts Hoy y Ayer -->
-      <div style="display:flex;gap:28px;flex-wrap:wrap;flex-shrink:0;">
-        <div style="text-align:center;">
+      <div style="display:flex;gap:32px;flex-wrap:wrap;flex-shrink:0;">
+        <div>
           <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;" id="pieLabel">Hoy</div>
           <svg id="pieChart" width="220" height="220" viewBox="0 0 220 220" style="display:block;"></svg>
+          <div id="pieLegend" style="margin-top:12px;display:flex;flex-direction:column;gap:5px;max-width:220px;"></div>
         </div>
-        <div style="text-align:center;">
+        <div>
           <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;" id="pieLabelAyer">Ayer</div>
           <svg id="pieChartAyer" width="220" height="220" viewBox="0 0 220 220" style="display:block;"></svg>
+          <div id="pieLegendAyer" style="margin-top:12px;display:flex;flex-direction:column;gap:5px;max-width:220px;"></div>
         </div>
       </div>
 
@@ -933,50 +935,44 @@ function buildSegsFromCarteraPrev(ca) {
 function renderPieChart(id, segs) {
   const el = document.getElementById(id);
   if (!el || !segs.length) return;
-  const cx = 110, cy = 110, R = 90, r = 48; // donut
+  const cx = 110, cy = 110, R = 95, r = 50;
   const total = segs.reduce((s,g) => s + g.pct, 0);
-  let angle = -Math.PI / 2; // start top
+  let angle = -Math.PI / 2;
   let paths = '', labels = '';
 
   segs.forEach(s => {
     const sweep = (s.pct / total) * 2 * Math.PI;
-    const x1 = cx + R * Math.cos(angle);
-    const y1 = cy + R * Math.sin(angle);
-    const x2 = cx + R * Math.cos(angle + sweep);
-    const y2 = cy + R * Math.sin(angle + sweep);
-    const xi1 = cx + r * Math.cos(angle);
-    const yi1 = cy + r * Math.sin(angle);
-    const xi2 = cx + r * Math.cos(angle + sweep);
-    const yi2 = cy + r * Math.sin(angle + sweep);
+    const x1  = cx + R * Math.cos(angle),          y1  = cy + R * Math.sin(angle);
+    const x2  = cx + R * Math.cos(angle + sweep),  y2  = cy + R * Math.sin(angle + sweep);
+    const xi1 = cx + r * Math.cos(angle),           yi1 = cy + r * Math.sin(angle);
+    const xi2 = cx + r * Math.cos(angle + sweep),  yi2 = cy + r * Math.sin(angle + sweep);
     const large = sweep > Math.PI ? 1 : 0;
 
-    paths += `<path d="M ${x1} ${y1} A ${R} ${R} 0 ${large} 1 ${x2} ${y2}
-              L ${xi2} ${yi2} A ${r} ${r} 0 ${large} 0 ${xi1} ${yi1} Z"
-              fill="${s.color}" opacity="0.88" stroke="white" stroke-width="1.5"/>`;
+    paths += `<path d="M ${x1.toFixed(1)} ${y1.toFixed(1)} A ${R} ${R} 0 ${large} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} L ${xi2.toFixed(1)} ${yi2.toFixed(1)} A ${r} ${r} 0 ${large} 0 ${xi1.toFixed(1)} ${yi1.toFixed(1)} Z" fill="${s.color}" opacity="0.88" stroke="white" stroke-width="2"/>`;
 
-    // Label if segment big enough
-    if (s.pct >= 3) {
+    if (s.pct >= 4) {
       const midA = angle + sweep / 2;
-      const lR = (R + r) / 2;
-      const lx = cx + lR * Math.cos(midA);
-      const ly = cy + lR * Math.sin(midA);
-      labels += `<text x="${lx.toFixed(1)}" y="${(ly+4).toFixed(1)}" text-anchor="middle"
-                 fill="white" font-size="9" font-weight="600" font-family="IBM Plex Mono,monospace">${s.pct.toFixed(1)}%</text>`;
+      const lR   = (R + r) / 2;
+      const lx   = cx + lR * Math.cos(midA);
+      const ly   = cy + lR * Math.sin(midA);
+      labels += `<text x="${lx.toFixed(1)}" y="${(ly+4).toFixed(1)}" text-anchor="middle" fill="white" font-size="10" font-weight="700" font-family="IBM Plex Mono,monospace">${s.pct.toFixed(1)}%</text>`;
     }
     angle += sweep;
   });
 
-  // Legend below
-  let legend = '';
-  segs.forEach((s,i) => {
-    const lx = 10 + (i % 2) * 105;
-    const ly = 196 + Math.floor(i / 2) * 16;
-    legend += `<rect x="${lx}" y="${ly-8}" width="9" height="9" rx="2" fill="${s.color}"/>
-               <text x="${lx+13}" y="${ly}" fill="#6b758f" font-size="9" font-family="IBM Plex Mono,monospace">${s.name} ${s.pct.toFixed(1)}%</text>`;
-  });
+  el.innerHTML = paths + labels;
 
-  el.setAttribute('height', 196 + Math.ceil(segs.length / 2) * 16 + 4);
-  el.innerHTML = paths + labels + legend;
+  // ── Leyenda HTML separada ──
+  const legId = id === 'pieChart' ? 'pieLegend' : 'pieLegendAyer';
+  const legEl = document.getElementById(legId);
+  if (legEl) {
+    legEl.innerHTML = segs.map(s => `
+      <div style="display:flex;align-items:center;gap:7px;">
+        <div style="width:10px;height:10px;border-radius:2px;background:${s.color};flex-shrink:0;opacity:.88;"></div>
+        <span style="font-size:11px;color:#1a1f30;white-space:nowrap;">${s.name}</span>
+        <span style="font-size:11px;color:#6b758f;margin-left:auto;padding-left:8px;">${s.pct.toFixed(1)}%</span>
+      </div>`).join('');
+  }
 }
 
 // ── TABLA SUBTOTALES CARTERA ──
