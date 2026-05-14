@@ -75,7 +75,7 @@
   /* ── CARD ── */
   .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
     padding:22px 26px;box-shadow:var(--shadow)}
-  .card-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;letter-spacing:1.8px;
+  .card-title{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700;letter-spacing:1.8px;
     text-transform:uppercase;color:var(--text);margin-bottom:14px;padding-bottom:10px;
     border-bottom:1px solid var(--dim)}
 
@@ -104,18 +104,18 @@
   @media(max-width:1200px){.three-col{grid-template-columns:1fr 1fr}}
 
   /* ── TABLE ── */
-  .cmp-table{width:100%;border-collapse:collapse;font-size:14px}
+  .cmp-table{width:100%;border-collapse:collapse;font-size:12.5px}
   .cmp-table thead th{text-align:left;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
     color:var(--muted);padding:0 0 12px;border-bottom:1px solid var(--dim);font-weight:400}
   .cmp-table thead th:not(:first-child){text-align:right}
   .cmp-table tbody td{padding:11px 0;border-bottom:1px solid rgba(221,225,236,.6);vertical-align:middle}
   .cmp-table tbody td:not(:first-child){text-align:right}
   .cmp-table tbody tr:last-child td{border-bottom:none}
-  .cmp-table .name-col{color:var(--muted);font-size:14px;max-width:180px;white-space:nowrap;
+  .cmp-table .name-col{color:var(--muted);font-size:13px;max-width:180px;white-space:nowrap;
     overflow:hidden;text-overflow:ellipsis}
   .cmp-table .today-col{color:var(--text);font-weight:500}
-  .cmp-table .prev-col{color:var(--muted);font-size:14px}
-  .cmp-table .delta-col{font-size:14px;font-weight:500}
+  .cmp-table .prev-col{color:var(--muted);font-size:12px}
+  .cmp-table .delta-col{font-size:12px;font-weight:500}
   .cmp-table .total-row td{border-top:1.5px solid var(--border2);font-weight:600;padding-top:10px;color:var(--text)}
   .dpos{color:var(--accent2)} .dneg{color:var(--red)} .dneu{color:var(--muted)}
 
@@ -306,7 +306,7 @@
   <div class="two-col">
     <div class="card">
       <div class="card-title">Caída de cheques CPD — Próximos 10 días hábiles</div>
-      <div style="font-size:17px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+      <div style="font-size:9px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
         Vencimientos proyectados · Total cartera CPD: <strong id="cpdTotal" style="color:var(--text)">—</strong>
       </div>
       <div id="cpdMaturityChart" style="overflow-x:auto;"></div>
@@ -346,15 +346,28 @@
   <div class="section-label">Cartera de inversiones</div>
   <div class="card" style="margin-bottom:14px;">
     <div class="card-title">Composición por instrumento — % sobre Patrimonio Neto</div>
-    <div class="stacked-wrap">
-      <div class="stacked-label" id="stackedLabelHoy">Hoy</div>
-      <div class="stacked-bar" id="stackedHoy"></div>
+    <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
+
+      <!-- Pie charts Hoy y Ayer -->
+      <div style="display:flex;gap:28px;flex-wrap:wrap;flex-shrink:0;">
+        <div style="text-align:center;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;" id="pieLabel">Hoy</div>
+          <svg id="pieChart" width="220" height="220" viewBox="0 0 220 220" style="display:block;"></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;" id="pieLabelAyer">Ayer</div>
+          <svg id="pieChartAyer" width="220" height="220" viewBox="0 0 220 220" style="display:block;"></svg>
+        </div>
+      </div>
+
+      <!-- Tabla de subtotales -->
+      <div style="flex:1;min-width:320px;">
+        <table class="cmp-table">
+          <thead><tr><th>Instrumento</th><th>Hoy</th><th>Ayer</th><th>Var.</th></tr></thead>
+          <tbody id="carteraSubtotalBody"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="stacked-wrap" style="margin-top:10px;">
-      <div class="stacked-label" id="stackedLabelAyer">Ayer</div>
-      <div class="stacked-bar" id="stackedAyer"></div>
-    </div>
-    <div class="stacked-legend" id="stackedLeg"></div>
   </div>
 
   <div class="three-col">
@@ -504,7 +517,7 @@
         <tbody id="flujoHoyBody"></tbody>
       </table>
       <div style="margin-top:16px;">
-        <div class="card-title" style="font-size:17px;border:none;padding:0;margin-bottom:8px;color:var(--muted);" id="flujoPrevLabel">Flujos del día anterior</div>
+        <div class="card-title" style="font-size:9px;border:none;padding:0;margin-bottom:8px;color:var(--muted);" id="flujoPrevLabel">Flujos del día anterior</div>
         <table class="cmp-table">
           <thead><tr><th>Clase</th><th>Ingresos</th><th>Egresos</th><th>Saldo Neto</th></tr></thead>
           <tbody id="flujoPrevBody"></tbody>
@@ -582,10 +595,10 @@ const fmt = {
   money(v, dec=3) {
     if (v == null) return '—';
     v = Number(v);
-    if (Math.abs(v) >= 1e9) return `$${(v/1e9).toFixed(3)} MM`;
+    if (Math.abs(v) >= 1e9) return `$${(v/1e9).toFixed(dec === 3 ? 2 : dec)} MM`;
     if (Math.abs(v) >= 1e6) return `$${(v/1e6).toFixed(1)} M`;
     return `$${v.toLocaleString('es-AR')}`;
-},
+  },
   pct(hoy, ayer, decimals=2) {
     if (!hoy || !ayer || ayer === 0) return { txt:'—', cls:'dneu' };
     const d = (hoy - ayer) / Math.abs(ayer) * 100;
@@ -663,8 +676,8 @@ function populateDashboard(data) {
     const v = hoy  != null ? Math.abs(hoy)  : null;
     const a = ayer != null ? Math.abs(ayer) : null;
     const lbl = indent
-      ? `<span style="padding-left:14px;color:var(--muted);font-size:17px;">· ${label}</span>`
-      : `<span style="font-size:15px;font-weight:500;">${label}</span>`;
+      ? `<span style="padding-left:14px;color:var(--muted);font-size:12px;">· ${label}</span>`
+      : `<span style="font-size:14px;font-weight:500;">${label}</span>`;
     return `<tr>
       <td class="name-col">${lbl}</td>
       <td class="today-col" style="color:var(--red)">${v != null ? fmt.money(v,1) : '—'}</td>
@@ -693,11 +706,11 @@ function populateDashboard(data) {
   // ── Stacked bars ──
   const segsHoy  = buildSegsFromCartera(ca);
   const segsAyer = buildSegsFromCarteraPrev(ca);
-  renderStackedBar('stackedHoy',  segsHoy);
-  renderStackedBar('stackedAyer', segsAyer);
-  renderStackedLegend('stackedLeg', segsHoy);
-  setTxt('stackedLabelHoy',  `Hoy · ${m.fecha_actual  || ''}`);
-  setTxt('stackedLabelAyer', `Ayer · ${m.fecha_anterior || ''}`);
+  setTxt('pieLabel',      `Hoy · ${m.fecha_actual   || ''}`);
+  setTxt('pieLabelAyer',  `Ayer · ${m.fecha_anterior || ''}`);
+  renderPieChart('pieChart',      segsHoy);
+  renderPieChart('pieChartAyer',  segsAyer);
+  renderCarteraSubtotals(ca);
 
   // ── Cartera MM table ──
   const mmRows = [
@@ -725,7 +738,7 @@ function populateDashboard(data) {
       return `<tr>
         <td class="name-col" title="${i.nombre}">${n}</td>
         <td class="today-col">${fmt.money(i.total,1)}</td>
-        <td class="prev-col">${prev != null ? fmt.money(prev,1) : '<span style="color:var(--muted);font-size:17px;">nuevo</span>'}</td>
+        <td class="prev-col">${prev != null ? fmt.money(prev,1) : '<span style="color:var(--muted);font-size:9px;">nuevo</span>'}</td>
         <td class="delta-col">${prev != null ? fmt.pctDelta(i.total, prev) : '<span class="dneu">—</span>'}</td>
       </tr>`;
     }).join('') +
@@ -836,7 +849,7 @@ function populateDashboard(data) {
     </div>`;
   }).join('') + `<div class="saldo-row" style="border-top:2px solid var(--border2);margin-top:4px;padding-top:10px;">
     <div class="saldo-left">
-      <span style="font-size:17px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">TOTAL</span>
+      <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">TOTAL</span>
       <div style="font-size:10px;color:var(--muted);margin-top:3px;">Ayer: ${fmt.money(totalAyerCP)}</div>
     </div>
     <div class="saldo-right">
@@ -916,27 +929,88 @@ function buildSegsFromCarteraPrev(ca) {
   return fields.map(f => ({ ...f, pct: total > 0 ? +(f.val/total*100).toFixed(2) : 0 }));
 }
 
-function renderStackedBar(id, segs) {
+// ── PIE CHART ──
+function renderPieChart(id, segs) {
   const el = document.getElementById(id);
-  if (!el) return;
-  el.innerHTML = segs.map(s =>
-    `<div class="stacked-seg" style="flex:${s.pct};background:${s.color};">
-      <span>${s.pct >= 5 ? s.name : ''}</span>
-    </div>`
-  ).join('');
+  if (!el || !segs.length) return;
+  const cx = 110, cy = 110, R = 90, r = 48; // donut
+  const total = segs.reduce((s,g) => s + g.pct, 0);
+  let angle = -Math.PI / 2; // start top
+  let paths = '', labels = '';
+
+  segs.forEach(s => {
+    const sweep = (s.pct / total) * 2 * Math.PI;
+    const x1 = cx + R * Math.cos(angle);
+    const y1 = cy + R * Math.sin(angle);
+    const x2 = cx + R * Math.cos(angle + sweep);
+    const y2 = cy + R * Math.sin(angle + sweep);
+    const xi1 = cx + r * Math.cos(angle);
+    const yi1 = cy + r * Math.sin(angle);
+    const xi2 = cx + r * Math.cos(angle + sweep);
+    const yi2 = cy + r * Math.sin(angle + sweep);
+    const large = sweep > Math.PI ? 1 : 0;
+
+    paths += `<path d="M ${x1} ${y1} A ${R} ${R} 0 ${large} 1 ${x2} ${y2}
+              L ${xi2} ${yi2} A ${r} ${r} 0 ${large} 0 ${xi1} ${yi1} Z"
+              fill="${s.color}" opacity="0.88" stroke="white" stroke-width="1.5"/>`;
+
+    // Label if segment big enough
+    if (s.pct >= 3) {
+      const midA = angle + sweep / 2;
+      const lR = (R + r) / 2;
+      const lx = cx + lR * Math.cos(midA);
+      const ly = cy + lR * Math.sin(midA);
+      labels += `<text x="${lx.toFixed(1)}" y="${(ly+4).toFixed(1)}" text-anchor="middle"
+                 fill="white" font-size="9" font-weight="600" font-family="IBM Plex Mono,monospace">${s.pct.toFixed(1)}%</text>`;
+    }
+    angle += sweep;
+  });
+
+  // Legend below
+  let legend = '';
+  segs.forEach((s,i) => {
+    const lx = 10 + (i % 2) * 105;
+    const ly = 196 + Math.floor(i / 2) * 16;
+    legend += `<rect x="${lx}" y="${ly-8}" width="9" height="9" rx="2" fill="${s.color}"/>
+               <text x="${lx+13}" y="${ly}" fill="#6b758f" font-size="9" font-family="IBM Plex Mono,monospace">${s.name} ${s.pct.toFixed(1)}%</text>`;
+  });
+
+  el.setAttribute('height', 196 + Math.ceil(segs.length / 2) * 16 + 4);
+  el.innerHTML = paths + labels + legend;
 }
 
-function renderStackedLegend(id, segs) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.innerHTML = segs.map(s =>
-    `<div class="sl-item"><div class="sl-dot" style="background:${s.color}"></div>${s.name}</div>`
-  ).join('');
+// ── TABLA SUBTOTALES CARTERA ──
+function renderCarteraSubtotals(ca) {
+  const rows = [
+    { n:'CPD Pesos',        h: ca.cpd_pesos,        a: ca.cpd_pesos_prev        },
+    { n:'CPD USD',          h: ca.cpd_usd,           a: ca.cpd_usd_prev          },
+    { n:'Pases / Cauciones',h: ca.pases_cauciones,   a: ca.pases_cauciones_prev  },
+    { n:'Money Market',     h: ca.money_market,      a: ca.money_market_prev     },
+    { n:'Fideicomisos FF',  h: ca.fideicomisos,      a: ca.fideicomisos_prev     },
+    { n:'Títulos Públicos', h: ca.titulos_publicos,  a: ca.titulos_publicos_prev  },
+    { n:'Oblig. Negociables',h:ca.obligaciones_neg,  a: ca.obligaciones_neg_prev  },
+    { n:'Título Provincial',h: ca.titulo_provincial, a: ca.titulo_provincial_prev },
+  ].filter(r => r.h != null);
+
+  const total_h = rows.reduce((s,r) => s + (r.h||0), 0);
+  const total_a = rows.reduce((s,r) => s + (r.a||0), 0);
+
+  const tbody = document.getElementById('carteraSubtotalBody');
+  if (!tbody) return;
+  tbody.innerHTML = rows.map(r => `<tr>
+    <td class="name-col">${r.n}</td>
+    <td class="today-col">${fmt.money(r.h)}</td>
+    <td class="prev-col">${r.a != null ? fmt.money(r.a) : '—'}</td>
+    <td class="delta-col">${fmt.pctDelta(r.h, r.a)}</td>
+  </tr>`).join('') +
+  `<tr class="total-row">
+    <td class="name-col">Total Cartera</td>
+    <td class="today-col">${fmt.money(total_h)}</td>
+    <td class="prev-col">${fmt.money(total_a)}</td>
+    <td class="delta-col">${fmt.pctDelta(total_h, total_a)}</td>
+  </tr>`;
 }
 
-// ═══════════════════════════════════════
-// CPD MATURITY CHART
-// ═══════════════════════════════════════
 function renderCPDChart(cpd) {
   const container = document.getElementById('cpdMaturityChart');
   if (!container || !cpd.length) { if(container) container.innerHTML = '<div style="color:var(--muted);font-size:10px;padding:10px 0;">Sin datos de vencimientos</div>'; return; }
@@ -958,7 +1032,7 @@ function renderCPDChart(cpd) {
   ticks.forEach(t => {
     const y = PAD_T + chartH - (t / (maxM * 1.1)) * chartH;
     svg += `<line x1="${PAD_L}" y1="${y}" x2="${PAD_L+chartW}" y2="${y}" stroke="#e4e8f2" stroke-width="${t===0?1.5:1}" stroke-dasharray="${t===0?'':'3,3'}"/>`;
-    svg += `<text x="${PAD_L-6}" y="${y+4}" text-anchor="end" fill="#9ba8c0" font-size="12">${t>=1e9?'$'+(t/1e9).toFixed(0)+'B':t>0?'$'+(t/1e6).toFixed(0)+'M':'$0'}</text>`;
+    svg += `<text x="${PAD_L-6}" y="${y+4}" text-anchor="end" fill="#9ba8c0" font-size="8">${t>=1e9?'$'+(t/1e9).toFixed(0)+'B':t>0?'$'+(t/1e6).toFixed(0)+'M':'$0'}</text>`;
   });
 
   // Accumulated line
@@ -976,8 +1050,8 @@ function renderCPDChart(cpd) {
     const bh = (d.monto / (maxM * 1.1)) * chartH;
     const y = PAD_T + chartH - bh;
     svg += `<rect x="${x}" y="${y}" width="${barW}" height="${bh}" rx="3" fill="#1a56e8" opacity="${Math.max(0.82 - i*0.04, 0.45)}"/>`;
-    svg += `<text x="${x+barW/2}" y="${y-4}" text-anchor="middle" fill="#1a1f30" font-size="12" font-weight="600">$${(d.monto/1e9).toFixed(2)}B</text>`;
-    svg += `<text x="${x+barW/2}" y="${PAD_T+chartH+14}" text-anchor="middle" fill="#1a1f30" font-size="12" font-weight="500">${d.fecha}</text>`;
+    svg += `<text x="${x+barW/2}" y="${y-4}" text-anchor="middle" fill="#1a1f30" font-size="8" font-weight="600">$${(d.monto/1e9).toFixed(2)}B</text>`;
+    svg += `<text x="${x+barW/2}" y="${PAD_T+chartH+14}" text-anchor="middle" fill="#1a1f30" font-size="8.5" font-weight="500">${d.fecha}</text>`;
     svg += `<text x="${x+barW/2}" y="${PAD_T+chartH+26}" text-anchor="middle" fill="#9ba8c0" font-size="8">${d.dia}</text>`;
   });
   svg += `<text x="${PAD_L+chartW+PAD_R-4}" y="${PAD_T+10}" text-anchor="end" fill="#6b758f" font-size="8">Total: $${(totalCPD/1e9).toFixed(2)}B</text>`;
@@ -1016,8 +1090,8 @@ function renderAtribucion(at, cpC, meta) {
     const dpStr = d.dp != null ? `$${d.dp >= 0 ? '+' : ''}${Number(d.dp).toFixed(2)}M` : '—';
     return `<tr>
       <td style="text-align:center;color:${col};font-size:13px;">${arrow}</td>
-      <td style="font-size:13px;">${d.n}</td>
-      <td><span style="display:inline-block;background:${bg};color:${col};font-size:17px;letter-spacing:1px;padding:2px 7px;border-radius:3px;white-space:nowrap;">${d.t}</span></td>
+      <td style="font-size:11px;">${d.n}</td>
+      <td><span style="display:inline-block;background:${bg};color:${col};font-size:8px;letter-spacing:1px;padding:2px 7px;border-radius:3px;white-space:nowrap;">${d.t}</span></td>
       <td style="text-align:right;font-size:10px;color:${col};">${dpStr}</td>
       <td style="text-align:right;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:${col};">${d.bps >= 0 ? '+' : ''}${d.bps.toFixed(2)}</td>
       <td style="text-align:right;font-size:10px;color:${parseFloat(pct)>=0?'#00a887':'#d63347'};">${parseFloat(pct)>=0?'+':''}${pct}%</td>
@@ -1059,12 +1133,12 @@ function renderWaterfall(items, DELTA_TOTAL) {
     const bx = d.bps >= 0 ? ZX : ZX - bw;
     const col = ACOLORS[d.t] || '#9ba8c0';
     const label = d.n.length > 30 ? d.n.slice(0,30) + '…' : d.n;
-    svg += `<text x="${LW-8}" y="${y+BARH/2+4}" text-anchor="end" fill="#1a1f30" font-size="12">${label}</text>`;
+    svg += `<text x="${LW-8}" y="${y+BARH/2+4}" text-anchor="end" fill="#1a1f30" font-size="9.5">${label}</text>`;
     if (Math.abs(d.bps) > 0.01)
       svg += `<rect x="${bx}" y="${y}" width="${Math.max(bw,1)}" height="${BARH}" rx="3" fill="${col}" opacity="0.82"/>`;
     const tx = d.bps >= 0 ? ZX+bw+5 : ZX-bw-5;
     const ta = d.bps >= 0 ? 'start' : 'end';
-    svg += `<text x="${tx}" y="${y+BARH/2+4}" text-anchor="${ta}" fill="${col}" font-weight="600" font-size="12">${d.bps>=0?'+':''}${d.bps.toFixed(2)}</text>`;
+    svg += `<text x="${tx}" y="${y+BARH/2+4}" text-anchor="${ta}" fill="${col}" font-weight="600" font-size="9">${d.bps>=0?'+':''}${d.bps.toFixed(2)}</text>`;
   });
   const ty = items.length*(BARH+PAD)+12;
   const tw = DELTA_TOTAL/MAX*(CW/2);
