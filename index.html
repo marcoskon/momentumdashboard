@@ -1016,7 +1016,7 @@ function renderAtribucion(at, cpC, meta) {
     const dpStr = d.dp != null ? `$${d.dp >= 0 ? '+' : ''}${Number(d.dp).toFixed(2)}M` : '—';
     return `<tr>
       <td style="text-align:center;color:${col};font-size:13px;">${arrow}</td>
-      <td style="font-size:11px;">${d.n}</td>
+      <td style="font-size:13px;">${d.n}</td>
       <td><span style="display:inline-block;background:${bg};color:${col};font-size:17px;letter-spacing:1px;padding:2px 7px;border-radius:3px;white-space:nowrap;">${d.t}</span></td>
       <td style="text-align:right;font-size:10px;color:${col};">${dpStr}</td>
       <td style="text-align:right;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:${col};">${d.bps >= 0 ? '+' : ''}${d.bps.toFixed(2)}</td>
@@ -1059,12 +1059,12 @@ function renderWaterfall(items, DELTA_TOTAL) {
     const bx = d.bps >= 0 ? ZX : ZX - bw;
     const col = ACOLORS[d.t] || '#9ba8c0';
     const label = d.n.length > 30 ? d.n.slice(0,30) + '…' : d.n;
-    svg += `<text x="${LW-8}" y="${y+BARH/2+4}" text-anchor="end" fill="#1a1f30" font-size="9.5">${label}</text>`;
+    svg += `<text x="${LW-8}" y="${y+BARH/2+4}" text-anchor="end" fill="#1a1f30" font-size="12">${label}</text>`;
     if (Math.abs(d.bps) > 0.01)
       svg += `<rect x="${bx}" y="${y}" width="${Math.max(bw,1)}" height="${BARH}" rx="3" fill="${col}" opacity="0.82"/>`;
     const tx = d.bps >= 0 ? ZX+bw+5 : ZX-bw-5;
     const ta = d.bps >= 0 ? 'start' : 'end';
-    svg += `<text x="${tx}" y="${y+BARH/2+4}" text-anchor="${ta}" fill="${col}" font-weight="600" font-size="9">${d.bps>=0?'+':''}${d.bps.toFixed(2)}</text>`;
+    svg += `<text x="${tx}" y="${y+BARH/2+4}" text-anchor="${ta}" fill="${col}" font-weight="600" font-size="12">${d.bps>=0?'+':''}${d.bps.toFixed(2)}</text>`;
   });
   const ty = items.length*(BARH+PAD)+12;
   const tw = DELTA_TOTAL/MAX*(CW/2);
