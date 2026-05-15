@@ -506,6 +506,22 @@
     </div>
   </div>
 
+  <div class="section-label">Inversión por cuotapartista externo</div>
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Distribución de inversión — excluye Momentum Capital Investment</div>
+    <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="flex:1;min-width:280px;position:relative;height:200px;">
+        <canvas id="cpExternoChart" role="img" aria-label="Gráfico de inversión por cuotapartista externo por clase">Inversión por cuotapartista: ZOFINGEN, BANCO CIUDAD, ALYCBUR distribuidos en clases A, B, C.</canvas>
+      </div>
+      <div style="min-width:280px;">
+        <table class="cmp-table">
+          <thead><tr><th>Cuotapartista</th><th>Inversión total</th><th>%</th></tr></thead>
+          <tbody id="cpExternoBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <div class="section-label">Saldo y flujos de cuotapartes</div>
   <div class="two-col">
     <div class="card">
@@ -597,7 +613,7 @@ const fmt = {
   money(v, dec=3) {
     if (v == null) return '—';
     v = Number(v);
-    if (Math.abs(v) >= 1e9) return `$${(v/1e9).toFixed(3)} MM`;
+    if (Math.abs(v) >= 1e9) return `$${(v/1e9).toFixed(dec === 3 ? 2 : dec)} MM`;
     if (Math.abs(v) >= 1e6) return `$${(v/1e6).toFixed(1)} M`;
     return `$${v.toLocaleString('es-AR')}`;
   },
@@ -883,6 +899,9 @@ function populateDashboard(data) {
       <td class="delta-col ${net>0?'dpos':net<0?'dneg':'dneu'}">${net > 0 ? '+' : ''}${fmt.money(net)}</td>
     </tr>`;
   }).join('');
+
+  // ── Cuotapartistas externos ──
+  renderCPExterno(data);
 
   // ── Atribución VCP ──
   renderAtribucion(at, cp.C, m);
@@ -1241,6 +1260,89 @@ async function init() {
 }
 
 init();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ── CUOTAPARTISTAS EXTERNOS ──
+let cpExternoChartInst = null;
+
+function renderCPExterno(data) {
+  const ext = data.cuotapartistas_ext || [];
+  if (!ext.length) return;
+
+  // Agrupar por nombre (sumar todas las clases)
+  const totales = {};
+  ext.forEach(c => { totales[c.nombre] = (totales[c.nombre] || 0) + c.inversion; });
+  const sorted  = Object.entries(totales).sort((a,b) => b[1] - a[1]);
+  const nombres = sorted.map(x => x[0]);
+  const montos  = sorted.map(x => x[1]);
+  const total   = montos.reduce((s,v) => s + v, 0);
+
+  const bgColors = ['#1a56e8cc','#00a887cc','#e07b00cc','#d63347cc','#7c5cbfcc'];
+
+  if (cpExternoChartInst) cpExternoChartInst.destroy();
+
+  const canvas = document.getElementById('cpExternoChart');
+  if (!canvas) return;
+  canvas.parentElement.style.height = Math.max(160, nombres.length * 56 + 60) + 'px';
+
+  cpExternoChartInst = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: nombres,
+      datasets: [{
+        data:            montos,
+        backgroundColor: bgColors.slice(0, nombres.length),
+        borderColor:     bgColors.slice(0, nombres.length).map(c => c.slice(0,7)),
+        borderWidth:     1.5,
+        borderRadius:    4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' $' + (ctx.raw / 1e6).toFixed(1) + ' M  (' +
+              (ctx.raw / total * 100).toFixed(1) + '%)'
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(128,128,128,0.1)' },
+          ticks: {
+            font: { size: 11, family: 'monospace' },
+            color: '#888',
+            callback: v => v === 0 ? '$0' : '$' + (v/1e6).toFixed(0) + ' M'
+          }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { font: { size: 13, family: 'monospace' }, color: '#333' }
+        }
+      }
+    }
+  });
+
+  // Tabla simplificada: solo nombre, total y %
+  const tbody = document.getElementById('cpExternoBody');
+  if (!tbody) return;
+  tbody.innerHTML = sorted.map(([nombre, monto]) => `<tr>
+    <td class="name-col">${nombre}</td>
+    <td class="today-col">${fmt.money(monto)}</td>
+    <td class="delta-col" style="color:var(--muted)">${(monto/total*100).toFixed(1)}%</td>
+  </tr>`).join('') +
+  `<tr class="total-row">
+    <td class="name-col">Total externos</td>
+    <td class="today-col">${fmt.money(total)}</td>
+    <td class="delta-col">100%</td>
+  </tr>`;
+}
 </script>
 </body>
 </html>
