@@ -284,6 +284,31 @@ def parse_gestion(path):
     # VCP por clase
     df_cp  = pd.read_excel(path, sheet_name='Posicion cuotapartista', header=None)
     datos  = df_cp.iloc[3:].reset_index(drop=True)
+
+    # Cuotapartistas externos (excluye MOMENTUM)
+    cuotapartistas_ext = []
+    for _, row in datos.iterrows():
+        nombre = str(row.iloc[1]).strip()
+        if not nombre or nombre in ('nan', 'None', ''):
+            continue
+        if 'MOMENTUM' in nombre.upper():
+            continue
+        clase_cp = str(row.iloc[2]).strip()
+        if clase_cp not in ('A', 'B', 'C'):
+            continue
+        inv = safe(row.iloc[4])
+        qty = safe(row.iloc[3])
+        if inv is None:
+            continue
+        # Limpiar nombre
+        nombre_limpio = nombre.replace(' (ACDI)', '').replace(' S.A.', '').strip()
+        cuotapartistas_ext.append({
+            'nombre': nombre_limpio,
+            'clase':  clase_cp,
+            'inversion': round(inv),
+            'cuotapartes': round(qty) if qty else None,
+        })
+
     vcp_data = {}
     for clase in ['A', 'B', 'C']:
         mask = datos.iloc[:, 2].astype(str).str.strip() == clase
@@ -406,6 +431,7 @@ def parse_gestion(path):
             for f in fut_det
         ],
         'cuotapartes':      vcp_data,
+        'cuotapartistas_ext': cuotapartistas_ext,
         'cpd_vencimientos': cpd_venc,
         'atribucion':       {'delta_total': 0, 'items': []},  # se llena después
     }
