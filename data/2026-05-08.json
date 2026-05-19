@@ -360,27 +360,6 @@
         "det": "Código 4001001000000000013"
       },
       {
-        "n": "Gastos Sociedad Depositaria Clase A",
-        "t": "Costo",
-        "bps": -0.0084,
-        "dp": -0.0326,
-        "det": "Código 4001001000000000015"
-      },
-      {
-        "n": "Gastos Sociedad Depositaria Clase B",
-        "t": "Costo",
-        "bps": -0.0078,
-        "dp": -0.0304,
-        "det": "Código 4001001000000000016"
-      },
-      {
-        "n": "Gastos Sociedad Depositaria Clase C",
-        "t": "Costo",
-        "bps": -0.0486,
-        "dp": -0.1889,
-        "det": "Código 4001001000000000017"
-      },
-      {
         "n": "Gastos por Negociacion de Cheque de Pago Diferido DMAE",
         "t": "Costo",
         "bps": -0.0,
@@ -428,6 +407,13 @@
         "bps": 0.045,
         "dp": 0.1749,
         "det": "Código 4002001004000000013"
+      },
+      {
+        "n": "Gastos Soc. Depositaria",
+        "t": "Costo",
+        "bps": -0.0648,
+        "dp": -0.2519,
+        "det": "Neto: Gastos Depositaria Clase A + B + C"
       },
       {
         "n": "Money Market (FCI)",
