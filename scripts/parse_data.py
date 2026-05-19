@@ -19,15 +19,25 @@ DATA_DIR.mkdir(exist_ok=True)
 DIAS_ES = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 
 # Cuentas contables para atribución del VCP
+# (código, tipo) — el nombre se lee automáticamente del archivo Balance
 CUENTAS_ATRIB = [
-    ('4002001002000000000', 'Intereses Pesos',            'Devengo'),
-    ('4000000000000000010', 'Resultado CPD USD',           'Devengo'),
-    ('4000000000000000001', 'Resultado Títulos Públicos',  'Precio' ),
-    ('4000000000000000009', 'Diferencia Cotización USD',   'Precio' ),
-    ('4002001004000000000', 'Resultado por Tenencia',      'Precio' ),
-    ('4000000000000000013', 'Resultado Operación Futuro',  'MTM'    ),
-    ('4001001000000000013', 'Gastos Negociación CPD',      'Costo'  ),
-    ('4001002001000000000', 'Honorarios Administración',   'Costo'  ),
+    ('4000000000000000001', 'Precio' ),  # Resultado Títulos Públicos en $
+    ('4000000000000000009', 'Precio' ),  # Diferencia de Cotización US3
+    ('4000000000000000010', 'Devengo'),  # Resultado Cheque Pago diferido US3
+    ('4000000000000000013', 'MTM'    ),  # Resultado de Operación Futuro
+    ('4001001000000000004', 'Costo'  ),  # Costo Fondos Comunes de Inversión
+    ('4001001000000000013', 'Costo'  ),  # Gastos por negociación de CPD
+    ('4001001000000000015', 'Costo'  ),  # Gastos Sociedad Depositaria Clase A
+    ('4001001000000000016', 'Costo'  ),  # Gastos Sociedad Depositaria Clase B
+    ('4001001000000000017', 'Costo'  ),  # Gastos Sociedad Depositaria Clase C
+    ('4001001000000000021', 'Costo'  ),  # Gastos por Negociación CPD DM
+    ('4001002000000000021', 'Costo'  ),  # Resultado por CPD incobrables
+    ('4001002001000000000', 'Costo'  ),  # Honorarios de Administración
+    ('4002001000000000006', 'Devengo'),  # Ventas Fondos Comunes de Inversión
+    ('4002001000000000017', 'Devengo'),  # Resultado Cheques de Pago Diferido
+    ('4002001000000000022', 'Devengo'),  # Intereses Pase
+    ('4002001002000000002', 'Devengo'),  # Intereses Caución
+    ('4002001004000000013', 'Precio' ),  # Resultado por Tenencia Títulos Provinciales
 ]
 CODIGO_TOTAL = '4000000000'
 
@@ -120,17 +130,18 @@ def to_xlsx(path: Path) -> Path:
     return out
 
 def read_balance_codes(path: Path) -> dict:
-    """Lee el balance y devuelve {codigo_cuenta: valor}."""
+    """Lee el balance y devuelve {codigo: {'valor': float, 'nombre': str}}."""
     try:
         xlsx = to_xlsx(path)
         df = pd.read_excel(xlsx, header=None)
         data = {}
         for _, row in df.iterrows():
             code = str(row[1]).strip().replace(' ', '')
+            nombre = str(row[0]).strip().lstrip('. ').strip()
             try:
                 val = float(row[2])
                 if not pd.isna(val):
-                    data[code] = val
+                    data[code] = {'valor': val, 'nombre': nombre}
             except Exception:
                 pass
         return data
@@ -153,9 +164,13 @@ def compute_atribucion(bal_t0: Path, bal_t1: Path, pn_prev: float) -> dict:
     if not b0 or not b1:
         return {'delta_total': 0, 'items': []}
 
+    def get_val(bdict, code):
+        entry = bdict.get(code)
+        return entry['valor'] if entry else None
+
     def bps(code):
-        v0 = b0.get(code)
-        v1 = b1.get(code)
+        v0 = get_val(b0, code)
+        v1 = get_val(b1, code)
         if v0 is None or v1 is None:
             return None
         return -(v0 - v1) / pn_prev * 10000
@@ -168,21 +183,44 @@ def compute_atribucion(bal_t0: Path, bal_t1: Path, pn_prev: float) -> dict:
     # Detalle por cuenta
     items = []
     suma_items = 0.0
-    for code, name, tipo in CUENTAS_ATRIB:
+    for code, tipo in CUENTAS_ATRIB:
         b = bps(code)
         if b is None:
             continue
-        v0 = b0.get(code, 0)
-        v1 = b1.get(code, 0)
-        delta_abs = -(v0 - v1)          # monto del cambio (positivo = bueno para VCP)
+        v0 = get_val(b0, code) or 0
+        v1 = get_val(b1, code) or 0
+        delta_abs = -(v0 - v1)
+        # Nombre desde el balance (el que tenga el code en cualquiera de los dos archivos)
+        nombre = (b0.get(code) or b1.get(code) or {}).get('nombre', f'Cuenta {code}')
         items.append({
-            'n':   name,
+            'n':   nombre,
             't':   tipo,
             'bps': round(b, 4),
-            'dp':  round(delta_abs / 1e6, 4),   # en millones
-            'det': f'Cuenta {code}',
+            'dp':  round(delta_abs / 1e6, 4),
+            'det': f'Código {code}',
+            '_code': code,
         })
         suma_items += b
+
+    # Netear Costo FCI + Ventas FCI → Money Market (FCI)
+    FCI_CODES = {'4001001000000000004', '4002001000000000006'}
+    fci_items = [i for i in items if i.get('_code') in FCI_CODES]
+    if len(fci_items) >= 1:
+        net_bps = sum(i['bps'] for i in fci_items)
+        net_dp  = sum(i['dp']  for i in fci_items)
+        items = [i for i in items if i.get('_code') not in FCI_CODES]
+        if abs(net_bps) > 0.0001:
+            items.append({
+                'n':   'Money Market (FCI)',
+                't':   'Devengo',
+                'bps': round(net_bps, 4),
+                'dp':  round(net_dp,  4),
+                'det': 'Neto: Ventas FCI − Costo FCI',
+            })
+            suma_items = suma_items - sum(i['bps'] for i in fci_items) + net_bps
+    # Limpiar campo interno
+    for i in items:
+        i.pop('_code', None)
 
     # Residual (diferencia entre total y suma de items)
     residual = round(delta_total - suma_items, 4)
