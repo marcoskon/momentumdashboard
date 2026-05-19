@@ -350,67 +350,116 @@
     "pn_prev": 37972954877,
     "items": [
       {
-        "n": "Intereses Pesos",
-        "t": "Devengo",
-        "bps": 21.4881,
-        "dp": 81.5967,
-        "det": "Cuenta 4002001002000000000"
-      },
-      {
-        "n": "Resultado CPD USD",
-        "t": "Devengo",
-        "bps": 0.183,
-        "dp": 0.6949,
-        "det": "Cuenta 4000000000000000010"
-      },
-      {
-        "n": "Resultado Títulos Públicos",
+        "n": "Resultado Títulos Públicos en $",
         "t": "Precio",
         "bps": -0.2292,
         "dp": -0.8705,
-        "det": "Cuenta 4000000000000000001"
+        "det": "Código 4000000000000000001"
       },
       {
-        "n": "Diferencia Cotización USD",
+        "n": "Diferencia de Cotizacion US3",
         "t": "Precio",
         "bps": -0.0838,
         "dp": -0.3181,
-        "det": "Cuenta 4000000000000000009"
+        "det": "Código 4000000000000000009"
       },
       {
-        "n": "Resultado por Tenencia",
-        "t": "Precio",
-        "bps": -0.7686,
-        "dp": -2.9184,
-        "det": "Cuenta 4002001004000000000"
+        "n": "Resultado Cheque Pago diferido US3",
+        "t": "Devengo",
+        "bps": 0.183,
+        "dp": 0.6949,
+        "det": "Código 4000000000000000010"
       },
       {
-        "n": "Resultado Operación Futuro",
+        "n": "Resultado de Operacion Futuro",
         "t": "MTM",
         "bps": 0.0232,
         "dp": 0.088,
-        "det": "Cuenta 4000000000000000013"
+        "det": "Código 4000000000000000013"
       },
       {
-        "n": "Gastos Negociación CPD",
+        "n": "Gastos por negociación de Cheque de Pago Diferido",
         "t": "Costo",
         "bps": -0.0192,
         "dp": -0.073,
-        "det": "Cuenta 4001001000000000013"
+        "det": "Código 4001001000000000013"
       },
       {
-        "n": "Honorarios Administración",
+        "n": "Gastos Sociedad Depositaria Clase A",
+        "t": "Costo",
+        "bps": -0.0273,
+        "dp": -0.1035,
+        "det": "Código 4001001000000000015"
+      },
+      {
+        "n": "Gastos Sociedad Depositaria Clase B",
+        "t": "Costo",
+        "bps": -0.0252,
+        "dp": -0.0959,
+        "det": "Código 4001001000000000016"
+      },
+      {
+        "n": "Gastos Sociedad Depositaria Clase C",
+        "t": "Costo",
+        "bps": -0.1533,
+        "dp": -0.5823,
+        "det": "Código 4001001000000000017"
+      },
+      {
+        "n": "Gastos por Negociacion de Cheque de Pago Diferido DMAE",
+        "t": "Costo",
+        "bps": -0.0105,
+        "dp": -0.0399,
+        "det": "Código 4001001000000000021"
+      },
+      {
+        "n": "Resultado por CPD incobrables",
+        "t": "Costo",
+        "bps": -2.9,
+        "dp": -11.0122,
+        "det": "Código 4001002000000000021"
+      },
+      {
+        "n": "Honorarios de Administración",
         "t": "Costo",
         "bps": -2.198,
         "dp": -8.3466,
-        "det": "Cuenta 4001002001000000000"
+        "det": "Código 4001002001000000000"
       },
       {
-        "n": "Residual / ajustes contables",
-        "t": "Otros",
-        "bps": -2.5189,
-        "dp": null,
-        "det": "Diferencia entre RESULTADOS total y cuentas desagregadas"
+        "n": "Resultado Cheques de Pago Diferido",
+        "t": "Devengo",
+        "bps": 20.9259,
+        "dp": 79.4619,
+        "det": "Código 4002001000000000017"
+      },
+      {
+        "n": "Intereses Pase",
+        "t": "Devengo",
+        "bps": 0.4757,
+        "dp": 1.8064,
+        "det": "Código 4002001000000000022"
+      },
+      {
+        "n": "Intereses Caución",
+        "t": "Devengo",
+        "bps": 0.0865,
+        "dp": 0.3284,
+        "det": "Código 4002001002000000002"
+      },
+      {
+        "n": "Resultado por Tenencia Títulos Provinciales",
+        "t": "Precio",
+        "bps": -0.7686,
+        "dp": -2.9184,
+        "det": "Código 4002001004000000013"
+      },
+      {
+        "n": "Money Market (FCI)",
+        "t": "Devengo",
+        "bps": 0.5974,
+        "dp": 2.2686,
+        "det": "Neto: Ventas FCI − Costo FCI"
       }
     ]
   }
