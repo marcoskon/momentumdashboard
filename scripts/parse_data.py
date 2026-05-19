@@ -202,6 +202,23 @@ def compute_atribucion(bal_t0: Path, bal_t1: Path, pn_prev: float) -> dict:
         })
         suma_items += b
 
+    # Netear Gastos Depositaria A + B + C → uno solo
+    DEP_CODES = {'4001001000000000015', '4001001000000000016', '4001001000000000017'}
+    dep_items = [i for i in items if i.get('_code') in DEP_CODES]
+    if len(dep_items) >= 1:
+        net_bps_dep = sum(i['bps'] for i in dep_items)
+        net_dp_dep  = sum(i['dp']  for i in dep_items)
+        items = [i for i in items if i.get('_code') not in DEP_CODES]
+        items.append({
+            'n':   'Gastos Soc. Depositaria',
+            't':   'Costo',
+            'bps': round(net_bps_dep, 4),
+            'dp':  round(net_dp_dep,  4),
+            'det': 'Neto: Gastos Depositaria Clase A + B + C',
+            '_code': '__dep__',
+        })
+        suma_items = suma_items - sum(i['bps'] for i in dep_items) + net_bps_dep
+
     # Netear Costo FCI + Ventas FCI → Money Market (FCI)
     FCI_CODES = {'4001001000000000004', '4002001000000000006'}
     fci_items = [i for i in items if i.get('_code') in FCI_CODES]
