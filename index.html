@@ -1127,39 +1127,72 @@ function renderAtribucion(at, cpC, meta) {
 function renderWaterfall(items, DELTA_TOTAL) {
   const el = document.getElementById('waterfallChart');
   if (!el || !items.length) return;
-  const LW = 240, BARH = 24, PAD = 5, MAX = 12;
-  const W = Math.min(820, el.offsetWidth || window.innerWidth - 60);
-  const CW = W - LW - 80;
-  const H = (items.length + 2) * (BARH + PAD) + 44;
-  const ZX = LW + CW / 2;
 
-  let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="IBM Plex Mono,monospace">`;
-  [-10,-8,-6,-4,-2,2,4,6,8,10].forEach(v => {
+  const LW   = 310;
+  const BARH = 28;
+  const PAD  = 7;
+  const maxVal = Math.max(...items.map(d => Math.abs(d.bps)), Math.abs(DELTA_TOTAL));
+  const MAX  = Math.ceil(maxVal * 1.25 / 2) * 2 || 12;
+  const W    = Math.max(880, (el.parentElement?.clientWidth || 1000) - 20);
+  const CW   = W - LW - 100;
+  const H    = (items.length + 2) * (BARH + PAD) + 52;
+  const ZX   = LW + CW / 2;
+
+  // Ticks dinámicos
+  const tickStep = MAX <= 10 ? 2 : MAX <= 20 ? 4 : MAX <= 50 ? 10 : 20;
+  const ticks = [];
+  for (let v = -MAX + tickStep; v < MAX; v += tickStep) { if (v !== 0) ticks.push(v); }
+
+  let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="IBM Plex Mono,monospace" style="display:block;">`;
+
+  // Grid
+  ticks.forEach(v => {
     const x = ZX + (v / MAX) * (CW / 2);
-    svg += `<line x1="${x}" y1="0" x2="${x}" y2="${H-28}" stroke="#e4e8f2" stroke-width="1" stroke-dasharray="3,3"/>`;
-    svg += `<text x="${x}" y="${H-8}" text-anchor="middle" fill="#9ba8c0" font-size="8">${v>0?'+':''}${v}</text>`;
+    svg += `<line x1="${x.toFixed(1)}" y1="0" x2="${x.toFixed(1)}" y2="${H-32}" stroke="#e4e8f2" stroke-width="1" stroke-dasharray="3,3"/>`;
+    svg += `<text x="${x.toFixed(1)}" y="${H-10}" text-anchor="middle" fill="#9ba8c0" font-size="10">${v>0?'+':''}${v}</text>`;
   });
-  svg += `<line x1="${ZX}" y1="0" x2="${ZX}" y2="${H-28}" stroke="#c8d0e0" stroke-width="1.5"/>`;
-  svg += `<text x="${ZX}" y="${H-8}" text-anchor="middle" fill="#6b758f" font-size="8">0</text>`;
+  svg += `<line x1="${ZX.toFixed(1)}" y1="0" x2="${ZX.toFixed(1)}" y2="${H-32}" stroke="#c8d0e0" stroke-width="1.5"/>`;
+  svg += `<text x="${ZX.toFixed(1)}" y="${H-10}" text-anchor="middle" fill="#6b758f" font-size="10">0</text>`;
 
+  // Barras
   items.forEach((d, i) => {
-    const y = i * (BARH + PAD) + 6;
-    const bw = Math.abs(d.bps) / MAX * (CW / 2);
-    const bx = d.bps >= 0 ? ZX : ZX - bw;
+    const y   = i * (BARH + PAD) + 6;
+    const bw  = Math.abs(d.bps) / MAX * (CW / 2);
+    const bx  = d.bps >= 0 ? ZX : ZX - bw;
     const col = ACOLORS[d.t] || '#9ba8c0';
-    const label = d.n.length > 30 ? d.n.slice(0,30) + '…' : d.n;
-    svg += `<text x="${LW-8}" y="${y+BARH/2+4}" text-anchor="end" fill="#1a1f30" font-size="9.5">${label}</text>`;
-    if (Math.abs(d.bps) > 0.01)
-      svg += `<rect x="${bx}" y="${y}" width="${Math.max(bw,1)}" height="${BARH}" rx="3" fill="${col}" opacity="0.82"/>`;
-    const tx = d.bps >= 0 ? ZX+bw+5 : ZX-bw-5;
-    const ta = d.bps >= 0 ? 'start' : 'end';
-    svg += `<text x="${tx}" y="${y+BARH/2+4}" text-anchor="${ta}" fill="${col}" font-weight="600" font-size="9">${d.bps>=0?'+':''}${d.bps.toFixed(2)}</text>`;
+    const labelVal = `${d.bps >= 0 ? '+' : ''}${d.bps.toFixed(2)}`;
+
+    // Nombre completo
+    svg += `<text x="${LW - 10}" y="${y + BARH/2 + 4}" text-anchor="end" fill="#1a1f30" font-size="11.5">${d.n}</text>`;
+
+    // Barra
+    if (Math.abs(d.bps) > 0.001)
+      svg += `<rect x="${bx.toFixed(1)}" y="${y}" width="${Math.max(bw, 2).toFixed(1)}" height="${BARH}" rx="3" fill="${col}" opacity="0.85"/>`;
+
+    // Valor bps: dentro si la barra es ancha, fuera si es chica
+    if (bw >= 50) {
+      svg += `<text x="${(bx + bw/2).toFixed(1)}" y="${y + BARH/2 + 4}" text-anchor="middle" fill="white" font-weight="700" font-size="11">${labelVal}</text>`;
+    } else {
+      const tx = d.bps >= 0 ? ZX + bw + 6 : ZX - bw - 6;
+      const ta = d.bps >= 0 ? 'start' : 'end';
+      svg += `<text x="${tx.toFixed(1)}" y="${y + BARH/2 + 4}" text-anchor="${ta}" fill="${col}" font-weight="700" font-size="11">${labelVal}</text>`;
+    }
   });
-  const ty = items.length*(BARH+PAD)+12;
-  const tw = DELTA_TOTAL/MAX*(CW/2);
-  svg += `<text x="${LW-8}" y="${ty+BARH/2+4}" text-anchor="end" fill="#1a1f30" font-weight="700" font-size="10.5">TOTAL</text>`;
-  svg += `<rect x="${ZX}" y="${ty}" width="${tw}" height="${BARH}" rx="3" fill="#1a56e8" opacity="0.9"/>`;
-  svg += `<text x="${ZX+tw+6}" y="${ty+BARH/2+4}" text-anchor="start" fill="#1a56e8" font-weight="700" font-size="10.5">+${DELTA_TOTAL.toFixed(2)} bps</text>`;
+
+  // Fila TOTAL
+  const ty  = items.length * (BARH + PAD) + 14;
+  const tw  = Math.abs(DELTA_TOTAL) / MAX * (CW / 2);
+  const tbx = DELTA_TOTAL >= 0 ? ZX : ZX - tw;
+  const totalLabel = `${DELTA_TOTAL >= 0 ? '+' : ''}${DELTA_TOTAL.toFixed(2)} bps`;
+  svg += `<text x="${LW - 10}" y="${ty + BARH/2 + 4}" text-anchor="end" fill="#1a1f30" font-weight="700" font-size="13">TOTAL</text>`;
+  svg += `<rect x="${tbx.toFixed(1)}" y="${ty}" width="${Math.max(tw,2).toFixed(1)}" height="${BARH}" rx="3" fill="#1a56e8" opacity="0.92"/>`;
+  if (tw >= 60) {
+    svg += `<text x="${(tbx + tw/2).toFixed(1)}" y="${ty + BARH/2 + 4}" text-anchor="middle" fill="white" font-weight="700" font-size="13">${totalLabel}</text>`;
+  } else {
+    const ttx = DELTA_TOTAL >= 0 ? ZX + tw + 6 : ZX - tw - 6;
+    svg += `<text x="${ttx.toFixed(1)}" y="${ty + BARH/2 + 4}" text-anchor="${DELTA_TOTAL >= 0 ? 'start' : 'end'}" fill="#1a56e8" font-weight="700" font-size="13">${totalLabel}</text>`;
+  }
+
   svg += '</svg>';
   el.innerHTML = svg;
 }
