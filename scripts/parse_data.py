@@ -336,6 +336,46 @@ def parse_gestion(path):
         cpd_venc.append({'fecha': d.strftime('%d/%m'), 'dia': DIAS_ES[d.weekday()], 'monto': round(monto)})
         dias_hab += 1
 
+    # ── Diversificación de libradores ─────────────────────────────────────
+    lib_map = {}
+    for _, row in chq.iterrows():
+        nombre  = str(row.iloc[0]).strip() if hasattr(row, 'iloc') else ''
+        # La hoja tiene los datos en el DataFrame 'chq' ya filtrado
+        # Necesitamos releer sin filtro de fecha para tener todos los cheques
+        pass
+
+    # Releer sin filtro de fecha para obtener todos los cheques activos
+    df_lib = pd.read_excel(path, sheet_name='Reporte de Cheques', header=None)
+    lib_rows = df_lib.iloc[3:].reset_index(drop=True)
+    lib_map = {}
+    for _, row in lib_rows.iterrows():
+        nombre = str(row.iloc[0]).strip()
+        if not nombre or nombre in ('nan','None','') or nombre.startswith('Cheque'):
+            continue
+        monto = safe(row.iloc[9])   # Col J: Importe Actual Moneda Fondo
+        tasa  = safe(row.iloc[15])  # Col P: Tasa de Descuento
+        pct   = safe(row.iloc[22])  # Col W: % sobre VP (decimal)
+        if monto is None or monto <= 0:
+            continue
+        if nombre not in lib_map:
+            lib_map[nombre] = {'monto': 0, 'tasa_w': 0, 'pct_vp': 0, 'n': 0}
+        lib_map[nombre]['monto']  += monto
+        lib_map[nombre]['tasa_w'] += (tasa or 0) * monto  # para promedio ponderado
+        lib_map[nombre]['pct_vp'] += (pct or 0) * 100     # decimal → %
+        lib_map[nombre]['n']      += 1
+
+    libradores = sorted([
+        {
+            'nombre':   k,
+            'monto':    round(v['monto']),
+            'tasa_prom': round(v['tasa_w'] / v['monto'], 2) if v['monto'] else 0,
+            'pct_vp':   round(v['pct_vp'], 4),
+            'n_cheques': v['n'],
+        }
+        for k, v in lib_map.items()
+    ], key=lambda x: -x['monto'])
+    print(f"  Libradores: {len(libradores)} únicos")
+
     # VCP por clase
     df_cp  = pd.read_excel(path, sheet_name='Posicion cuotapartista', header=None)
     datos  = df_cp.iloc[3:].reset_index(drop=True)
@@ -487,6 +527,7 @@ def parse_gestion(path):
         ],
         'cuotapartes':      vcp_data,
         'cuotapartistas_ext': cuotapartistas_ext,
+        'libradores': libradores,
         'cpd_vencimientos': cpd_venc,
         'atribucion':       {'delta_total': 0, 'items': []},  # se llena después
     }
