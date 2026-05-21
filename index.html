@@ -260,6 +260,9 @@
     <button class="tab-btn" data-tab="variacion">
       <span>📈</span> Variación del VCP <span class="tab-badge">Atribución</span>
     </button>
+    <button class="tab-btn" data-tab="libradores">
+      <span>🏢</span> Libradores <span class="tab-badge">Diversificación</span>
+    </button>
   </div>
 </nav>
 
@@ -602,6 +605,83 @@
 </div>
 </div>
 
+<!-- ══════════════════════════════
+     TAB 5 — LIBRADORES
+══════════════════════════════ -->
+<div id="tab-libradores" class="tab-panel">
+<div class="page">
+
+  <div class="section-label">Concentración por librador</div>
+
+  <!-- KPIs -->
+  <div class="kpi-row" style="margin-bottom:20px;" id="libKpiRow">
+    <div class="kpi-card" style="--ka:#1a56e8">
+      <div class="kpi-label">Total libradores</div>
+      <div class="kpi-value" id="libTotal">—</div>
+      <div class="kpi-prev">Cheques únicos en cartera</div>
+      <div class="kpi-delta neu" id="libTotalSub">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#00a887">
+      <div class="kpi-label">Concentración Top 5</div>
+      <div class="kpi-value" id="libTop5">—</div>
+      <div class="kpi-prev">% sobre VP del fondo</div>
+      <div class="kpi-delta neu" id="libTop5n">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#e07b00">
+      <div class="kpi-label">Concentración Top 10</div>
+      <div class="kpi-value" id="libTop10">—</div>
+      <div class="kpi-prev">% sobre VP del fondo</div>
+      <div class="kpi-delta neu" id="libTop10n">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#d63347">
+      <div class="kpi-label">Mayor librador</div>
+      <div class="kpi-value" style="font-size:clamp(14px,1.6vw,20px);line-height:1.2;" id="libMax">—</div>
+      <div class="kpi-prev" id="libMaxMonto">—</div>
+      <div class="kpi-delta pos" id="libMaxPct">—</div>
+    </div>
+  </div>
+
+  <!-- Gráfico top 20 + tabla completa -->
+  <div class="two-col" style="grid-template-columns:1.1fr 0.9fr;align-items:start;">
+
+    <div class="card">
+      <div class="card-title">Top 20 libradores por monto — % sobre VP</div>
+      <div style="position:relative;height:520px;">
+        <canvas id="libChart" role="img" aria-label="Gráfico de barras horizontales con los 20 principales libradores">Top 20 libradores por monto invertido.</canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Todos los libradores</div>
+      <!-- Buscador -->
+      <input type="text" id="libSearch"
+        placeholder="Buscar librador…"
+        style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:6px;
+               font-family:'IBM Plex Mono',monospace;font-size:12px;margin-bottom:12px;
+               background:var(--surface2);color:var(--text);outline:none;">
+      <div style="max-height:520px;overflow-y:auto;">
+        <table class="cmp-table" style="font-size:11px;">
+          <thead style="position:sticky;top:0;background:var(--surface);z-index:1;">
+            <tr>
+              <th style="cursor:pointer;" onclick="sortLib('nombre')">Librador ↕</th>
+              <th style="cursor:pointer;text-align:right;" onclick="sortLib('monto')">Monto ↕</th>
+              <th style="cursor:pointer;text-align:right;" onclick="sortLib('pct_vp')">% VP ↕</th>
+              <th style="cursor:pointer;text-align:right;" onclick="sortLib('tasa_prom')">Tasa ↕</th>
+              <th style="text-align:right;">Cheques</th>
+            </tr>
+          </thead>
+          <tbody id="libTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>Fuente:</strong> Reporte de Cheques · Agrupado por librador · Tasa promedio ponderada por monto · Responsable: Marcos Kon
+  </div>
+</div>
+</div><!-- /tab-libradores -->
+
 <!-- ══════════════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════════════ -->
@@ -902,6 +982,8 @@ function populateDashboard(data) {
 
   // ── Cuotapartistas externos ──
   renderCPExterno(data);
+  // ── Libradores ──
+  renderLibradores(data);
 
   // ── Atribución VCP ──
   renderAtribucion(at, cp.C, m);
@@ -1375,6 +1457,130 @@ function renderCPExterno(data) {
     <td class="today-col">${fmt.money(total)}</td>
     <td class="delta-col">100%</td>
   </tr>`;
+}
+</script>
+<script>
+// ── LIBRADORES ──
+let _libData = [];
+let _libSort = { key: 'monto', asc: false };
+let _libChartInst = null;
+
+function renderLibradores(data) {
+  _libData = data.libradores || [];
+  if (!_libData.length) return;
+
+  const total = _libData.length;
+  const totalCheques = _libData.reduce((s,l) => s + l.n_cheques, 0);
+  const top5pct  = _libData.slice(0,5).reduce((s,l)  => s + l.pct_vp, 0);
+  const top10pct = _libData.slice(0,10).reduce((s,l) => s + l.pct_vp, 0);
+  const top5monto  = _libData.slice(0,5).reduce((s,l)  => s + l.monto, 0);
+  const top10monto = _libData.slice(0,10).reduce((s,l) => s + l.monto, 0);
+  const max = _libData[0] || {};
+
+  setTxt('libTotal',   total);
+  setTxt('libTotalSub', totalCheques + ' cheques en total');
+  setTxt('libTop5',    top5pct.toFixed(2) + '%');
+  setTxt('libTop5n',   fmt.money(top5monto) + ' — 5 libradores');
+  setTxt('libTop10',   top10pct.toFixed(2) + '%');
+  setTxt('libTop10n',  fmt.money(top10monto) + ' — 10 libradores');
+  setTxt('libMax',     max.nombre || '—');
+  setTxt('libMaxMonto', fmt.money(max.monto));
+  setTxt('libMaxPct',  (max.pct_vp || 0).toFixed(3) + '% del VP');
+
+  // Gráfico top 20
+  const top20 = _libData.slice(0, 20);
+  const labels  = top20.map(l => l.nombre.length > 28 ? l.nombre.slice(0,28)+'…' : l.nombre);
+  const dataVP  = top20.map(l => +l.pct_vp.toFixed(3));
+  const bgColors = top20.map((_, i) => `hsl(${220 - i*6}, 70%, ${55 + i*1.2}%)`);
+
+  if (_libChartInst) _libChartInst.destroy();
+  const canvas = document.getElementById('libChart');
+  if (canvas) {
+    _libChartInst = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '% VP',
+          data: dataVP,
+          backgroundColor: bgColors,
+          borderColor: bgColors.map(c => c.replace('70%','55%')),
+          borderWidth: 1.5,
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const l = top20[ctx.dataIndex];
+                return [
+                  ` ${ctx.raw}% del VP`,
+                  ` Monto: ${fmt.money(l.monto)}`,
+                  ` Tasa prom: ${l.tasa_prom}%`,
+                  ` Cheques: ${l.n_cheques}`,
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(128,128,128,0.1)' },
+            ticks: { font: { size: 11, family: 'monospace' }, color: '#888',
+                     callback: v => v + '%' }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { font: { size: 11, family: 'monospace' }, color: '#333' }
+          }
+        }
+      }
+    });
+  }
+
+  // Tabla
+  renderLibTable();
+
+  // Buscador
+  const search = document.getElementById('libSearch');
+  if (search) {
+    search.oninput = () => renderLibTable(search.value);
+  }
+}
+
+function sortLib(key) {
+  if (_libSort.key === key) _libSort.asc = !_libSort.asc;
+  else { _libSort.key = key; _libSort.asc = key === 'nombre'; }
+  const val = document.getElementById('libSearch')?.value || '';
+  renderLibTable(val);
+}
+
+function renderLibTable(filter = '') {
+  const tbody = document.getElementById('libTableBody');
+  if (!tbody) return;
+  const q = filter.trim().toUpperCase();
+  let rows = _libData.filter(l => !q || l.nombre.toUpperCase().includes(q));
+  const { key, asc } = _libSort;
+  rows.sort((a,b) => {
+    const va = a[key], vb = b[key];
+    if (typeof va === 'string') return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+    return asc ? va - vb : vb - va;
+  });
+  tbody.innerHTML = rows.map((l, i) => `<tr>
+    <td class="name-col" title="${l.nombre}" style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+      <span style="color:var(--muted);margin-right:4px;">${i+1}.</span>${l.nombre}
+    </td>
+    <td style="text-align:right;">${fmt.money(l.monto)}</td>
+    <td style="text-align:right;font-weight:600;">${l.pct_vp.toFixed(3)}%</td>
+    <td style="text-align:right;color:var(--muted);">${l.tasa_prom.toFixed(1)}%</td>
+    <td style="text-align:right;color:var(--muted);">${l.n_cheques}</td>
+  </tr>`).join('');
 }
 </script>
 </body>
