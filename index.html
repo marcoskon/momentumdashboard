@@ -693,8 +693,93 @@
 
   <div class="section-label">Situación BCRA por CUIT</div>
 
-  <!-- Upload card -->
-  <div class="card" style="margin-bottom:20px;">
+  <!-- Resumen KPIs -->
+  <div class="kpi-row" id="bcraKpis" style="display:none;margin-bottom:20px;">
+    <div class="kpi-card" style="--ka:#1a56e8">
+      <div class="kpi-label">Total consultados</div>
+      <div class="kpi-value" id="bcraKpiTotal">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#00a887">
+      <div class="kpi-label">Situación normal (1)</div>
+      <div class="kpi-value" id="bcraKpiNormal">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#f59f00">
+      <div class="kpi-label">Con alertas (2-3)</div>
+      <div class="kpi-value" id="bcraKpiAlerta">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#d63347">
+      <div class="kpi-label">Críticos (4-5-6)</div>
+      <div class="kpi-value" id="bcraKpiCritico">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#9ba8c0">
+      <div class="kpi-label">Sin información</div>
+      <div class="kpi-value" id="bcraKpiSinInfo">—</div>
+    </div>
+  </div>
+
+  <!-- Tabla resultados -->
+  <div class="card" id="bcraResultCard" style="display:none;margin-bottom:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div class="card-title" style="margin:0;padding:0;border:none;">Resultados de consulta BCRA</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <!-- Filtro situación -->
+        <select id="bcraSitFilter" onchange="renderBCRATable()"
+          style="font-family:'IBM Plex Mono',monospace;font-size:11px;padding:6px 10px;
+                 border:1px solid var(--border);border-radius:6px;background:var(--surface2);
+                 color:var(--text);cursor:pointer;outline:none;">
+          <option value="">Todas las situaciones</option>
+          <option value="1">1 - Normal</option>
+          <option value="2">2 - Seg. especial</option>
+          <option value="3">3 - Con problemas</option>
+          <option value="4">4 - Alto riesgo</option>
+          <option value="5">5 - Irrecuperable</option>
+          <option value="0">Sin información</option>
+        </select>
+        <!-- Orden situación -->
+        <button id="bcraSortBtn" onclick="toggleBCRASort()"
+          style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+                 background:var(--surface2);color:var(--text);border:1px solid var(--border);
+                 border-radius:6px;padding:6px 12px;cursor:pointer;">
+          Situación ↓ Mayor primero
+        </button>
+        <!-- Buscador -->
+        <input type="text" id="bcraSearch" placeholder="Buscar empresa o CUIT…"
+          style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;
+                 font-family:'IBM Plex Mono',monospace;font-size:11px;width:210px;
+                 background:var(--surface2);color:var(--text);outline:none;"
+          oninput="renderBCRATable()">
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="cmp-table" style="font-size:12px;">
+        <thead>
+          <tr>
+            <th>CUIT</th>
+            <th>Empresa</th>
+            <th style="text-align:center;">Situación BCRA</th>
+            <th style="text-align:center;">Período</th>
+            <th style="text-align:center;">Cheques rechazados</th>
+            <th style="text-align:right;">Entidades</th>
+          </tr>
+        </thead>
+        <tbody id="bcraTableBody"></tbody>
+      </table>
+    </div>
+    <div style="font-size:10px;color:var(--muted);margin-top:12px;line-height:1.6;">
+      <strong>Fuente:</strong> API BCRA — Central de Deudores del Sistema Financiero ·
+      Situación: 1=Normal, 2=Seguimiento especial, 3=Con problemas, 4=Alto riesgo, 5=Irrecuperable, 6=Irrecuperable (disp. técnica)
+    </div>
+  </div>
+
+  <!-- Upload card — al final, colapsable -->
+  <details id="bcraUploadDetails" open>
+    <summary style="cursor:pointer;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+                    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+                    margin-bottom:14px;list-style:none;display:flex;align-items:center;gap:8px;">
+      <span id="bcraUploadArrow">▼</span> CARGAR ARCHIVO
+      <span style="flex:1;height:1px;background:var(--border);display:inline-block;margin-left:6px;"></span>
+    </summary>
+  <div class="card">
     <div class="card-title">Cargar listado de CUITs</div>
     <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
 
@@ -725,7 +810,6 @@
           · El sistema detecta automáticamente la columna<br>
           · Puede incluir otras columnas (nombre, etc.)
         </div>
-        <!-- Estado de procesamiento -->
         <div id="bcraStatus" style="display:none;background:var(--surface2);border:1px solid var(--border);
              border-radius:8px;padding:14px;font-size:12px;">
           <div id="bcraStatusText" style="color:var(--text);margin-bottom:8px;">Procesando…</div>
@@ -734,7 +818,6 @@
           </div>
           <div id="bcraProgressText" style="color:var(--muted);margin-top:5px;font-size:11px;">0 / 0</div>
         </div>
-        <!-- Botones acción -->
         <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
           <button id="bcraBtnExport" onclick="exportBCRA()" style="display:none;
             font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
@@ -748,60 +831,10 @@
       </div>
     </div>
   </div>
+  </details>
 
-  <!-- Resumen KPIs -->
-  <div class="kpi-row" id="bcraKpis" style="display:none;margin-bottom:20px;">
-    <div class="kpi-card" style="--ka:#1a56e8">
-      <div class="kpi-label">Total consultados</div>
-      <div class="kpi-value" id="bcraKpiTotal">—</div>
-    </div>
-    <div class="kpi-card" style="--ka:#00a887">
-      <div class="kpi-label">Situación normal (1)</div>
-      <div class="kpi-value" id="bcraKpiNormal">—</div>
-    </div>
-    <div class="kpi-card" style="--ka:#f59f00">
-      <div class="kpi-label">Con alertas (2-3)</div>
-      <div class="kpi-value" id="bcraKpiAlerta">—</div>
-    </div>
-    <div class="kpi-card" style="--ka:#d63347">
-      <div class="kpi-label">Críticos (4-5-6)</div>
-      <div class="kpi-value" id="bcraKpiCritico">—</div>
-    </div>
-    <div class="kpi-card" style="--ka:#9ba8c0">
-      <div class="kpi-label">Sin información</div>
-      <div class="kpi-value" id="bcraKpiSinInfo">—</div>
-    </div>
-  </div>
-
-  <!-- Tabla resultados -->
-  <div class="card" id="bcraResultCard" style="display:none;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-      <div class="card-title" style="margin:0;padding:0;border:none;">Resultados de consulta BCRA</div>
-      <input type="text" id="bcraSearch" placeholder="Buscar empresa o CUIT…"
-        style="padding:7px 12px;border:1px solid var(--border);border-radius:6px;
-               font-family:'IBM Plex Mono',monospace;font-size:11px;width:240px;
-               background:var(--surface2);color:var(--text);outline:none;"
-        oninput="renderBCRATable(this.value)">
-    </div>
-    <div style="overflow-x:auto;">
-      <table class="cmp-table" style="font-size:12px;">
-        <thead>
-          <tr>
-            <th>CUIT</th>
-            <th>Empresa</th>
-            <th style="text-align:center;">Situación BCRA</th>
-            <th style="text-align:center;">Período</th>
-            <th style="text-align:center;">Cheques rechazados</th>
-            <th style="text-align:right;">Entidades</th>
-          </tr>
-        </thead>
-        <tbody id="bcraTableBody"></tbody>
-      </table>
-    </div>
-    <div style="font-size:10px;color:var(--muted);margin-top:12px;line-height:1.6;">
-      <strong>Fuente:</strong> API BCRA — Central de Deudores del Sistema Financiero ·
-      Situación: 1=Normal, 2=Seguimiento especial, 3=Con problemas, 4=Alto riesgo, 5=Irrecuperable, 6=Irrecuperable (disp. técnica)
-    </div>
+  <div class="footer">
+    <strong>Fuente:</strong> API BCRA — Central de Deudores del Sistema Financiero · Responsable: Marcos Kon
   </div>
 
 </div>
@@ -1736,6 +1769,16 @@ const SIT_BG = {
 
 let _bcraResults = [];
 let _bcraRunning = false;
+let _bcraSortSitDesc = true;  // true = mayor primero
+
+function toggleBCRASort() {
+  _bcraSortSitDesc = !_bcraSortSitDesc;
+  const btn = document.getElementById('bcraSortBtn');
+  if (btn) btn.textContent = _bcraSortSitDesc
+    ? 'Situación ↓ Mayor primero'
+    : 'Situación ↑ Menor primero';
+  renderBCRATable();
+}
 
 // ── Drag & Drop / File input ──
 function handleBCRADrop(e) {
@@ -1795,6 +1838,9 @@ async function procesarCUITs(cuits) {
   status.style.display = 'block';
   kpis.style.display   = 'none';
   card.style.display   = 'none';
+  // Colapsar el upload card al iniciar
+  const det = document.getElementById('bcraUploadDetails');
+  if (det) det.open = false;
   document.getElementById('bcraBtnExport').style.display = 'none';
 
   for (let i = 0; i < cuits.length; i++) {
@@ -1878,12 +1924,21 @@ async function consultarCUIT(cuit) {
 }
 
 // ── Render tabla ──
-function renderBCRATable(filter = '') {
+function renderBCRATable(filter) {
   const tbody = document.getElementById('bcraTableBody');
   if (!tbody) return;
-  const q = (filter || document.getElementById('bcraSearch')?.value || '').trim().toUpperCase();
-  const rows = _bcraResults.filter(r =>
-    !q || r.cuit.includes(q) || r.denominacion.toUpperCase().includes(q)
+  const q      = (document.getElementById('bcraSearch')?.value || '').trim().toUpperCase();
+  const sitF   = document.getElementById('bcraSitFilter')?.value || '';
+
+  let rows = _bcraResults.filter(r => {
+    const matchQ   = !q   || r.cuit.includes(q) || r.denominacion.toUpperCase().includes(q);
+    const matchSit = !sitF || String(r.situacion) === sitF;
+    return matchQ && matchSit;
+  });
+
+  // Ordenar por situación
+  rows = [...rows].sort((a, b) =>
+    _bcraSortSitDesc ? b.situacion - a.situacion : a.situacion - b.situacion
   );
 
   tbody.innerHTML = rows.map(r => {
