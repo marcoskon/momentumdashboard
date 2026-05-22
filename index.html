@@ -694,35 +694,48 @@
   <div class="section-label">Situación BCRA por CUIT</div>
 
   <!-- Barra de acciones -->
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
-              gap:12px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);
-              border-radius:10px;padding:14px 20px;box-shadow:var(--shadow-sm);">
-    <div>
-      <div style="font-size:13px;font-weight:600;color:var(--text);">
-        Archivo: <span style="color:var(--accent);font-family:'IBM Plex Mono',monospace;">CUITS.xlsx</span>
-      </div>
-      <div id="bcraFileInfo" style="font-size:11px;color:var(--muted);margin-top:2px;">
-        Cargá el archivo CUITS.xlsx al repositorio para actualizar la lista
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <div id="bcraStatus" style="display:none;font-size:11px;color:var(--muted);">
-        <div id="bcraStatusText">Procesando…</div>
-        <div style="background:var(--dim);border-radius:3px;height:4px;overflow:hidden;margin-top:4px;width:160px;">
-          <div id="bcraProgressBar" style="height:100%;background:var(--accent);border-radius:3px;width:0%;transition:width .3s;"></div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;
+              padding:18px 22px;box-shadow:var(--shadow-sm);margin-bottom:20px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+      <div style="flex:1;min-width:240px;">
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;">
+          Fuente: <span style="color:var(--accent);font-family:'IBM Plex Mono',monospace;">CUITS.xlsx</span>
+          <span style="font-size:10px;color:var(--muted);font-weight:400;margin-left:8px;">en la raíz del repositorio</span>
         </div>
-        <div id="bcraProgressText" style="margin-top:3px;">0 / 0</div>
+        <!-- Estado / error -->
+        <div id="bcraFileInfo" style="font-size:12px;color:var(--muted);">
+          Hacé click en "Consultar desde repo" o cargá un archivo manualmente
+        </div>
+        <!-- Barra de progreso -->
+        <div id="bcraStatus" style="display:none;margin-top:10px;">
+          <div id="bcraStatusText" style="font-size:12px;color:var(--text);margin-bottom:5px;">Procesando…</div>
+          <div style="background:var(--dim);border-radius:4px;height:5px;overflow:hidden;max-width:320px;">
+            <div id="bcraProgressBar" style="height:100%;background:var(--accent);border-radius:4px;width:0%;transition:width .3s;"></div>
+          </div>
+          <div id="bcraProgressText" style="font-size:11px;color:var(--muted);margin-top:4px;">0 / 0</div>
+        </div>
       </div>
-      <button id="bcraBtnExport" onclick="exportBCRA()" style="display:none;
-        font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
-        background:var(--accent2);color:#fff;border:none;border-radius:6px;
-        padding:7px 14px;cursor:pointer;">⬇ Exportar</button>
-      <button onclick="iniciarConsultaBCRA()" id="bcraBtnConsultar"
-        style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
-               background:var(--accent);color:#fff;border:none;border-radius:6px;
-               padding:7px 16px;cursor:pointer;">
-        🔄 Actualizar consulta
-      </button>
+      <!-- Botones -->
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex-shrink:0;">
+        <button id="bcraBtnExport" onclick="exportBCRA()" style="display:none;
+          font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+          background:var(--accent2);color:#fff;border:none;border-radius:6px;
+          padding:7px 14px;cursor:pointer;">⬇ Exportar</button>
+        <!-- Carga manual fallback -->
+        <label style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+               background:var(--surface2);color:var(--text);border:1px solid var(--border);
+               border-radius:6px;padding:7px 14px;cursor:pointer;white-space:nowrap;">
+          📂 Cargar archivo
+          <input type="file" id="bcraFileInput" accept=".xlsx,.xls,.csv" style="display:none"
+                 onchange="handleBCRAFileInput(this.files[0])">
+        </label>
+        <button onclick="iniciarConsultaBCRA()" id="bcraBtnConsultar"
+          style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+                 background:var(--accent);color:#fff;border:none;border-radius:6px;
+                 padding:7px 16px;cursor:pointer;white-space:nowrap;">
+          🔄 Consultar desde repo
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1740,42 +1753,70 @@ let _bcraSortDesc = true;
 async function iniciarConsultaBCRA() {
   if (_bcraRunning) return;
 
-  const btn = document.getElementById('bcraBtnConsultar');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Procesando…'; }
+  const btn      = document.getElementById('bcraBtnConsultar');
+  const infoEl   = document.getElementById('bcraFileInfo');
+
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Buscando CUITS.xlsx…'; }
+  if (infoEl) { infoEl.style.color = 'var(--muted)'; infoEl.textContent = 'Buscando CUITS.xlsx en el repositorio…'; }
 
   try {
-    // Fetch del archivo desde el mismo dominio (GitHub Pages)
     const res = await fetch('CUITS.xlsx', { cache: 'no-store' });
-    if (!res.ok) throw new Error(`No se encontró CUITS.xlsx en el repositorio (HTTP ${res.status})`);
+
+    if (!res.ok) {
+      // Archivo no encontrado en repo → indicar cómo solucionarlo
+      if (infoEl) {
+        infoEl.style.color = '#e07b00';
+        infoEl.innerHTML = '⚠ No se encontró <strong>CUITS.xlsx</strong> en el repositorio. '
+          + 'Subilo a la raíz del repo o usá el botón <strong>📂 Cargar archivo</strong>.';
+      }
+      if (btn) { btn.disabled = false; btn.textContent = '🔄 Consultar desde repo'; }
+      return;
+    }
 
     const buffer = await res.arrayBuffer();
-    const XLSX = window.XLSX;
-    if (!XLSX) throw new Error('SheetJS no disponible');
+    const XLSX   = window.XLSX;
+    if (!XLSX) throw new Error('SheetJS no cargó — recargá la página');
 
-    const wb   = XLSX.read(buffer, { type: 'array' });
-    const ws   = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+    const cuits = extraerCUITs(buffer);
+    if (cuits.length === 0) throw new Error('No se encontraron CUITs de 11 dígitos en el archivo');
 
-    // Detectar CUITs (11 dígitos numéricos)
-    const cuits = new Set();
-    rows.forEach(row => {
-      row.forEach(cell => {
-        const str = String(cell || '').replace(/[^0-9]/g, '');
-        if (str.length === 11) cuits.add(str);
-      });
-    });
-
-    if (cuits.size === 0) throw new Error('No se encontraron CUITs de 11 dígitos en CUITS.xlsx');
-
-    setTxt('bcraFileInfo', `${cuits.size} CUITs cargados desde CUITS.xlsx`);
-    await procesarCUITs([...cuits]);
+    if (infoEl) { infoEl.style.color = 'var(--muted)'; infoEl.textContent = `${cuits.length} CUITs cargados desde CUITS.xlsx`; }
+    await procesarCUITs(cuits);
 
   } catch(e) {
-    setTxt('bcraFileInfo', '⚠ ' + e.message);
-    alert(e.message);
+    if (infoEl) { infoEl.style.color = 'var(--red, #d63347)'; infoEl.textContent = '⚠ ' + e.message; }
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = '🔄 Actualizar consulta'; }
+    if (btn) { btn.disabled = false; btn.textContent = '🔄 Consultar desde repo'; }
   }
+}
+
+// ── Carga manual desde input file ──
+async function handleBCRAFileInput(file) {
+  if (!file || _bcraRunning) return;
+  const infoEl = document.getElementById('bcraFileInfo');
+  try {
+    const buffer = await file.arrayBuffer();
+    const cuits  = extraerCUITs(buffer);
+    if (cuits.length === 0) throw new Error('No se encontraron CUITs de 11 dígitos en el archivo');
+    if (infoEl) { infoEl.style.color = 'var(--muted)'; infoEl.textContent = `${cuits.length} CUITs cargados desde ${file.name}`; }
+    await procesarCUITs(cuits);
+  } catch(e) {
+    if (infoEl) { infoEl.style.color = '#d63347'; infoEl.textContent = '⚠ ' + e.message; }
+  }
+}
+
+// ── Extraer CUITs de un ArrayBuffer ──
+function extraerCUITs(buffer) {
+  const XLSX = window.XLSX;
+  const wb   = XLSX.read(buffer, { type: 'array' });
+  const ws   = wb.Sheets[wb.SheetNames[0]];
+  const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  const set  = new Set();
+  rows.forEach(row => row.forEach(cell => {
+    const s = String(cell || '').replace(/[^0-9]/g, '');
+    if (s.length === 11) set.add(s);
+  }));
+  return [...set];
 }
 
 // ── Procesar lista de CUITs ──
