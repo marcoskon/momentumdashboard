@@ -263,6 +263,9 @@
     <button class="tab-btn" data-tab="libradores">
       <span>🏢</span> Libradores <span class="tab-badge">Diversificación</span>
     </button>
+    <button class="tab-btn" data-tab="bcra">
+      <span>🏛️</span> Consulta BCRA <span class="tab-badge">CUITs</span>
+    </button>
   </div>
 </nav>
 
@@ -681,6 +684,128 @@
   </div>
 </div>
 </div><!-- /tab-libradores -->
+
+<!-- ══════════════════════════════
+     TAB 6 — CONSULTA BCRA
+══════════════════════════════ -->
+<div id="tab-bcra" class="tab-panel">
+<div class="page">
+
+  <div class="section-label">Situación BCRA por CUIT</div>
+
+  <!-- Upload card -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">Cargar listado de CUITs</div>
+    <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+
+      <!-- Drop zone -->
+      <div id="bcraDropZone"
+        style="flex:1;min-width:260px;border:2px dashed var(--border2);border-radius:10px;
+               padding:32px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;"
+        ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='#eef2ff';"
+        ondragleave="this.style.borderColor='var(--border2)';this.style.background='';"
+        ondrop="handleBCRADrop(event);"
+        onclick="document.getElementById('bcraFileInput').click()">
+        <div style="font-size:28px;margin-bottom:8px;">📄</div>
+        <div style="font-size:13px;color:var(--text);font-weight:500;margin-bottom:4px;">
+          Arrastrá el Excel o hacé click para seleccionarlo
+        </div>
+        <div style="font-size:11px;color:var(--muted);">
+          El archivo debe tener una columna con los CUITs (11 dígitos)
+        </div>
+        <input type="file" id="bcraFileInput" accept=".xlsx,.xls,.csv" style="display:none"
+               onchange="handleBCRAFile(this.files[0])">
+      </div>
+
+      <!-- Instrucciones + estado -->
+      <div style="min-width:240px;max-width:340px;">
+        <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px;">
+          <strong style="color:var(--text);">Formato esperado:</strong><br>
+          · Una columna con los CUITs (sin guiones)<br>
+          · El sistema detecta automáticamente la columna<br>
+          · Puede incluir otras columnas (nombre, etc.)
+        </div>
+        <!-- Estado de procesamiento -->
+        <div id="bcraStatus" style="display:none;background:var(--surface2);border:1px solid var(--border);
+             border-radius:8px;padding:14px;font-size:12px;">
+          <div id="bcraStatusText" style="color:var(--text);margin-bottom:8px;">Procesando…</div>
+          <div style="background:var(--dim);border-radius:4px;height:6px;overflow:hidden;">
+            <div id="bcraProgressBar" style="height:100%;background:var(--accent);border-radius:4px;width:0%;transition:width .3s;"></div>
+          </div>
+          <div id="bcraProgressText" style="color:var(--muted);margin-top:5px;font-size:11px;">0 / 0</div>
+        </div>
+        <!-- Botones acción -->
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <button id="bcraBtnExport" onclick="exportBCRA()" style="display:none;
+            font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+            background:var(--accent2);color:#fff;border:none;border-radius:6px;
+            padding:7px 14px;cursor:pointer;">⬇ Exportar Excel</button>
+          <button onclick="clearBCRA()" style="
+            font-family:'IBM Plex Mono',monospace;font-size:11px;
+            background:var(--dim);color:var(--muted);border:none;border-radius:6px;
+            padding:7px 14px;cursor:pointer;">✕ Limpiar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resumen KPIs -->
+  <div class="kpi-row" id="bcraKpis" style="display:none;margin-bottom:20px;">
+    <div class="kpi-card" style="--ka:#1a56e8">
+      <div class="kpi-label">Total consultados</div>
+      <div class="kpi-value" id="bcraKpiTotal">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#00a887">
+      <div class="kpi-label">Situación normal (1)</div>
+      <div class="kpi-value" id="bcraKpiNormal">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#f59f00">
+      <div class="kpi-label">Con alertas (2-3)</div>
+      <div class="kpi-value" id="bcraKpiAlerta">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#d63347">
+      <div class="kpi-label">Críticos (4-5-6)</div>
+      <div class="kpi-value" id="bcraKpiCritico">—</div>
+    </div>
+    <div class="kpi-card" style="--ka:#9ba8c0">
+      <div class="kpi-label">Sin información</div>
+      <div class="kpi-value" id="bcraKpiSinInfo">—</div>
+    </div>
+  </div>
+
+  <!-- Tabla resultados -->
+  <div class="card" id="bcraResultCard" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div class="card-title" style="margin:0;padding:0;border:none;">Resultados de consulta BCRA</div>
+      <input type="text" id="bcraSearch" placeholder="Buscar empresa o CUIT…"
+        style="padding:7px 12px;border:1px solid var(--border);border-radius:6px;
+               font-family:'IBM Plex Mono',monospace;font-size:11px;width:240px;
+               background:var(--surface2);color:var(--text);outline:none;"
+        oninput="renderBCRATable(this.value)">
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="cmp-table" style="font-size:12px;">
+        <thead>
+          <tr>
+            <th>CUIT</th>
+            <th>Empresa</th>
+            <th style="text-align:center;">Situación BCRA</th>
+            <th style="text-align:center;">Período</th>
+            <th style="text-align:center;">Cheques rechazados</th>
+            <th style="text-align:right;">Entidades</th>
+          </tr>
+        </thead>
+        <tbody id="bcraTableBody"></tbody>
+      </table>
+    </div>
+    <div style="font-size:10px;color:var(--muted);margin-top:12px;line-height:1.6;">
+      <strong>Fuente:</strong> API BCRA — Central de Deudores del Sistema Financiero ·
+      Situación: 1=Normal, 2=Seguimiento especial, 3=Con problemas, 4=Alto riesgo, 5=Irrecuperable, 6=Irrecuperable (disp. técnica)
+    </div>
+  </div>
+
+</div>
+</div><!-- /tab-bcra -->
 
 <!-- ══════════════════════════════════════════════
      SCRIPTS
@@ -1585,3 +1710,258 @@ function renderLibTable(filter = '') {
 </script>
 </body>
 </html>
+<script>
+// ══════════════════════════════════════════════════════
+// CONSULTA BCRA — Central de Deudores
+// ══════════════════════════════════════════════════════
+
+const SIT_LABEL = {
+  0: 'Sin info',
+  1: 'Normal',
+  2: 'Seg. especial',
+  3: 'Con problemas',
+  4: 'Alto riesgo',
+  5: 'Irrecuperable',
+  6: 'Irrecup. (téc.)',
+};
+const SIT_COLOR = {
+  0: '#9ba8c0', 1: '#00a887', 2: '#f59f00',
+  3: '#e07b00', 4: '#d63347', 5: '#991b2b', 6: '#991b2b',
+};
+const SIT_BG = {
+  0: '#f0f2f7', 1: '#e8f8f4', 2: '#fff9e6',
+  3: '#fff3e0', 4: '#fceef0', 5: '#fce8eb', 6: '#fce8eb',
+};
+
+let _bcraResults = [];
+let _bcraRunning = false;
+
+// ── Drag & Drop / File input ──
+function handleBCRADrop(e) {
+  e.preventDefault();
+  document.getElementById('bcraDropZone').style.borderColor = 'var(--border2)';
+  document.getElementById('bcraDropZone').style.background = '';
+  const file = e.dataTransfer.files[0];
+  if (file) handleBCRAFile(file);
+}
+
+async function handleBCRAFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const XLSX = window.XLSX;
+      if (!XLSX) { alert('SheetJS no disponible. Recargá la página.'); return; }
+      const wb = XLSX.read(e.target.result, { type: 'array' });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+      // Detectar columna de CUITs (valores de 11 dígitos numéricos)
+      const cuits = new Set();
+      rows.forEach(row => {
+        row.forEach(cell => {
+          const str = String(cell || '').replace(/[^0-9]/g, '');
+          if (str.length === 11) cuits.add(str);
+        });
+      });
+
+      if (cuits.size === 0) {
+        alert('No se encontraron CUITs de 11 dígitos en el archivo.');
+        return;
+      }
+
+      await procesarCUITs([...cuits]);
+    } catch(err) {
+      alert('Error leyendo el archivo: ' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ── Procesamiento de CUITs ──
+async function procesarCUITs(cuits) {
+  if (_bcraRunning) return;
+  _bcraRunning = true;
+  _bcraResults = [];
+
+  const status    = document.getElementById('bcraStatus');
+  const statusTxt = document.getElementById('bcraStatusText');
+  const progBar   = document.getElementById('bcraProgressBar');
+  const progTxt   = document.getElementById('bcraProgressText');
+  const kpis      = document.getElementById('bcraKpis');
+  const card      = document.getElementById('bcraResultCard');
+
+  status.style.display = 'block';
+  kpis.style.display   = 'none';
+  card.style.display   = 'none';
+  document.getElementById('bcraBtnExport').style.display = 'none';
+
+  for (let i = 0; i < cuits.length; i++) {
+    const cuit = cuits[i];
+    statusTxt.textContent = `Consultando ${cuit} (${i+1} de ${cuits.length})…`;
+    progBar.style.width = ((i+1) / cuits.length * 100) + '%';
+    progTxt.textContent = `${i+1} / ${cuits.length}`;
+
+    const result = await consultarCUIT(cuit);
+    _bcraResults.push(result);
+
+    // Mostrar resultados parciales cada 5
+    if ((i + 1) % 5 === 0 || i === cuits.length - 1) {
+      renderBCRATable();
+      actualizarBCRAKpis();
+    }
+
+    await sleep(300); // respetar rate limit BCRA
+  }
+
+  statusTxt.textContent = `✅ Consulta finalizada — ${cuits.length} CUITs procesados`;
+  kpis.style.display = 'grid';
+  card.style.display = 'block';
+  document.getElementById('bcraBtnExport').style.display = '';
+  actualizarBCRAKpis();
+  renderBCRATable();
+  _bcraRunning = false;
+}
+
+async function consultarCUIT(cuit) {
+  const base = 'https://api.bcra.gob.ar/centraldedeudores/v1.0';
+  let situacion = 0, denominacion = '—', periodo = '—', entidades = 0;
+  let chequesRechazados = null;
+  let error = null;
+
+  // ── 1. Situación crediticia ──
+  try {
+    const res = await fetch(`${base}/Deudas/${cuit}`, {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.status === 404) {
+      denominacion = 'Sin deudas registradas';
+    } else if (res.ok) {
+      const data = await res.json();
+      const r = data.results;
+      denominacion = r?.denominacion || '—';
+      if (r?.periodos?.length) {
+        const ult = r.periodos[0];
+        periodo = ult.periodo || '—';
+        const sits = (ult.entidades || []).map(e => e.situacion || 0);
+        situacion = sits.length ? Math.max(...sits) : 0;
+        entidades = sits.length;
+      }
+    } else {
+      error = `HTTP ${res.status}`;
+    }
+  } catch(e) {
+    error = 'CORS / red';
+  }
+
+  // ── 2. Cheques rechazados (inhabilitados) ──
+  try {
+    const res2 = await fetch(`${base}/Deudas/${cuit}/Historico`, {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res2.ok) {
+      const data2 = await res2.json();
+      // Busca si hay situaciones problemáticas en el histórico o
+      // si el resultado contiene información de inhabilitaciones
+      const periodos = data2?.results?.periodos || [];
+      const tieneCheques = periodos.some(p =>
+        (p.entidades || []).some(e => e.situacion >= 3)
+      );
+      chequesRechazados = tieneCheques;
+    }
+  } catch(e) {
+    chequesRechazados = null; // no disponible
+  }
+
+  return { cuit, situacion, denominacion, periodo, entidades, chequesRechazados, error };
+}
+
+// ── Render tabla ──
+function renderBCRATable(filter = '') {
+  const tbody = document.getElementById('bcraTableBody');
+  if (!tbody) return;
+  const q = (filter || document.getElementById('bcraSearch')?.value || '').trim().toUpperCase();
+  const rows = _bcraResults.filter(r =>
+    !q || r.cuit.includes(q) || r.denominacion.toUpperCase().includes(q)
+  );
+
+  tbody.innerHTML = rows.map(r => {
+    const sit = r.situacion;
+    const col = SIT_COLOR[sit] || '#9ba8c0';
+    const bg  = SIT_BG[sit]   || '#f0f2f7';
+    const lbl = SIT_LABEL[sit] || '—';
+
+    const badge = `<span style="display:inline-block;background:${bg};color:${col};
+      font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;
+      border:1px solid ${col}30;">${sit > 0 ? sit + ' · ' : ''}${lbl}</span>`;
+
+    let cheqBadge;
+    if (r.chequesRechazados === true) {
+      cheqBadge = `<span style="color:#d63347;font-weight:600;">⚠ Registra</span>`;
+    } else if (r.chequesRechazados === false) {
+      cheqBadge = `<span style="color:#00a887;font-weight:600;">✓ Sin registros</span>`;
+    } else {
+      cheqBadge = `<span style="color:#9ba8c0;">— N/D</span>`;
+    }
+
+    const errBadge = r.error
+      ? `<span style="font-size:10px;color:#d63347;">${r.error}</span>` : '';
+
+    return `<tr>
+      <td style="font-family:'IBM Plex Mono',monospace;letter-spacing:.5px;color:var(--muted);">${r.cuit}</td>
+      <td style="font-weight:500;">${r.denominacion}${errBadge}</td>
+      <td style="text-align:center;">${badge}</td>
+      <td style="text-align:center;color:var(--muted);font-size:11px;">${r.periodo}</td>
+      <td style="text-align:center;">${cheqBadge}</td>
+      <td style="text-align:right;color:var(--muted);">${r.entidades || '—'}</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="6" style="color:var(--muted);padding:16px;text-align:center;">Sin resultados</td></tr>`;
+}
+
+// ── KPIs ──
+function actualizarBCRAKpis() {
+  const total   = _bcraResults.length;
+  const normal  = _bcraResults.filter(r => r.situacion === 1).length;
+  const alerta  = _bcraResults.filter(r => r.situacion === 2 || r.situacion === 3).length;
+  const critico = _bcraResults.filter(r => r.situacion >= 4).length;
+  const sinInfo = _bcraResults.filter(r => r.situacion === 0).length;
+  setTxt('bcraKpiTotal',   total);
+  setTxt('bcraKpiNormal',  normal);
+  setTxt('bcraKpiAlerta',  alerta);
+  setTxt('bcraKpiCritico', critico);
+  setTxt('bcraKpiSinInfo', sinInfo);
+}
+
+// ── Exportar Excel ──
+function exportBCRA() {
+  const XLSX = window.XLSX;
+  if (!XLSX || !_bcraResults.length) return;
+  const rows = _bcraResults.map(r => ({
+    'CUIT':                r.cuit,
+    'Empresa':             r.denominacion,
+    'Situación BCRA':      r.situacion,
+    'Descripción':         SIT_LABEL[r.situacion] || '—',
+    'Período':             r.periodo,
+    'Cheques rechazados':  r.chequesRechazados === true ? 'Registra' :
+                           r.chequesRechazados === false ? 'Sin registros' : 'N/D',
+    'Entidades':           r.entidades,
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Consulta BCRA');
+  XLSX.writeFile(wb, 'consulta_bcra.xlsx');
+}
+
+// ── Limpiar ──
+function clearBCRA() {
+  _bcraResults = [];
+  document.getElementById('bcraStatus').style.display = 'none';
+  document.getElementById('bcraKpis').style.display = 'none';
+  document.getElementById('bcraResultCard').style.display = 'none';
+  document.getElementById('bcraBtnExport').style.display = 'none';
+  document.getElementById('bcraTableBody').innerHTML = '';
+  document.getElementById('bcraFileInput').value = '';
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+</script>
