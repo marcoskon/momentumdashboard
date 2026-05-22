@@ -698,7 +698,7 @@
        border-radius:8px;padding:11px 18px;font-size:12px;color:var(--muted);
        margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
     <span id="bcraAlertText">Cargando datos…</span>
-    <div id="bcraStatus" style="display:none;display:flex;align-items:center;gap:10px;">
+    <div id="bcraStatus" style="display:none;align-items:center;gap:10px;">
       <div style="background:var(--dim);border-radius:3px;height:4px;overflow:hidden;width:140px;">
         <div id="bcraProgressBar" style="height:100%;background:var(--accent);border-radius:3px;width:0%;transition:width .3s;"></div>
       </div>
@@ -1762,43 +1762,45 @@ async function iniciarConsultaBCRA() {
 
 // ── Procesar lista de CUITs ──
 async function procesarCUITs(cuits) {
-  _bcraRunning  = true;
-  _bcraResults  = [];
+  _bcraRunning = true;
+  _bcraResults = [];
 
-  const status  = document.getElementById('bcraStatus');
-  const stTxt   = document.getElementById('bcraStatusText');
   const progBar = document.getElementById('bcraProgressBar');
   const progTxt = document.getElementById('bcraProgressText');
+  const status  = document.getElementById('bcraStatus');
 
   if (status) status.style.display = 'flex';
-  document.getElementById('bcraKpis').style.display      = 'none';
+  document.getElementById('bcraKpis').style.display       = 'none';
   document.getElementById('bcraResultCard').style.display = 'none';
   document.getElementById('bcraBtnExport').style.display  = 'none';
 
-  for (let i = 0; i < cuits.length; i++) {
-    const cuit = cuits[i];
-    stTxt.textContent    = `Consultando ${cuit} (${i+1} de ${cuits.length})…`;
-    progBar.style.width  = ((i+1) / cuits.length * 100) + '%';
-    progTxt.textContent  = `${i+1} / ${cuits.length}`;
+  try {
+    for (let i = 0; i < cuits.length; i++) {
+      const cuit = cuits[i];
+      setAlert(`Consultando CUIT ${i+1} de ${cuits.length}: ${cuit}…`, 'info');
+      if (progBar) progBar.style.width = ((i+1) / cuits.length * 100) + '%';
+      if (progTxt) progTxt.textContent = `${i+1} / ${cuits.length}`;
 
-    _bcraResults.push(await consultarCUIT(cuit));
+      _bcraResults.push(await consultarCUIT(cuit));
 
-    if ((i+1) % 5 === 0 || i === cuits.length - 1) {
-      renderBCRATable();
-      actualizarBCRAKpis();
+      if ((i+1) % 5 === 0 || i === cuits.length - 1) {
+        renderBCRATable();
+        actualizarBCRAKpis();
+      }
+      await new Promise(r => setTimeout(r, 300));
     }
-    await new Promise(r => setTimeout(r, 300));
-  }
 
-  stTxt.textContent = `✅ ${cuits.length} CUITs procesados`;
-  document.getElementById('bcraKpis').style.display       = 'grid';
-  document.getElementById('bcraResultCard').style.display  = 'block';
-  document.getElementById('bcraBtnExport').style.display   = '';
-  if (status) status.style.display = 'none';
-  actualizarBCRAKpis();
-  renderBCRATable();
-  _bcraRunning = false;
-  setAlert(`✅ Consulta completada — ${_bcraResults.length} CUITs procesados.`, 'ok');
+    document.getElementById('bcraKpis').style.display      = 'grid';
+    document.getElementById('bcraResultCard').style.display = 'block';
+    document.getElementById('bcraBtnExport').style.display  = '';
+    actualizarBCRAKpis();
+    renderBCRATable();
+    setAlert(`✅ Consulta completada — ${_bcraResults.length} CUITs procesados.`, 'ok');
+
+  } finally {
+    _bcraRunning = false;
+    if (status) status.style.display = 'none';
+  }
 }
 
 // ── Consulta individual por CUIT ──
