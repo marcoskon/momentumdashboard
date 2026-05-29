@@ -1412,11 +1412,32 @@
         "det": "Código 4001002001000000000"
       },
       {
+        "n": "Gastos Sociedad Depositaria",
+        "t": "Costo",
+        "bps": -0.0,
+        "dp": -0.0,
+        "det": "Código 4001002002000000002"
+      },
+      {
         "n": "Resultado Cheques de Pago Diferido",
         "t": "Devengo",
         "bps": 7.0391,
         "dp": 29.5754,
         "det": "Código 4002001000000000017"
+      },
+      {
+        "n": "Rentas en $",
+        "t": "Devengo",
+        "bps": 0.7995,
+        "dp": 3.3593,
+        "det": "Código 4002001000000000018"
+      },
+      {
+        "n": "Resultado por venta Cheques",
+        "t": "Devengo",
+        "bps": 0.0344,
+        "dp": 0.1447,
+        "det": "Código 4002001000000000021"
       },
       {
         "n": "Intereses Pase",
@@ -1442,23 +1463,16 @@
       {
         "n": "Gastos Soc. Depositaria",
         "t": "Costo",
-        "bps": -0.0685,
+        "bps": -0.0686,
         "dp": -0.2881,
-        "det": "Neto: Gastos Depositaria Clase A + B + C"
+        "det": "Neto de 4 cuenta(s)"
       },
       {
         "n": "Money Market (FCI)",
         "t": "Devengo",
-        "bps": 0.2263,
+        "bps": 0.2262,
         "dp": 0.9505,
-        "det": "Neto: Ventas FCI − Costo FCI"
-      },
-      {
-        "n": "Residual / ajustes contables",
-        "t": "Otros",
-        "bps": 0.834,
-        "dp": null,
-        "det": "Diferencia entre RESULTADOS total y cuentas desagregadas"
+        "det": "Neto de 2 cuenta(s)"
       }
     ]
   }
