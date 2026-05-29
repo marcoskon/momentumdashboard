@@ -18,28 +18,57 @@ DATA_DIR.mkdir(exist_ok=True)
 
 DIAS_ES = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 
-# Cuentas contables para atribución del VCP
-# (código, tipo) — el nombre se lee automáticamente del archivo Balance
+# ══════════════════════════════════════════════════════════════════
+# CUENTAS CONTABLES PARA ATRIBUCIÓN DEL VCP
+# Fuente: Cuentas_contables_desglose_cuotapartes.xlsx (Estatus = Si)
+# Los nombres se leen automáticamente del archivo Balance
+# ══════════════════════════════════════════════════════════════════
+
+CODIGO_TOTAL = '4000000000'
+
+# Ítems individuales
 CUENTAS_ATRIB = [
     ('4000000000000000001', 'Precio' ),  # Resultado Títulos Públicos en $
     ('4000000000000000009', 'Precio' ),  # Diferencia de Cotización US3
     ('4000000000000000010', 'Devengo'),  # Resultado Cheque Pago diferido US3
     ('4000000000000000013', 'MTM'    ),  # Resultado de Operación Futuro
-    ('4001001000000000004', 'Costo'  ),  # Costo Fondos Comunes de Inversión
-    ('4001001000000000013', 'Costo'  ),  # Gastos por negociación de CPD
-    ('4001001000000000015', 'Costo'  ),  # Gastos Sociedad Depositaria Clase A
-    ('4001001000000000016', 'Costo'  ),  # Gastos Sociedad Depositaria Clase B
-    ('4001001000000000017', 'Costo'  ),  # Gastos Sociedad Depositaria Clase C
-    ('4001001000000000021', 'Costo'  ),  # Gastos por Negociación CPD DM
+    ('4001001000000000013', 'Costo'  ),  # Gastos por negociación CPD
+    ('4001001000000000021', 'Costo'  ),  # Gastos por Negociación CPD DMAE
     ('4001002000000000021', 'Costo'  ),  # Resultado por CPD incobrables
     ('4001002001000000000', 'Costo'  ),  # Honorarios de Administración
-    ('4002001000000000006', 'Devengo'),  # Ventas Fondos Comunes de Inversión
+    ('4001002002000000002', 'Costo'  ),  # Gastos de Gestión Soc. Depositaria
     ('4002001000000000017', 'Devengo'),  # Resultado Cheques de Pago Diferido
+    ('4002001000000000018', 'Devengo'),  # Rentas en $
+    ('4002001000000000021', 'Devengo'),  # Resultado por venta Cheques
     ('4002001000000000022', 'Devengo'),  # Intereses Pase
     ('4002001002000000002', 'Devengo'),  # Intereses Caución
-    ('4002001004000000013', 'Precio' ),  # Resultado por Tenencia Títulos Provinciales
+    ('4002001004000000013', 'Precio' ),  # Resultado Tenencia Títulos Provinciales
 ]
-CODIGO_TOTAL = '4000000000'
+
+# Grupos neteados (varios códigos → un ítem en el waterfall)
+GRUPOS_ATRIB = [
+    {
+        'nombre':  'Gastos Soc. Depositaria',
+        'tipo':    'Costo',
+        'codigos': ['4001001000000000015', '4001001000000000016',
+                    '4001001000000000017', '4001001000000000018'],
+    },
+    {
+        'nombre':  'Títulos Públicos (compra/venta)',
+        'tipo':    'Precio',
+        'codigos': ['4002001000000000001', '4001001000000000001'],
+    },
+    {
+        'nombre':  'Fideicomisos Financieros (compra/venta)',
+        'tipo':    'Precio',
+        'codigos': ['4002001000000000005', '4001001000000000003'],
+    },
+    {
+        'nombre':  'Money Market (FCI)',
+        'tipo':    'Devengo',
+        'codigos': ['4002001000000000006', '4001001000000000004'],
+    },
+]
 
 # ─── UTILIDADES ──────────────────────────────────────────────────────────────
 
@@ -180,7 +209,7 @@ def compute_atribucion(bal_t0: Path, bal_t1: Path, pn_prev: float) -> dict:
     if delta_total is None:
         return {'delta_total': 0, 'items': []}
 
-    # Detalle por cuenta
+    # Detalle por cuenta individual
     items = []
     suma_items = 0.0
     for code, tipo in CUENTAS_ATRIB:
@@ -190,7 +219,6 @@ def compute_atribucion(bal_t0: Path, bal_t1: Path, pn_prev: float) -> dict:
         v0 = get_val(b0, code) or 0
         v1 = get_val(b1, code) or 0
         delta_abs = -(v0 - v1)
-        # Nombre desde el balance (el que tenga el code en cualquiera de los dos archivos)
         nombre = (b0.get(code) or b1.get(code) or {}).get('nombre', f'Cuenta {code}')
         items.append({
             'n':   nombre,
@@ -198,46 +226,34 @@ def compute_atribucion(bal_t0: Path, bal_t1: Path, pn_prev: float) -> dict:
             'bps': round(b, 4),
             'dp':  round(delta_abs / 1e6, 4),
             'det': f'Código {code}',
-            '_code': code,
         })
         suma_items += b
 
-    # Netear Gastos Depositaria A + B + C → uno solo
-    DEP_CODES = {'4001001000000000015', '4001001000000000016', '4001001000000000017'}
-    dep_items = [i for i in items if i.get('_code') in DEP_CODES]
-    if len(dep_items) >= 1:
-        net_bps_dep = sum(i['bps'] for i in dep_items)
-        net_dp_dep  = sum(i['dp']  for i in dep_items)
-        items = [i for i in items if i.get('_code') not in DEP_CODES]
+    # Grupos neteados (GRUPOS_ATRIB)
+    for grupo in GRUPOS_ATRIB:
+        bps_vals, dp_vals = [], []
+        for code in grupo['codigos']:
+            b = bps(code)
+            if b is None:
+                continue
+            v0 = get_val(b0, code) or 0
+            v1 = get_val(b1, code) or 0
+            bps_vals.append(b)
+            dp_vals.append(-(v0 - v1) / 1e6)
+        if not bps_vals:
+            continue
+        net_bps = sum(bps_vals)
+        net_dp  = sum(dp_vals)
+        if abs(net_bps) < 0.0001:
+            continue
         items.append({
-            'n':   'Gastos Soc. Depositaria',
-            't':   'Costo',
-            'bps': round(net_bps_dep, 4),
-            'dp':  round(net_dp_dep,  4),
-            'det': 'Neto: Gastos Depositaria Clase A + B + C',
-            '_code': '__dep__',
+            'n':   grupo['nombre'],
+            't':   grupo['tipo'],
+            'bps': round(net_bps, 4),
+            'dp':  round(net_dp,  4),
+            'det': f"Neto de {len(bps_vals)} cuenta(s)",
         })
-        suma_items = suma_items - sum(i['bps'] for i in dep_items) + net_bps_dep
-
-    # Netear Costo FCI + Ventas FCI → Money Market (FCI)
-    FCI_CODES = {'4001001000000000004', '4002001000000000006'}
-    fci_items = [i for i in items if i.get('_code') in FCI_CODES]
-    if len(fci_items) >= 1:
-        net_bps = sum(i['bps'] for i in fci_items)
-        net_dp  = sum(i['dp']  for i in fci_items)
-        items = [i for i in items if i.get('_code') not in FCI_CODES]
-        if abs(net_bps) > 0.0001:
-            items.append({
-                'n':   'Money Market (FCI)',
-                't':   'Devengo',
-                'bps': round(net_bps, 4),
-                'dp':  round(net_dp,  4),
-                'det': 'Neto: Ventas FCI − Costo FCI',
-            })
-            suma_items = suma_items - sum(i['bps'] for i in fci_items) + net_bps
-    # Limpiar campo interno
-    for i in items:
-        i.pop('_code', None)
+        suma_items += net_bps
 
     # Residual (diferencia entre total y suma de items)
     residual = round(delta_total - suma_items, 4)
