@@ -564,9 +564,27 @@ def find_prev_json(fecha_actual):
 
 # ─── MAIN ────────────────────────────────────────────────────────────────────
 
+def leer_cuits():
+    """Lee CUITS.xlsx de la raíz del repo y devuelve lista de CUITs."""    for fname in ['CUITS.xlsx','CUITS.xls','cuits.xlsx','cuits.xls']:
+        path = ROOT / fname
+        if path.exists():
+            try:
+                df = pd.read_excel(path, header=None, dtype=str)
+                cuits = set()
+                for val in df.values.flatten():
+                    s = str(val).replace('-','').replace(' ','').strip()
+                    if s.isdigit() and len(s) == 11:
+                        cuits.add(s)
+                print(f"  CUITs: {len(cuits)} leídos desde {fname}")
+                return sorted(cuits)
+            except Exception as e:
+                print(f"  ⚠ Error leyendo {fname}: {e}")
+    return []
+
 def main():
     gestiones = {}
     balances  = {}
+    cuits_lista = leer_cuits()
 
     for f in sorted(RAW_DIR.glob('*')):
         if not f.is_file():
@@ -620,6 +638,7 @@ def main():
                     print(f"  ⚠️  Sin balance T0 para {fecha_iso} (disponibles: {bal_dates})")
 
             out = DATA_DIR / f'{ds}.json'
+            result['cuits'] = cuits_lista
             out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
             p = result['patrimonial']
             print(f"  Activo: {p['activo_total']:,.0f} | PN: {p['patrimonio_neto']:,.0f}")
