@@ -710,8 +710,7 @@
       padding:6px 12px;cursor:pointer;">⬇ Exportar</button>
   </div>
 
-  <!-- Resumen KPIs --
-  <!-- Resumen KPIs -->>
+  <!-- Resumen KPIs -->
   <div class="kpi-row" id="bcraKpis" style="display:none;margin-bottom:20px;">
     <div class="kpi-card" style="--ka:#1a56e8">
       <div class="kpi-label">Total consultados</div>
@@ -1422,7 +1421,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     }, 50);
     if (btn.dataset.tab === 'bcra' && !_bcraLoaded && !_bcraRunning) {
       _bcraLoaded = true;
-      iniciarConsultaBCRA();
+      setTimeout(iniciarConsultaBCRA, 100); // pequeño delay para que el DOM esté listo
     }
   });
 });
@@ -1743,21 +1742,23 @@ function extraerCUITs(buffer) {
 
 async function iniciarConsultaBCRA() {
   if (_bcraRunning) return;
-  setAlert('Cargando <strong>CUITS.xlsx</strong> desde el repositorio…', 'info');
-  try {
-    const res = await fetch('CUITS.xlsx?t=' + Date.now());
-    if (!res.ok) {
-      setAlert('⚠ No se encontró <strong>CUITS.xlsx</strong> en la raíz del repositorio. '
-             + 'Asegurate de haberlo subido a GitHub.', 'warn');
-      return;
-    }
-    const cuits = extraerCUITs(await res.arrayBuffer());
-    if (!cuits.length) throw new Error('No se encontraron CUITs de 11 dígitos en CUITS.xlsx');
-    setAlert(`✅ ${cuits.length} CUITs encontrados. Consultando BCRA…`, 'ok');
-    await procesarCUITs(cuits);
-  } catch(e) {
-    setAlert('⚠ ' + e.message, 'err');
+
+  // Leer CUITs desde el JSON diario (ya cargado en window._lastData)
+  const cuits = window._lastData?.cuits || [];
+
+  if (!cuits.length) {
+    setAlert(
+      '⚠ No se encontraron CUITs en los datos. ' +
+      'Asegurate de que <strong>CUITS.xlsx</strong> esté en la raíz del repositorio y ' +
+      'el workflow haya corrido al menos una vez.',
+      'warn'
+    );
+    _bcraLoaded = false;
+    return;
   }
+
+  setAlert(`✅ <strong>${cuits.length} CUITs</strong> cargados. Consultando API BCRA…`, 'ok');
+  await procesarCUITs(cuits);
 }
 
 // ── Procesar lista de CUITs ──
