@@ -565,7 +565,8 @@ def find_prev_json(fecha_actual):
 # ─── MAIN ────────────────────────────────────────────────────────────────────
 
 def leer_cuits():
-    """Lee CUITS.xlsx de la raíz del repo y devuelve lista de CUITs."""    for fname in ['CUITS.xlsx','CUITS.xls','cuits.xlsx','cuits.xls']:
+    """Lee CUITS.xlsx de la raíz del repo y devuelve lista de CUITs."""
+    for fname in ['CUITS.xlsx','CUITS.xls','cuits.xlsx','cuits.xls']:
         path = ROOT / fname
         if path.exists():
             try:
