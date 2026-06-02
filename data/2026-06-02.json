@@ -1,218 +1,204 @@
 {
   "meta": {
-    "fecha_actual": "27/05/2026",
+    "fecha_actual": "02/06/2026",
     "fecha_anterior": "01/06/2026",
-    "duration_dias": 8.0,
+    "duration_dias": 2.0,
     "participes": 3
   },
   "patrimonial": {
-    "activo_total": 40464163331.33,
+    "activo_total": 42664503500.22,
     "activo_total_prev": 42545602037.36,
-    "pasivo_total": -295142456.97,
+    "pasivo_total": -411260701.87,
     "pasivo_total_prev": -284363458.92,
-    "patrimonio_neto": 40169020874.36,
+    "patrimonio_neto": 42253242798.35,
     "patrimonio_neto_prev": 42261238578.44,
-    "creditos_totales": 2322039153.25,
+    "creditos_totales": 2274320183.23,
     "creditos_totales_prev": 2281792219.87,
-    "liquidez_corriente": 137.1,
-    "liquidez_efectiva": 2107421842.05
+    "liquidez_corriente": 103.7,
+    "liquidez_efectiva": 1870298801.04
   },
   "balance_detalle": {
-    "provisiones": -78912723.04,
-    "prov_depositaria": -4578959.8,
-    "prov_gerente": -67576148.4,
-    "prov_gastos": -6757614.84,
-    "rescates": -5002012.66,
-    "prevision_incobrables": -180014873.18,
-    "deudas_pesos": -211412695.65
+    "provisiones": -3386736.91,
+    "prov_depositaria": -196517.52,
+    "prov_gerente": -2900199.45,
+    "prov_gastos": -290019.94,
+    "rescates": -111857434.46,
+    "prevision_incobrables": -192270632.37,
+    "deudas_pesos": -318363184.86
   },
   "cartera": {
-    "cpd_pesos": 34382237472,
+    "cpd_pesos": 34458242284,
     "cpd_pesos_prev": 33649018829,
-    "cpd_usd": 1338910175.38,
+    "cpd_usd": 1409120474.3,
     "cpd_usd_prev": 1342118986.78,
-    "pases_cauciones": 593495325.44,
+    "pases_cauciones": 1897108104.15,
     "pases_cauciones_prev": 1797802069.18,
-    "money_market": 910000000.0,
+    "money_market": 2045000000.0,
     "money_market_prev": 2920000000.0,
-    "titulos_publicos": 493559526.01,
+    "titulos_publicos": 232988492.0,
     "titulos_publicos_prev": 233352188.0,
-    "obligaciones_neg": 631242405.0,
+    "obligaciones_neg": 634113399.0,
     "obligaciones_neg_prev": 633637524.0,
-    "fideicomisos": 985267916.55,
+    "fideicomisos": 920558443.59,
     "fideicomisos_prev": 927783007.05,
-    "titulo_provincial": 303085557.0,
+    "titulo_provincial": 311892267.0,
     "titulo_provincial_prev": 311571231.0,
     "tp_det": [
       {
         "nombre": "Lecap S30N6",
-        "total": 232510554.0,
+        "total": 232988492.0,
         "total_prev": 233352188.0,
-        "cierre": 1.1626,
+        "cierre": 1.1649,
         "cantidad": 200000000.0
-      },
-      {
-        "nombre": "S29Y6 - Lecap S29Y6",
-        "total": 261048972.01,
-        "total_prev": null,
-        "cierre": 1.319,
-        "cantidad": 197919126.0
       }
     ],
     "on_det": [
       {
         "nombre": "LR7AO - ON Laboratorios Richmond Serie 7 Cl A Vto 10/12/26",
-        "total": 324942405.0,
+        "total": 326508087.0,
         "total_prev": 326245950.0,
-        "cierre": 1.0831,
+        "cierre": 1.0884,
         "cantidad": 300000000.0
       },
       {
         "nombre": "VBC3O - ON BANCO DE VALORES CL.3 24/10/26 $",
-        "total": 306300000.0,
+        "total": 307605312.0,
         "total_prev": 307391574.0,
-        "cierre": 1.021,
+        "cierre": 1.0254,
         "cantidad": 300000000.0
       }
     ],
     "ff_det": [
       {
         "nombre": "FF AMFAyS S49 Clase A",
-        "total": 40860296.0,
+        "total": 33051500.0,
         "total_prev": 40965632.0,
-        "cierre": 0.4086,
+        "cierre": 0.3305,
         "cantidad": 100000000.0
       },
       {
         "nombre": "MY50B - VD FF AMFAYS S.50 CL.B $",
-        "total": 135306454.08,
+        "total": 136415055.76,
         "total_prev": 135868535.13,
-        "cierre": 1.327,
+        "cierre": 1.3379,
         "cantidad": 101962042.0
       },
       {
         "nombre": "MY50C - VD FF AMFAYS S.50 CL.C $",
-        "total": 420155487.73,
+        "total": 423347287.11,
         "total_prev": 423229551.54,
-        "cierre": 1.0989,
+        "cierre": 1.1072,
         "cantidad": 382357659.0
       },
       {
         "nombre": "MY51B - VD FF AMFAYS Serie 51 Clase B",
-        "total": 80042372.45,
+        "total": 78120610.58,
         "total_prev": 78891252.85,
-        "cierre": 1.059,
+        "cierre": 1.0336,
         "cantidad": 75584213.0
       },
       {
         "nombre": "MY51C - VD FF AMFAYS Serie 51 Clase C",
-        "total": 171305176.83,
+        "total": 174422681.44,
         "total_prev": 173854368.79,
-        "cierre": 0.9713,
+        "cierre": 0.989,
         "cantidad": 176363163.0
       },
       {
         "nombre": "VD FF SECUBONO 245 CL.A $",
-        "total": 137598129.46,
+        "total": 75201308.69,
         "total_prev": 74973666.74,
-        "cierre": 0.4493,
+        "cierre": 0.2455,
         "cantidad": 306275000.0
       }
     ],
     "prov_det": [
       {
         "nombre": "CO2D7 - Título provincia de Córdoba 05/12/27",
-        "total": 303085557.0,
+        "total": 311892267.0,
         "total_prev": 311571231.0,
-        "cierre": 1.0103,
+        "cierre": 1.0396,
         "cantidad": 300000000.0
       }
     ],
     "money_market_det": [
       {
         "nombre": "FCI IEB Ahorro - Clase E",
-        "total": 910000000.0,
+        "total": 2045000000.0,
         "total_prev": null,
-        "cierre": 12.2295
+        "cierre": 12.265
       }
     ]
   },
   "futuros": [
     {
-      "contrato": "Fut Rofex DLR052026",
-      "cantidad": -40000.0,
-      "cierre": 1411.0,
-      "total_hoy": -56440000.0,
-      "total_prev": null
-    },
-    {
       "contrato": "Fut Rofex DLR062026",
       "cantidad": -439000.0,
-      "cierre": 1438.5,
-      "total_hoy": -631501500.0,
+      "cierre": 1446.5,
+      "total_hoy": -635013500.0,
       "total_prev": null
     },
     {
       "contrato": "Fut Rofex DLR072026",
       "cantidad": -301000.0,
-      "cierre": 1469.0,
-      "total_hoy": -442169000.0,
+      "cierre": 1472.5,
+      "total_hoy": -443222500.0,
       "total_prev": null
     },
     {
       "contrato": "Fut Rofex DLR082026",
-      "cantidad": -125000.0,
-      "cierre": 1499.0,
-      "total_hoy": -187375000.0,
+      "cantidad": -165000.0,
+      "cierre": 1501.0,
+      "total_hoy": -247665000.0,
       "total_prev": null
     },
     {
       "contrato": "Fut Rofex DLR092026",
       "cantidad": -75000.0,
-      "cierre": 1528.0,
-      "total_hoy": -114600000.0,
+      "cierre": 1529.0,
+      "total_hoy": -114675000.0,
       "total_prev": null
     }
   ],
   "cuotapartes": {
     "A": {
-      "vcp": 1390.178,
+      "vcp": 1396.328,
       "vcp_prev": 1393.746,
       "vcp_abril": null,
       "vcp_dic": null,
-      "saldo_cp": 3815092262,
-      "inversion": 5303657330,
+      "saldo_cp": 3793769338,
+      "inversion": 5297346352,
       "inversion_prev": 5373674175,
       "saldo_cp_prev": 3855562043,
-      "ingresos_hoy": 0,
-      "egresos_hoy": 5002013,
+      "ingresos_hoy": 25574551,
+      "egresos_hoy": 111857434,
       "ingresos_prev": 0,
       "egresos_prev": 50000
     },
     "B": {
-      "vcp": 1665.81,
+      "vcp": 1673.18,
       "vcp_prev": 1670.086,
       "vcp_abril": null,
       "vcp_dic": null,
-      "saldo_cp": 3057218577,
-      "inversion": 5092745278,
+      "saldo_cp": 3207168793,
+      "inversion": 5366170682,
       "inversion_prev": 5356247702,
       "saldo_cp_prev": 3207168793,
-      "ingresos_hoy": 250000000,
+      "ingresos_hoy": 0,
       "egresos_hoy": 0,
       "ingresos_prev": 0,
       "egresos_prev": 0
     },
     "C": {
-      "vcp": 1678.181,
+      "vcp": 1685.605,
       "vcp_prev": 1682.488,
       "vcp_abril": null,
       "vcp_dic": null,
-      "saldo_cp": 17741001723,
-      "inversion": 29772612012,
+      "saldo_cp": 18740884689,
+      "inversion": 31589728937,
       "inversion_prev": 31531313599,
       "saldo_cp_prev": 18740884689,
-      "ingresos_hoy": 500000000,
+      "ingresos_hoy": 0,
       "egresos_hoy": 0,
       "ingresos_prev": 571114870,
       "egresos_prev": 0
@@ -222,999 +208,1181 @@
     {
       "nombre": "ZOFINGEN SECURITIES",
       "clase": "C",
-      "inversion": 560649522,
+      "inversion": 563129744,
       "cuotapartes": 334081676
     },
     {
       "nombre": "BANCO DE LA CIUDAD DE BUENOS AIRES",
       "clase": "C",
-      "inversion": 2341532729,
+      "inversion": 2351891290,
       "cuotapartes": 1395280205
     },
     {
       "nombre": "ALYCBUR",
       "clase": "C",
-      "inversion": 570170652,
+      "inversion": 572692995,
       "cuotapartes": 339755159
     },
     {
       "nombre": "ALYCBUR",
       "clase": "A",
-      "inversion": 622616915,
+      "inversion": 625371306,
       "cuotapartes": 447868485
     },
     {
       "nombre": "ALYCBUR",
       "clase": "B",
-      "inversion": 281756392,
+      "inversion": 283002959,
       "cuotapartes": 169140773
     }
   ],
   "libradores": [
     {
-      "nombre": "COOPERATIVA DE VIVIENDA CREDITO Y CONSUMO PARA EL DESARROLLO LIMITADA",
-      "monto": 2783073266,
-      "tasa_prom": 38.11,
-      "pct_vp": 6.9284,
-      "n_cheques": 26
+      "nombre": "CREDICUOTAS CONSUMO SA",
+      "monto": 1954070023,
+      "tasa_prom": 26.0,
+      "pct_vp": 4.6247,
+      "n_cheques": 2
     },
     {
-      "nombre": "CREDICUOTAS CONSUMO SA",
-      "monto": 1945944125,
-      "tasa_prom": 26.0,
-      "pct_vp": 4.8444,
-      "n_cheques": 2
+      "nombre": "COOPERATIVA DE VIVIENDA CREDITO Y CONSUMO PARA EL DESARROLLO LIMITADA",
+      "monto": 1718001772,
+      "tasa_prom": 38.18,
+      "pct_vp": 4.066,
+      "n_cheques": 25
     },
     {
       "nombre": "MILLS S.G.R.",
-      "monto": 1707583882,
+      "monto": 1711240874,
       "tasa_prom": 29.03,
-      "pct_vp": 4.251,
-      "n_cheques": 110
-    },
-    {
-      "nombre": "EMOVA MOVILIDAD S.A.",
-      "monto": 1696681925,
-      "tasa_prom": 29.02,
-      "pct_vp": 4.2239,
-      "n_cheques": 7
-    },
-    {
-      "nombre": "SES SA",
-      "monto": 1495340250,
-      "tasa_prom": 40.69,
-      "pct_vp": 3.7226,
-      "n_cheques": 9
+      "pct_vp": 4.05,
+      "n_cheques": 109
     },
     {
       "nombre": "EMPRESA DIST SUR S.A. EDESUR S.A.",
-      "monto": 1465079161,
+      "monto": 1472170115,
       "tasa_prom": 30.0,
-      "pct_vp": 3.6473,
+      "pct_vp": 3.4842,
       "n_cheques": 1
+    },
+    {
+      "nombre": "SES SA",
+      "monto": 1375670926,
+      "tasa_prom": 40.66,
+      "pct_vp": 3.2558,
+      "n_cheques": 8
     },
     {
       "nombre": "TRANS BOX SRL",
-      "monto": 1218226026,
+      "monto": 1224898005,
       "tasa_prom": 34.0,
-      "pct_vp": 3.0328,
+      "pct_vp": 2.8989,
       "n_cheques": 2
     },
     {
+      "nombre": "TARJETA NARANJA SA",
+      "monto": 987020676,
+      "tasa_prom": 28.37,
+      "pct_vp": 2.336,
+      "n_cheques": 52
+    },
+    {
       "nombre": "ALLIANCE ONE TOBACCO ARGENTINA",
-      "monto": 969713154,
+      "monto": 974372735,
       "tasa_prom": 30.0,
-      "pct_vp": 2.4141,
+      "pct_vp": 2.306,
       "n_cheques": 1
     },
     {
-      "nombre": "TARJETA NARANJA SA",
-      "monto": 958622088,
-      "tasa_prom": 28.47,
-      "pct_vp": 2.3865,
-      "n_cheques": 35
-    },
-    {
       "nombre": "PAY PER TIC SA",
-      "monto": 949038044,
+      "monto": 954248441,
       "tasa_prom": 35.0,
-      "pct_vp": 2.3626,
+      "pct_vp": 2.2584,
       "n_cheques": 1
     },
     {
       "nombre": "INTEGRA PYMES SGR",
-      "monto": 908157415,
+      "monto": 915911782,
       "tasa_prom": 28.78,
-      "pct_vp": 2.2608,
-      "n_cheques": 78
+      "pct_vp": 2.1677,
+      "n_cheques": 80
     },
     {
       "nombre": "ASOCIACION ATLETICA ARGENTINOS JUNIORS",
-      "monto": 876592467,
+      "monto": 882669334,
       "tasa_prom": 43.0,
-      "pct_vp": 2.1823,
+      "pct_vp": 2.089,
       "n_cheques": 3
     },
     {
-      "nombre": "DHN DESARROLLADORA SRL",
-      "monto": 767281158,
-      "tasa_prom": 37.11,
-      "pct_vp": 1.9101,
-      "n_cheques": 5
+      "nombre": "ASOCIACION DEL FUTBOL ARGENTINO",
+      "monto": 870974003,
+      "tasa_prom": 34.0,
+      "pct_vp": 2.0613,
+      "n_cheques": 3
+    },
+    {
+      "nombre": "EMOVA MOVILIDAD S.A.",
+      "monto": 847210381,
+      "tasa_prom": 26.0,
+      "pct_vp": 2.0051,
+      "n_cheques": 4
+    },
+    {
+      "nombre": "LA MANTOVANA DE SERVICIOS GENERALES SA",
+      "monto": 752398141,
+      "tasa_prom": 18.0,
+      "pct_vp": 1.7807,
+      "n_cheques": 1
     },
     {
       "nombre": "AVAL FEDERAL S.G.R.",
-      "monto": 690535883,
+      "monto": 693698389,
       "tasa_prom": 28.87,
-      "pct_vp": 1.7191,
+      "pct_vp": 1.6418,
       "n_cheques": 23
     },
     {
       "nombre": "BiBank S.A.",
-      "monto": 677943144,
+      "monto": 680978940,
       "tasa_prom": 28.0,
-      "pct_vp": 1.6877,
+      "pct_vp": 1.6117,
       "n_cheques": 5
     },
     {
       "nombre": "VITALCAN S.A.",
-      "monto": 671838303,
+      "monto": 675843143,
       "tasa_prom": 37.52,
-      "pct_vp": 1.6725,
+      "pct_vp": 1.5995,
       "n_cheques": 7
     },
     {
       "nombre": "COOPERATIVA DE TABACALEROS DE JUJUY LTDA",
-      "monto": 622830305,
+      "monto": 629674221,
       "tasa_prom": 8.23,
-      "pct_vp": 1.5505,
+      "pct_vp": 1.4902,
       "n_cheques": 8
     },
     {
-      "nombre": "Casa Hutton SA",
-      "monto": 535704048,
-      "tasa_prom": 41.61,
-      "pct_vp": 1.3336,
-      "n_cheques": 31
-    },
-    {
-      "nombre": "SION S A",
-      "monto": 476813897,
-      "tasa_prom": 37.42,
-      "pct_vp": 1.187,
-      "n_cheques": 7
-    },
-    {
-      "nombre": "INC SOCIEDAD ANONIMA",
-      "monto": 460572269,
-      "tasa_prom": 30.17,
-      "pct_vp": 1.1466,
-      "n_cheques": 30
-    },
-    {
       "nombre": "CELULOSA CAMPANA SA",
-      "monto": 450342551,
-      "tasa_prom": 41.0,
-      "pct_vp": 1.1211,
-      "n_cheques": 37
+      "monto": 613019929,
+      "tasa_prom": 38.57,
+      "pct_vp": 1.4508,
+      "n_cheques": 48
     },
     {
-      "nombre": "Fidus S.G.R.",
-      "monto": 442687518,
-      "tasa_prom": 27.31,
-      "pct_vp": 1.1021,
-      "n_cheques": 9
+      "nombre": "DHN DESARROLLADORA SRL",
+      "monto": 533838251,
+      "tasa_prom": 36.72,
+      "pct_vp": 1.2634,
+      "n_cheques": 4
     },
     {
-      "nombre": "VICTORIO PODESTA Y CIA S.A.",
-      "monto": 430823564,
-      "tasa_prom": 38.0,
-      "pct_vp": 1.0725,
-      "n_cheques": 1
+      "nombre": "Casa Hutton SA",
+      "monto": 496704420,
+      "tasa_prom": 40.11,
+      "pct_vp": 1.1755,
+      "n_cheques": 25
     },
     {
-      "nombre": "INDUSTRIAS ERCA S A",
-      "monto": 427282821,
-      "tasa_prom": 38.38,
-      "pct_vp": 1.0637,
-      "n_cheques": 14
-    },
-    {
-      "nombre": "COARD S A",
-      "monto": 419307062,
-      "tasa_prom": 40.0,
-      "pct_vp": 1.0439,
+      "nombre": "DRACONIS S.A.",
+      "monto": 449768743,
+      "tasa_prom": 37.68,
+      "pct_vp": 1.0645,
       "n_cheques": 5
     },
     {
       "nombre": "LOS GROBO SGR",
-      "monto": 405644693,
-      "tasa_prom": 26.36,
-      "pct_vp": 1.0098,
-      "n_cheques": 15
+      "monto": 445320480,
+      "tasa_prom": 26.92,
+      "pct_vp": 1.0539,
+      "n_cheques": 16
     },
     {
-      "nombre": "AVAL AR SGR",
-      "monto": 392865879,
-      "tasa_prom": 29.46,
-      "pct_vp": 0.978,
-      "n_cheques": 27
+      "nombre": "Fidus S.G.R.",
+      "monto": 444587630,
+      "tasa_prom": 27.31,
+      "pct_vp": 1.0522,
+      "n_cheques": 9
     },
     {
-      "nombre": "TALLERES METALURGICOS CRUCIANELLI SA",
-      "monto": 390075416,
-      "tasa_prom": 35.99,
-      "pct_vp": 0.9711,
-      "n_cheques": 21
+      "nombre": "VICTORIO PODESTA Y CIA S.A.",
+      "monto": 433486999,
+      "tasa_prom": 38.0,
+      "pct_vp": 1.0259,
+      "n_cheques": 1
     },
     {
-      "nombre": "LAROCCA NEUMATICOS S A",
-      "monto": 383253911,
-      "tasa_prom": 33.29,
-      "pct_vp": 0.9541,
-      "n_cheques": 8
+      "nombre": "SION S A",
+      "monto": 429473402,
+      "tasa_prom": 37.35,
+      "pct_vp": 1.0164,
+      "n_cheques": 6
     },
     {
-      "nombre": "REMOLQUES OMBU S.A",
-      "monto": 374250911,
-      "tasa_prom": 33.0,
-      "pct_vp": 0.9317,
-      "n_cheques": 8
+      "nombre": "INDUSTRIAS ERCA S A",
+      "monto": 427104812,
+      "tasa_prom": 38.0,
+      "pct_vp": 1.0108,
+      "n_cheques": 14
+    },
+    {
+      "nombre": "COARD S A",
+      "monto": 422012945,
+      "tasa_prom": 40.0,
+      "pct_vp": 0.9988,
+      "n_cheques": 5
     },
     {
       "nombre": "ESPECIALIDADES AGROPECUARIAS S.A.",
-      "monto": 372749861,
-      "tasa_prom": 31.06,
-      "pct_vp": 0.928,
-      "n_cheques": 40
+      "monto": 420078580,
+      "tasa_prom": 30.83,
+      "pct_vp": 0.9942,
+      "n_cheques": 45
+    },
+    {
+      "nombre": "TALLERES METALURGICOS CRUCIANELLI SA",
+      "monto": 392234207,
+      "tasa_prom": 35.99,
+      "pct_vp": 0.9283,
+      "n_cheques": 21
+    },
+    {
+      "nombre": "INC SOCIEDAD ANONIMA",
+      "monto": 387843685,
+      "tasa_prom": 30.8,
+      "pct_vp": 0.9179,
+      "n_cheques": 27
+    },
+    {
+      "nombre": "AVAL AR SGR",
+      "monto": 382113684,
+      "tasa_prom": 29.48,
+      "pct_vp": 0.9043,
+      "n_cheques": 26
+    },
+    {
+      "nombre": "Neuquén Pymes S.G.R.",
+      "monto": 380460640,
+      "tasa_prom": 30.75,
+      "pct_vp": 0.9004,
+      "n_cheques": 31
+    },
+    {
+      "nombre": "REMOLQUES OMBU S.A",
+      "monto": 376160340,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.8903,
+      "n_cheques": 8
     },
     {
       "nombre": "SERVICIOS DE PRODUCCIONES ARTISTICAS SRL",
-      "monto": 361603696,
+      "monto": 363805126,
       "tasa_prom": 38.65,
-      "pct_vp": 0.9002,
+      "pct_vp": 0.861,
       "n_cheques": 5
     },
     {
       "nombre": "Movil SGR",
-      "monto": 355279688,
-      "tasa_prom": 27.96,
-      "pct_vp": 0.8845,
-      "n_cheques": 65
-    },
-    {
-      "nombre": "DRACONIS S.A.",
-      "monto": 352068636,
-      "tasa_prom": 38.4,
-      "pct_vp": 0.8765,
-      "n_cheques": 4
+      "monto": 348040643,
+      "tasa_prom": 28.04,
+      "pct_vp": 0.8237,
+      "n_cheques": 58
     },
     {
       "nombre": "CEIBO CREDITOS S.A.",
-      "monto": 342494111,
+      "monto": 344266208,
       "tasa_prom": 32.0,
-      "pct_vp": 0.8526,
+      "pct_vp": 0.8148,
       "n_cheques": 3
+    },
+    {
+      "nombre": "LAROCCA NEUMATICOS S A",
+      "monto": 335129460,
+      "tasa_prom": 32.89,
+      "pct_vp": 0.7931,
+      "n_cheques": 7
     },
     {
       "nombre": "FGF TRAPANI",
-      "monto": 328458329,
+      "monto": 329832467,
       "tasa_prom": 27.0,
-      "pct_vp": 0.8177,
+      "pct_vp": 0.7806,
       "n_cheques": 3
     },
     {
-      "nombre": "Neuquén Pymes S.G.R.",
-      "monto": 324390484,
-      "tasa_prom": 31.39,
-      "pct_vp": 0.8076,
-      "n_cheques": 26
-    },
-    {
-      "nombre": "NVX SAS",
-      "monto": 287914275,
-      "tasa_prom": 42.87,
-      "pct_vp": 0.7168,
-      "n_cheques": 16
+      "nombre": "OJEDA ARIEL RUBEN",
+      "monto": 286125046,
+      "tasa_prom": 30.0,
+      "pct_vp": 0.6772,
+      "n_cheques": 3
     },
     {
       "nombre": "LAGAVULIN S.A.",
-      "monto": 283564506,
+      "monto": 285026036,
       "tasa_prom": 33.0,
-      "pct_vp": 0.7059,
+      "pct_vp": 0.6746,
       "n_cheques": 6
     },
     {
       "nombre": "BSP LARTI SA",
-      "monto": 277909259,
+      "monto": 280999874,
       "tasa_prom": 9.0,
-      "pct_vp": 0.6918,
+      "pct_vp": 0.665,
       "n_cheques": 4
     },
     {
       "nombre": "PUNTO PACK SRL",
-      "monto": 263352796,
-      "tasa_prom": 12.05,
-      "pct_vp": 0.6556,
+      "monto": 265954458,
+      "tasa_prom": 12.03,
+      "pct_vp": 0.6294,
       "n_cheques": 18
     },
     {
+      "nombre": "NVX SAS",
+      "monto": 249638891,
+      "tasa_prom": 42.36,
+      "pct_vp": 0.5908,
+      "n_cheques": 14
+    },
+    {
       "nombre": "S.E.S. S.A. - CONSTRUERE INGENIERIA S.A.",
-      "monto": 244178030,
+      "monto": 245796139,
       "tasa_prom": 41.0,
-      "pct_vp": 0.6079,
+      "pct_vp": 0.5817,
       "n_cheques": 2
     },
     {
+      "nombre": "BODEGAS Y VIÑEDOS SANTA ELENA SRL",
+      "monto": 242032301,
+      "tasa_prom": 35.0,
+      "pct_vp": 0.5728,
+      "n_cheques": 3
+    },
+    {
       "nombre": "AREA RIO NEGRO NORTE",
-      "monto": 219054065,
+      "monto": 220125520,
       "tasa_prom": 30.0,
-      "pct_vp": 0.5453,
+      "pct_vp": 0.521,
       "n_cheques": 2
     },
     {
       "nombre": "LIPSA SRL",
-      "monto": 208756636,
-      "tasa_prom": 34.73,
-      "pct_vp": 0.5197,
+      "monto": 209871157,
+      "tasa_prom": 34.74,
+      "pct_vp": 0.4967,
       "n_cheques": 4
     },
     {
-      "nombre": "LA NUEVA METROPOL SOCIEDAD ANONIMA DE TRANSPORTE AUTOMOTOR COMERCIAL E IND",
-      "monto": 198358374,
-      "tasa_prom": 38.0,
-      "pct_vp": 0.4938,
-      "n_cheques": 2
-    },
-    {
       "nombre": "Affidavit S.G.R.",
-      "monto": 194812148,
+      "monto": 195658019,
       "tasa_prom": 27.0,
-      "pct_vp": 0.485,
+      "pct_vp": 0.4631,
       "n_cheques": 1
     },
     {
       "nombre": "DEMAGRO SRL",
-      "monto": 185247130,
-      "tasa_prom": 18.98,
-      "pct_vp": 0.4612,
+      "monto": 185627003,
+      "tasa_prom": 19.01,
+      "pct_vp": 0.4393,
       "n_cheques": 5
     },
     {
       "nombre": "Vinculos S.G.R.",
-      "monto": 162678043,
-      "tasa_prom": 31.15,
-      "pct_vp": 0.405,
-      "n_cheques": 9
+      "monto": 159455704,
+      "tasa_prom": 31.2,
+      "pct_vp": 0.3774,
+      "n_cheques": 8
     },
     {
       "nombre": "CUYO AVAL SGR",
-      "monto": 149969057,
+      "monto": 150637129,
       "tasa_prom": 28.0,
-      "pct_vp": 0.3733,
+      "pct_vp": 0.3565,
+      "n_cheques": 26
+    },
+    {
+      "nombre": "ACINDAR PYMES SGR",
+      "monto": 147585335,
+      "tasa_prom": 25.95,
+      "pct_vp": 0.3493,
       "n_cheques": 26
     },
     {
       "nombre": "METALFOR SA",
-      "monto": 139902720,
+      "monto": 140673766,
       "tasa_prom": 34.78,
-      "pct_vp": 0.3483,
+      "pct_vp": 0.3329,
       "n_cheques": 9
     },
     {
       "nombre": "TREND SGR",
-      "monto": 125897097,
+      "monto": 126448194,
       "tasa_prom": 27.38,
-      "pct_vp": 0.3134,
+      "pct_vp": 0.2993,
       "n_cheques": 10
     },
     {
       "nombre": "BROADBANDTECH SA",
-      "monto": 113797543,
-      "tasa_prom": 36.35,
-      "pct_vp": 0.2833,
-      "n_cheques": 7
+      "monto": 121754639,
+      "tasa_prom": 35.77,
+      "pct_vp": 0.2882,
+      "n_cheques": 6
     },
     {
       "nombre": "PLANTIUM S.A.",
-      "monto": 107529405,
-      "tasa_prom": 36.48,
-      "pct_vp": 0.2677,
-      "n_cheques": 17
+      "monto": 105123934,
+      "tasa_prom": 36.39,
+      "pct_vp": 0.2488,
+      "n_cheques": 16
     },
     {
       "nombre": "COTO",
-      "monto": 103904667,
+      "monto": 104343128,
       "tasa_prom": 26.0,
-      "pct_vp": 0.2587,
+      "pct_vp": 0.2469,
       "n_cheques": 1
     },
     {
-      "nombre": "CONAVAL SGR",
-      "monto": 98324740,
-      "tasa_prom": 29.7,
-      "pct_vp": 0.2448,
-      "n_cheques": 4
-    },
-    {
-      "nombre": "BODEGAS Y VIÑEDOS SANTA ELENA SRL",
-      "monto": 97934004,
-      "tasa_prom": 35.0,
-      "pct_vp": 0.2438,
+      "nombre": "LA NUEVA METROPOL SOCIEDAD ANONIMA DE TRANSPORTE AUTOMOTOR COMERCIAL E IND",
+      "monto": 99071716,
+      "tasa_prom": 38.0,
+      "pct_vp": 0.2345,
       "n_cheques": 1
-    },
-    {
-      "nombre": "ACINDAR PYMES SGR",
-      "monto": 97115628,
-      "tasa_prom": 29.0,
-      "pct_vp": 0.2418,
-      "n_cheques": 5
     },
     {
       "nombre": "TEXTUM SA",
-      "monto": 96061168,
+      "monto": 96564515,
       "tasa_prom": 33.0,
-      "pct_vp": 0.2391,
+      "pct_vp": 0.2285,
       "n_cheques": 10
     },
     {
       "nombre": "TECNOGRAFIC",
-      "monto": 95499604,
+      "monto": 96057555,
       "tasa_prom": 37.0,
-      "pct_vp": 0.2377,
+      "pct_vp": 0.2273,
       "n_cheques": 2
     },
     {
       "nombre": "THE CRAZY COW S.R.L.",
-      "monto": 93895124,
+      "monto": 94937061,
       "tasa_prom": 10.0,
-      "pct_vp": 0.2338,
+      "pct_vp": 0.2247,
       "n_cheques": 4
     },
     {
       "nombre": "YAGUA COLI S.A.",
-      "monto": 92475316,
+      "monto": 92898973,
       "tasa_prom": 30.0,
-      "pct_vp": 0.2302,
+      "pct_vp": 0.2199,
       "n_cheques": 2
     },
     {
       "nombre": "DOS MATES SA",
-      "monto": 90859302,
+      "monto": 91336408,
       "tasa_prom": 32.0,
-      "pct_vp": 0.2262,
+      "pct_vp": 0.2162,
       "n_cheques": 2
     },
     {
       "nombre": "ACERIAS 4 C SA",
-      "monto": 89357326,
+      "monto": 89886901,
       "tasa_prom": 40.0,
-      "pct_vp": 0.2225,
+      "pct_vp": 0.2127,
       "n_cheques": 10
     },
     {
       "nombre": "DANBURY S. A",
-      "monto": 82011823,
+      "monto": 82501738,
       "tasa_prom": 36.87,
-      "pct_vp": 0.2042,
+      "pct_vp": 0.1953,
       "n_cheques": 3
     },
     {
       "nombre": "I-LED ARGENTINA S.A.",
-      "monto": 80806533,
+      "monto": 81228411,
       "tasa_prom": 34.14,
-      "pct_vp": 0.2012,
+      "pct_vp": 0.1922,
       "n_cheques": 10
     },
     {
       "nombre": "CAMPO AVAL SGR",
-      "monto": 78122811,
+      "monto": 78450240,
       "tasa_prom": 26.0,
-      "pct_vp": 0.1945,
+      "pct_vp": 0.1857,
       "n_cheques": 8
     },
     {
-      "nombre": "ELIAS SEMILLAS E INSUMOS SRL",
-      "monto": 68480748,
-      "tasa_prom": 40.0,
-      "pct_vp": 0.1705,
-      "n_cheques": 7
+      "nombre": "CONAVAL SGR",
+      "monto": 68661302,
+      "tasa_prom": 30.0,
+      "pct_vp": 0.1625,
+      "n_cheques": 3
     },
     {
       "nombre": "LOGICA CONSULTING GROUP SAU",
-      "monto": 64198766,
+      "monto": 64572798,
       "tasa_prom": 38.0,
-      "pct_vp": 0.1598,
+      "pct_vp": 0.1528,
       "n_cheques": 15
     },
     {
       "nombre": "INTANSIA S.R.L",
-      "monto": 63991026,
-      "tasa_prom": 58.72,
-      "pct_vp": 0.1593,
+      "monto": 64553873,
+      "tasa_prom": 58.74,
+      "pct_vp": 0.1528,
       "n_cheques": 7
     },
     {
       "nombre": "VM METALURGICA SRL",
-      "monto": 63955704,
+      "monto": 64342337,
       "tasa_prom": 40.0,
-      "pct_vp": 0.1592,
+      "pct_vp": 0.1523,
       "n_cheques": 8
     },
     {
       "nombre": "BUROMAHTIK SA",
-      "monto": 62878423,
+      "monto": 63237128,
       "tasa_prom": 36.49,
-      "pct_vp": 0.1565,
+      "pct_vp": 0.1497,
       "n_cheques": 17
     },
     {
+      "nombre": "ELIAS SEMILLAS E INSUMOS SRL",
+      "monto": 58858011,
+      "tasa_prom": 40.0,
+      "pct_vp": 0.1393,
+      "n_cheques": 6
+    },
+    {
       "nombre": "DOSAM SOCIEDAD DE RESPONSABILIDAD LIMITADA",
-      "monto": 57684615,
+      "monto": 58074703,
       "tasa_prom": 42.5,
-      "pct_vp": 0.1436,
+      "pct_vp": 0.1374,
       "n_cheques": 4
     },
     {
       "nombre": "EL FIERRO SRL",
-      "monto": 56181508,
+      "monto": 56515179,
       "tasa_prom": 38.3,
-      "pct_vp": 0.1399,
+      "pct_vp": 0.1338,
       "n_cheques": 17
     },
     {
-      "nombre": "BUENA ONDA TELEVISORA COLOR SRL",
-      "monto": 51450983,
-      "tasa_prom": 38.0,
-      "pct_vp": 0.1281,
-      "n_cheques": 12
+      "nombre": "PAMPA VIDA S.R.L.",
+      "monto": 52615762,
+      "tasa_prom": 36.0,
+      "pct_vp": 0.1245,
+      "n_cheques": 16
     },
     {
       "nombre": "CASSAB HNOS S.R.L.",
-      "monto": 49119606,
+      "monto": 49411538,
       "tasa_prom": 40.0,
-      "pct_vp": 0.1223,
+      "pct_vp": 0.1169,
       "n_cheques": 4
     },
     {
-      "nombre": "VINOX SRL",
-      "monto": 48507465,
-      "tasa_prom": 35.0,
-      "pct_vp": 0.1208,
-      "n_cheques": 5
-    },
-    {
-      "nombre": "CONSTRUCCIONES S&C SAS",
-      "monto": 45527425,
-      "tasa_prom": 38.0,
-      "pct_vp": 0.1133,
-      "n_cheques": 7
-    },
-    {
       "nombre": "EL AUDITOR SA",
-      "monto": 42774074,
+      "monto": 43065191,
       "tasa_prom": 42.9,
-      "pct_vp": 0.1065,
+      "pct_vp": 0.1019,
       "n_cheques": 14
     },
     {
       "nombre": "REGCEN S.R.L.",
-      "monto": 41773314,
+      "monto": 42004095,
       "tasa_prom": 39.0,
-      "pct_vp": 0.104,
+      "pct_vp": 0.0994,
       "n_cheques": 13
     },
     {
       "nombre": "LITTLE BLUE SRL",
-      "monto": 40480269,
+      "monto": 40704003,
       "tasa_prom": 35.0,
-      "pct_vp": 0.1008,
+      "pct_vp": 0.0963,
       "n_cheques": 8
     },
     {
       "nombre": "POLIMEROS EXPRESS SA",
-      "monto": 40108281,
-      "tasa_prom": 39.91,
-      "pct_vp": 0.0998,
+      "monto": 40360347,
+      "tasa_prom": 39.92,
+      "pct_vp": 0.0955,
       "n_cheques": 2
-    },
-    {
-      "nombre": "PAMPA VIDA S.R.L.",
-      "monto": 39660213,
-      "tasa_prom": 36.0,
-      "pct_vp": 0.0987,
-      "n_cheques": 10
     },
     {
       "nombre": "DROGUERIA DISVAL S R L",
-      "monto": 38505338,
+      "monto": 38768008,
       "tasa_prom": 42.0,
-      "pct_vp": 0.0959,
+      "pct_vp": 0.0918,
       "n_cheques": 2
     },
     {
+      "nombre": "VINOX SRL",
+      "monto": 38731642,
+      "tasa_prom": 35.0,
+      "pct_vp": 0.0917,
+      "n_cheques": 4
+    },
+    {
+      "nombre": "CONSTRUCCIONES S&C SAS",
+      "monto": 38595712,
+      "tasa_prom": 38.0,
+      "pct_vp": 0.0913,
+      "n_cheques": 6
+    },
+    {
+      "nombre": "TECNO AGRIC RIO CUARTO SAS",
+      "monto": 36866778,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0873,
+      "n_cheques": 3
+    },
+    {
       "nombre": "AMERICA PAMPA AGROINDUSTRIAL S.A.",
-      "monto": 36128967,
+      "monto": 36315535,
       "tasa_prom": 31.97,
-      "pct_vp": 0.0899,
+      "pct_vp": 0.0859,
       "n_cheques": 6
     },
     {
       "nombre": "AYVU S.A.",
-      "monto": 35675574,
+      "monto": 35912692,
       "tasa_prom": 41.0,
-      "pct_vp": 0.0888,
+      "pct_vp": 0.085,
       "n_cheques": 2
     },
     {
+      "nombre": "BUENA ONDA TELEVISORA COLOR SRL",
+      "monto": 35708261,
+      "tasa_prom": 38.0,
+      "pct_vp": 0.0845,
+      "n_cheques": 8
+    },
+    {
       "nombre": "S A BUCCOLINI C I F I A",
-      "monto": 32710441,
+      "monto": 32899730,
       "tasa_prom": 39.0,
-      "pct_vp": 0.0814,
+      "pct_vp": 0.0779,
       "n_cheques": 3
     },
     {
       "nombre": "APEXAR TECHNOLOGIES SA",
-      "monto": 32620714,
+      "monto": 32808816,
       "tasa_prom": 40.0,
-      "pct_vp": 0.0812,
+      "pct_vp": 0.0776,
       "n_cheques": 5
     },
     {
-      "nombre": "DROGUERIA GARZON SA",
-      "monto": 28538943,
-      "tasa_prom": 42.0,
-      "pct_vp": 0.071,
-      "n_cheques": 3
-    },
-    {
       "nombre": "INTERTEXTIL SRL",
-      "monto": 28415710,
+      "monto": 28549117,
       "tasa_prom": 30.0,
-      "pct_vp": 0.0707,
+      "pct_vp": 0.0676,
       "n_cheques": 3
     },
     {
       "nombre": "ROTATIVOS UNICOM SRL",
-      "monto": 27089520,
+      "monto": 27248326,
       "tasa_prom": 37.0,
-      "pct_vp": 0.0674,
+      "pct_vp": 0.0645,
       "n_cheques": 1
     },
     {
-      "nombre": "SAN MARCOS TRADING S.A.",
-      "monto": 24628174,
-      "tasa_prom": 36.0,
-      "pct_vp": 0.0613,
-      "n_cheques": 5
+      "nombre": "QUILMES",
+      "monto": 25041531,
+      "tasa_prom": 22.6,
+      "pct_vp": 0.0593,
+      "n_cheques": 4
+    },
+    {
+      "nombre": "DISTRIBUIDORA LEO SRL",
+      "monto": 24638348,
+      "tasa_prom": 35.96,
+      "pct_vp": 0.0583,
+      "n_cheques": 3
     },
     {
       "nombre": "AGROTRANSPORTE ALDAO S.A.",
-      "monto": 24321164,
+      "monto": 24454180,
       "tasa_prom": 34.0,
-      "pct_vp": 0.0605,
+      "pct_vp": 0.0579,
       "n_cheques": 3
     },
     {
-      "nombre": "QUILMES",
-      "monto": 23532243,
-      "tasa_prom": 22.51,
-      "pct_vp": 0.0586,
-      "n_cheques": 3
+      "nombre": "QUALITET SA",
+      "monto": 23758767,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0562,
+      "n_cheques": 1
     },
     {
-      "nombre": "BILOMAT",
-      "monto": 23318391,
-      "tasa_prom": 38.0,
-      "pct_vp": 0.0581,
-      "n_cheques": 5
-    },
-    {
-      "nombre": "NEW ARRECIFE S.A.",
-      "monto": 22179033,
-      "tasa_prom": 25.51,
-      "pct_vp": 0.0552,
-      "n_cheques": 9
-    },
-    {
-      "nombre": "GRUPO 88 S.A.",
-      "monto": 22079306,
-      "tasa_prom": 30.0,
-      "pct_vp": 0.055,
+      "nombre": "DROGUERIA GARZON SA",
+      "monto": 23738647,
+      "tasa_prom": 42.0,
+      "pct_vp": 0.0562,
       "n_cheques": 2
     },
     {
-      "nombre": "ROSSMORE PHARMA",
-      "monto": 21364596,
-      "tasa_prom": 40.0,
-      "pct_vp": 0.0532,
-      "n_cheques": 3
+      "nombre": "BILOMAT",
+      "monto": 23450969,
+      "tasa_prom": 38.0,
+      "pct_vp": 0.0555,
+      "n_cheques": 5
+    },
+    {
+      "nombre": "GRUPO 88 S.A.",
+      "monto": 22184793,
+      "tasa_prom": 30.0,
+      "pct_vp": 0.0525,
+      "n_cheques": 2
+    },
+    {
+      "nombre": "NEW ARRECIFE S.A.",
+      "monto": 20236752,
+      "tasa_prom": 25.87,
+      "pct_vp": 0.0479,
+      "n_cheques": 8
+    },
+    {
+      "nombre": "SAN MARCOS TRADING S.A.",
+      "monto": 19752802,
+      "tasa_prom": 36.0,
+      "pct_vp": 0.0467,
+      "n_cheques": 4
     },
     {
       "nombre": "DESDE EL MAR S.A.",
-      "monto": 19386264,
+      "monto": 19494993,
       "tasa_prom": 35.0,
-      "pct_vp": 0.0483,
+      "pct_vp": 0.0461,
       "n_cheques": 10
     },
     {
       "nombre": "VITIVINICOLA ROCAL SRL",
-      "monto": 18265982,
+      "monto": 18362469,
       "tasa_prom": 35.0,
-      "pct_vp": 0.0455,
+      "pct_vp": 0.0435,
       "n_cheques": 1
-    },
-    {
-      "nombre": "DISTRIBUIDORA LEO SRL",
-      "monto": 18153776,
-      "tasa_prom": 37.0,
-      "pct_vp": 0.0452,
-      "n_cheques": 2
     },
     {
       "nombre": "G&T LOGISTICA SA",
-      "monto": 17204743,
+      "monto": 17286046,
       "tasa_prom": 30.0,
-      "pct_vp": 0.0428,
+      "pct_vp": 0.0409,
       "n_cheques": 3
     },
     {
+      "nombre": "NUEVAS CARTULINAS SRL",
+      "monto": 16863467,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0399,
+      "n_cheques": 6
+    },
+    {
       "nombre": "JOSE MORETTA S.A.",
-      "monto": 16783226,
+      "monto": 16860885,
       "tasa_prom": 30.0,
-      "pct_vp": 0.0418,
+      "pct_vp": 0.0399,
       "n_cheques": 1
+    },
+    {
+      "nombre": "HIADES SRL",
+      "monto": 16247488,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0385,
+      "n_cheques": 2
     },
     {
       "nombre": "PROYECTOS DEL NORTE SRL",
-      "monto": 15656088,
+      "monto": 15760031,
       "tasa_prom": 41.0,
-      "pct_vp": 0.039,
+      "pct_vp": 0.0373,
       "n_cheques": 8
     },
     {
-      "nombre": "LW GROUP SRL",
-      "monto": 14472607,
-      "tasa_prom": 37.66,
-      "pct_vp": 0.036,
-      "n_cheques": 9
+      "nombre": "PROLIB SAS",
+      "monto": 14434313,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0342,
+      "n_cheques": 4
     },
     {
       "nombre": "GREEN TRADE SOCIEDAD ANONIMA",
-      "monto": 13902086,
+      "monto": 13995698,
       "tasa_prom": 42.0,
-      "pct_vp": 0.0346,
-      "n_cheques": 1
-    },
-    {
-      "nombre": "OSCAR PEMAN Y ASOCIADOS S.A.",
-      "monto": 13098177,
-      "tasa_prom": 40.0,
-      "pct_vp": 0.0326,
+      "pct_vp": 0.0331,
       "n_cheques": 1
     },
     {
       "nombre": "BAYIT EMPRESA CONSTRUCTORA SRL",
-      "monto": 12906279,
+      "monto": 12979146,
       "tasa_prom": 38.0,
-      "pct_vp": 0.0321,
+      "pct_vp": 0.0307,
+      "n_cheques": 2
+    },
+    {
+      "nombre": "LW GROUP SRL",
+      "monto": 12546144,
+      "tasa_prom": 37.29,
+      "pct_vp": 0.0297,
+      "n_cheques": 8
+    },
+    {
+      "nombre": "ROSSMORE PHARMA",
+      "monto": 12475423,
+      "tasa_prom": 40.0,
+      "pct_vp": 0.0295,
       "n_cheques": 2
     },
     {
       "nombre": "JUARROS JOSE LUIS",
-      "monto": 12210499,
+      "monto": 12279652,
       "tasa_prom": 35.0,
-      "pct_vp": 0.0304,
+      "pct_vp": 0.0291,
       "n_cheques": 2
     },
     {
-      "nombre": "Grupo Grafico del Norte SA",
-      "monto": 11985880,
-      "tasa_prom": 43.0,
-      "pct_vp": 0.0298,
-      "n_cheques": 1
-    },
-    {
       "nombre": "TRIAL INTERNATIONAL S.A.",
-      "monto": 11772986,
+      "monto": 11814905,
       "tasa_prom": 22.0,
-      "pct_vp": 0.0293,
+      "pct_vp": 0.028,
       "n_cheques": 3
     },
     {
       "nombre": "GIVA LOGISTIC SRL",
-      "monto": 11634642,
+      "monto": 11694285,
       "tasa_prom": 32.0,
-      "pct_vp": 0.029,
+      "pct_vp": 0.0277,
       "n_cheques": 6
     },
     {
       "nombre": "GEOPOLIS SA",
-      "monto": 10853766,
+      "monto": 10916523,
       "tasa_prom": 38.0,
-      "pct_vp": 0.027,
+      "pct_vp": 0.0258,
       "n_cheques": 4
     },
     {
       "nombre": "ANDALUCIA SRL",
-      "monto": 9887702,
+      "monto": 9944911,
       "tasa_prom": 37.0,
-      "pct_vp": 0.0246,
+      "pct_vp": 0.0235,
       "n_cheques": 2
     },
     {
-      "nombre": "PROMO DIRECTA SRL",
-      "monto": 9746288,
-      "tasa_prom": 43.0,
-      "pct_vp": 0.0243,
-      "n_cheques": 2
+      "nombre": "MADETEC SA",
+      "monto": 9651743,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0228,
+      "n_cheques": 6
     },
     {
-      "nombre": "AGROREDES SRL",
-      "monto": 9309280,
-      "tasa_prom": 38.0,
-      "pct_vp": 0.0232,
+      "nombre": "EL TREBOL SRL",
+      "monto": 9404635,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0223,
       "n_cheques": 1
     },
     {
-      "nombre": "RUMBOFISH S.A.",
-      "monto": 7964712,
-      "tasa_prom": 36.0,
-      "pct_vp": 0.0198,
-      "n_cheques": 8
+      "nombre": "AGROREDES SRL",
+      "monto": 9363852,
+      "tasa_prom": 38.0,
+      "pct_vp": 0.0222,
+      "n_cheques": 1
     },
     {
       "nombre": "COOPERATIVA DE TRABAJO ASISTEN LIMITADA",
-      "monto": 7741657,
+      "monto": 7792483,
       "tasa_prom": 41.0,
-      "pct_vp": 0.0193,
+      "pct_vp": 0.0184,
       "n_cheques": 4
     },
     {
       "nombre": "VH FABRICS SRL",
-      "monto": 7650224,
+      "monto": 7697061,
       "tasa_prom": 38.0,
-      "pct_vp": 0.019,
+      "pct_vp": 0.0182,
       "n_cheques": 2
     },
     {
+      "nombre": "HARJUICE SRL",
+      "monto": 7552496,
+      "tasa_prom": 36.0,
+      "pct_vp": 0.0179,
+      "n_cheques": 4
+    },
+    {
       "nombre": "GRAFICA IGMA S.R.L",
-      "monto": 6161661,
+      "monto": 6196854,
       "tasa_prom": 37.0,
-      "pct_vp": 0.0153,
+      "pct_vp": 0.0147,
       "n_cheques": 1
     },
     {
       "nombre": "ELANDIU SRL",
-      "monto": 5946563,
+      "monto": 5986551,
       "tasa_prom": 41.0,
-      "pct_vp": 0.0148,
+      "pct_vp": 0.0142,
       "n_cheques": 3
     },
     {
       "nombre": "KEY TECHNOLOGY SRL",
-      "monto": 5844090,
+      "monto": 5878519,
       "tasa_prom": 38.0,
-      "pct_vp": 0.0145,
+      "pct_vp": 0.0139,
       "n_cheques": 2
     },
     {
       "nombre": "LOS INCAS DESARROLLOS",
-      "monto": 5834712,
+      "monto": 5867805,
       "tasa_prom": 36.0,
-      "pct_vp": 0.0145,
+      "pct_vp": 0.0139,
       "n_cheques": 3
     },
     {
+      "nombre": "PROMO DIRECTA SRL",
+      "monto": 4884491,
+      "tasa_prom": 43.0,
+      "pct_vp": 0.0116,
+      "n_cheques": 1
+    },
+    {
       "nombre": "BILOROOM",
-      "monto": 4824738,
+      "monto": 4852802,
       "tasa_prom": 38.0,
-      "pct_vp": 0.012,
+      "pct_vp": 0.0115,
       "n_cheques": 1
     },
     {
       "nombre": "V Y V ALIMENTOS S.A.",
-      "monto": 4796573,
+      "monto": 4823959,
       "tasa_prom": 36.0,
-      "pct_vp": 0.0119,
+      "pct_vp": 0.0114,
       "n_cheques": 1
     },
     {
       "nombre": "ENTRENUTS SRL",
-      "monto": 4551812,
+      "monto": 4577652,
       "tasa_prom": 36.0,
-      "pct_vp": 0.0113,
+      "pct_vp": 0.0108,
       "n_cheques": 1
     },
     {
-      "nombre": "BP FAMILY S.R.L.",
-      "monto": 3516874,
-      "tasa_prom": 22.0,
-      "pct_vp": 0.0088,
+      "nombre": "LITORAL CLEAN SRL",
+      "monto": 4384024,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0104,
+      "n_cheques": 2
+    },
+    {
+      "nombre": "RUMBOFISH S.A.",
+      "monto": 3995077,
+      "tasa_prom": 36.0,
+      "pct_vp": 0.0095,
+      "n_cheques": 4
+    },
+    {
+      "nombre": "CASA BODE SRL",
+      "monto": 3761851,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0089,
+      "n_cheques": 3
+    },
+    {
+      "nombre": "LEIDA S.A.",
+      "monto": 3554935,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0084,
       "n_cheques": 1
     },
     {
-      "nombre": "NEO-ONE SOCIEDAD ANONIMA",
-      "monto": 3009599,
-      "tasa_prom": 41.0,
-      "pct_vp": 0.0075,
+      "nombre": "INDUSTRIAS J A M SOCIEDAD ANONIMA INDUSTRIAL Y COMERCIAL",
+      "monto": 3358360,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0079,
+      "n_cheques": 2
+    },
+    {
+      "nombre": "TORO DIGITAL SA",
+      "monto": 3122254,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0074,
       "n_cheques": 1
     },
     {
-      "nombre": "SUAVENOL S.R.L.",
-      "monto": 2723751,
-      "tasa_prom": 43.0,
-      "pct_vp": 0.0068,
+      "nombre": "VEO VISUAL",
+      "monto": 2767401,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0065,
       "n_cheques": 1
     },
     {
-      "nombre": "OLLIARI ENVASES SRL",
-      "monto": 2704568,
-      "tasa_prom": 41.0,
-      "pct_vp": 0.0067,
+      "nombre": "ABANS PROCESOS SRL",
+      "monto": 2318573,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0055,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "EDUCACION POPULAR ASOCIACION CIVIL",
+      "monto": 2280469,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0054,
       "n_cheques": 1
     },
     {
       "nombre": "SUPERMERCADOS MAYORISTAS YAGUAR SOCIEDAD ANONIMA",
-      "monto": 2256477,
+      "monto": 2267812,
       "tasa_prom": 31.0,
-      "pct_vp": 0.0056,
+      "pct_vp": 0.0054,
       "n_cheques": 1
     },
     {
-      "nombre": "ILSA SA",
-      "monto": 2016633,
-      "tasa_prom": 35.0,
-      "pct_vp": 0.005,
+      "nombre": "GRAFICA EMEDE SRL",
+      "monto": 2264032,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0054,
       "n_cheques": 1
+    },
+    {
+      "nombre": "GRAFICOS SRL SRL",
+      "monto": 2134809,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0051,
+      "n_cheques": 2
+    },
+    {
+      "nombre": "AKIAN GRAFICA EDITORA SOCIEDAD ANONIMA",
+      "monto": 2112707,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.005,
+      "n_cheques": 2
     },
     {
       "nombre": "CUDEMO VERONICA TERESA",
-      "monto": 1938654,
+      "monto": 1948902,
       "tasa_prom": 33.0,
-      "pct_vp": 0.0048,
+      "pct_vp": 0.0046,
       "n_cheques": 1
     },
     {
       "nombre": "LAVORO FRANCO LUCIANO",
-      "monto": 1794221,
+      "monto": 1803647,
       "tasa_prom": 33.0,
-      "pct_vp": 0.0045,
+      "pct_vp": 0.0043,
       "n_cheques": 1
     },
     {
-      "nombre": "SANATORIO REGIONAL SRL",
-      "monto": 1143145,
-      "tasa_prom": 41.0,
-      "pct_vp": 0.0028,
+      "nombre": "SERVIPLAST S A",
+      "monto": 1592567,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0038,
       "n_cheques": 1
     },
     {
-      "nombre": "P I S R L",
-      "monto": 1120576,
-      "tasa_prom": 41.0,
-      "pct_vp": 0.0028,
+      "nombre": "VIA PRINT SRL",
+      "monto": 1495230,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0035,
       "n_cheques": 1
     },
     {
-      "nombre": "ARROLLAR SA",
-      "monto": 1083696,
-      "tasa_prom": 35.0,
+      "nombre": "AGROPECUARIA LA PODEROSA SA",
+      "monto": 1393193,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0033,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "MA SEOANE RIERA SRL",
+      "monto": 1392690,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0033,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "SALLEO SRL",
+      "monto": 1377753,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0033,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "LA PAMPAGONIA SRL",
+      "monto": 1158260,
+      "tasa_prom": 33.0,
       "pct_vp": 0.0027,
       "n_cheques": 1
     },
     {
-      "nombre": "PEREZ SEBASTIAN LEONEL",
-      "monto": 1054249,
+      "nombre": "SANATORIO REGIONAL SRL",
+      "monto": 1150832,
+      "tasa_prom": 41.0,
+      "pct_vp": 0.0027,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "P I S R L",
+      "monto": 1127987,
+      "tasa_prom": 41.0,
+      "pct_vp": 0.0027,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "VENTIMIGLIA SRL",
+      "monto": 1105043,
       "tasa_prom": 33.0,
       "pct_vp": 0.0026,
       "n_cheques": 1
     },
     {
-      "nombre": "MASTELLONE HNOS SA",
-      "monto": 1008412,
-      "tasa_prom": 41.0,
+      "nombre": "PEREZ SEBASTIAN LEONEL",
+      "monto": 1059758,
+      "tasa_prom": 33.0,
       "pct_vp": 0.0025,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "ANDRIMARSIL SRL",
+      "monto": 1048680,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0025,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "QUELEER SA",
+      "monto": 1036351,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0025,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "MASTELLONE HNOS SA",
+      "monto": 1015201,
+      "tasa_prom": 41.0,
+      "pct_vp": 0.0024,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "COLLEVECCHIO HNOS SA",
+      "monto": 995850,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0024,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "LA GRAFICA SRL",
+      "monto": 991151,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0023,
+      "n_cheques": 1
+    },
+    {
+      "nombre": "BLACKFOX SRL",
+      "monto": 957578,
+      "tasa_prom": 33.0,
+      "pct_vp": 0.0023,
       "n_cheques": 1
     }
   ],
@@ -1222,137 +1390,137 @@
     {
       "fecha": "02/06",
       "dia": "Mar",
-      "monto": 431401872
+      "monto": 434040248
     },
     {
       "fecha": "03/06",
       "dia": "Mié",
-      "monto": 394258448
+      "monto": 340014383
     },
     {
       "fecha": "04/06",
       "dia": "Jue",
-      "monto": 122754948
+      "monto": 123442679
     },
     {
       "fecha": "05/06",
       "dia": "Vie",
-      "monto": 367576675
+      "monto": 369853091
     },
     {
       "fecha": "08/06",
       "dia": "Lun",
-      "monto": 126752132
+      "monto": 127606706
     },
     {
       "fecha": "09/06",
       "dia": "Mar",
-      "monto": 596093627
+      "monto": 361622476
     },
     {
       "fecha": "10/06",
       "dia": "Mié",
-      "monto": 1058024471
+      "monto": 1062991449
     },
     {
       "fecha": "11/06",
       "dia": "Jue",
-      "monto": 877094804
+      "monto": 882232804
     },
     {
       "fecha": "12/06",
       "dia": "Vie",
-      "monto": 775746605
+      "monto": 780804657
     },
     {
       "fecha": "16/06",
       "dia": "Mar",
-      "monto": 319915041
+      "monto": 321942186
     },
     {
       "fecha": "17/06",
       "dia": "Mié",
-      "monto": 910308492
+      "monto": 915875857
     },
     {
       "fecha": "18/06",
       "dia": "Jue",
-      "monto": 1332573373
+      "monto": 1341056138
     },
     {
       "fecha": "19/06",
       "dia": "Vie",
-      "monto": 494065679
+      "monto": 496831719
     },
     {
       "fecha": "22/06",
       "dia": "Lun",
-      "monto": 567656498
+      "monto": 570853697
     },
     {
       "fecha": "23/06",
       "dia": "Mar",
-      "monto": 2077383361
+      "monto": 2089083032
     }
   ],
   "atribucion": {
-    "delta_total": 27.0674,
+    "delta_total": 18.5246,
     "pn_prev": 42261238578,
     "items": [
       {
         "n": "Resultado Títulos Públicos en $",
         "t": "Precio",
-        "bps": 0.8163,
-        "dp": 3.4499,
+        "bps": 0.0342,
+        "dp": 0.1444,
         "det": "Código 4000000000000000001"
       },
       {
         "n": "Diferencia de Cotizacion US3",
         "t": "Precio",
-        "bps": 3.2346,
-        "dp": 13.6699,
+        "bps": 2.5142,
+        "dp": 10.6255,
         "det": "Código 4000000000000000009"
       },
       {
         "n": "Resultado Cheque Pago diferido US3",
         "t": "Devengo",
-        "bps": 0.291,
-        "dp": 1.2296,
+        "bps": 0.2283,
+        "dp": 0.9648,
         "det": "Código 4000000000000000010"
       },
       {
         "n": "Resultado de Operacion Futuro",
         "t": "MTM",
-        "bps": -1.2847,
-        "dp": -5.4295,
+        "bps": -2.0241,
+        "dp": -8.554,
         "det": "Código 4000000000000000013"
       },
       {
         "n": "Gastos por negociación de Cheque de Pago Diferido",
         "t": "Costo",
-        "bps": -0.0856,
-        "dp": -0.362,
+        "bps": -0.0568,
+        "dp": -0.2402,
         "det": "Código 4001001000000000013"
       },
       {
         "n": "Gastos por Negociacion de Cheque de Pago Diferido DMAE",
         "t": "Costo",
-        "bps": -0.0,
-        "dp": -0.0,
+        "bps": -0.0034,
+        "dp": -0.0145,
         "det": "Código 4001001000000000021"
       },
       {
         "n": "Resultado por CPD incobrables",
         "t": "Costo",
-        "bps": -0.0,
-        "dp": -0.0,
+        "bps": -2.9,
+        "dp": -12.2558,
         "det": "Código 4001002000000000021"
       },
       {
         "n": "Honorarios de Administración",
         "t": "Costo",
-        "bps": -2.7298,
-        "dp": -11.5367,
+        "bps": -0.7328,
+        "dp": -3.0967,
         "det": "Código 4001002001000000000"
       },
       {
@@ -1365,15 +1533,15 @@
       {
         "n": "Resultado Cheques de Pago Diferido",
         "t": "Devengo",
-        "bps": 26.3983,
-        "dp": 111.5627,
+        "bps": 19.9921,
+        "dp": 84.4891,
         "det": "Código 4002001000000000017"
       },
       {
         "n": "Rentas en $",
         "t": "Devengo",
-        "bps": -0.0,
-        "dp": -0.0,
+        "bps": 0.2093,
+        "dp": 0.8847,
         "det": "Código 4002001000000000018"
       },
       {
@@ -1386,36 +1554,36 @@
       {
         "n": "Intereses Pase",
         "t": "Devengo",
-        "bps": 0.5699,
-        "dp": 2.4085,
+        "bps": 0.1425,
+        "dp": 0.6021,
         "det": "Código 4002001000000000022"
       },
       {
         "n": "Intereses Caución",
         "t": "Devengo",
-        "bps": -0.0,
-        "dp": -0.0,
+        "bps": 0.1533,
+        "dp": 0.648,
         "det": "Código 4002001002000000002"
       },
       {
         "n": "Resultado por Tenencia Títulos Provinciales",
         "t": "Precio",
-        "bps": -0.5055,
-        "dp": -2.1364,
+        "bps": 0.076,
+        "dp": 0.321,
         "det": "Código 4002001004000000013"
       },
       {
         "n": "Gastos Soc. Depositaria",
         "t": "Costo",
-        "bps": -0.2557,
-        "dp": -1.0805,
+        "bps": -0.0686,
+        "dp": -0.29,
         "det": "Neto de 4 cuenta(s)"
       },
       {
         "n": "Money Market (FCI)",
         "t": "Devengo",
-        "bps": 0.6187,
-        "dp": 2.6145,
+        "bps": 0.9604,
+        "dp": 4.0586,
         "det": "Neto de 2 cuenta(s)"
       }
     ]
