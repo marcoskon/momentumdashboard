@@ -306,6 +306,15 @@ def parse_gestion(path):
 
     lc_ratio = round(abs(activo_total) / abs(pasivo_total), 1) if activo_total and pasivo_total else None
 
+    # % Pyme (col 10 = label, col 11 = valor decimal)
+    pct_pyme = None
+    for i in range(min(50, len(df))):
+        if str(df.iloc[i, 10]).strip() == '% Pyme':
+            pct_pyme = safe(df.iloc[i, 11])
+            if pct_pyme is not None:
+                pct_pyme = round(pct_pyme * 100, 2)  # decimal → porcentaje
+            break
+
     # Duration
     duration = None
     dur_idx = find_row_contains(df, 'Duration del Fondo')
@@ -507,6 +516,7 @@ def parse_gestion(path):
             'creditos_totales':      creditos,
             'creditos_totales_prev': cred_prev,
             'liquidez_corriente':    lc_ratio,
+            'pct_pyme':              pct_pyme,
             'liquidez_efectiva':     liq_efectiva,
         },
         'balance_detalle': {
