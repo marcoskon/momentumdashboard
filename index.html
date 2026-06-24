@@ -301,10 +301,10 @@
       <div class="kpi-delta neu" id="kpiCreditosDelta">—</div>
     </div>
     <div class="kpi-card" style="--ka:#7c5cbf">
-      <div class="kpi-label">Liquidez Corriente</div>
-      <div class="kpi-value" style="font-size:clamp(18px,2vw,26px)" id="kpiLC">—</div>
-      <div class="kpi-prev" id="kpiLCDesc">—</div>
-      <div class="kpi-delta neu" id="kpiLCDelta">—</div>
+      <div class="kpi-label">% Pyme</div>
+      <div class="kpi-value" style="font-size:clamp(18px,2vw,26px)" id="kpiPyme">—</div>
+      <div class="kpi-prev" id="kpiPymeDesc">Mín. regulatorio: 75%</div>
+      <div class="kpi-delta neu" id="kpiPymeDelta">—</div>
     </div>
   </div>
 
@@ -863,10 +863,18 @@ function populateDashboard(data) {
   setTxt('kpiCreditosPrev', `Ayer: ${fmt.money(p.creditos_totales_prev)}`);
   setDelta('kpiCreditosDelta', p.creditos_totales, p.creditos_totales_prev);
 
-  const lc = p.liquidez_efectiva || p.liquidez_corriente;
-  setTxt('kpiLC', lc != null ? fmt.money(lc) : '—');
-  setTxt('kpiLCDesc', `Ayer: ${p.liquidez_efectiva_prev != null ? fmt.money(p.liquidez_efectiva_prev) : '—'}`);
-  setDelta('kpiLCDelta', lc, p.liquidez_efectiva_prev || p.liquidez_corriente_prev);
+  const pyme = p.pct_pyme;
+  setTxt('kpiPyme', pyme != null ? pyme.toFixed(2) + '%' : '—');
+  const pymeColor = pyme != null ? (pyme >= 75 ? '#00a887' : pyme >= 65 ? '#f59f00' : '#d63347') : 'var(--muted)';
+  const pymeEl = document.getElementById('kpiPyme');
+  if (pymeEl) pymeEl.style.color = pymeColor;
+  setTxt('kpiPymeDesc', 'Mín. regulatorio: 75%');
+  const pymeDelta = document.getElementById('kpiPymeDelta');
+  if (pymeDelta && pyme != null) {
+    const ok = pyme >= 75;
+    pymeDelta.textContent = ok ? '✓ Cumple requisito' : '⚠ Por debajo del mínimo';
+    pymeDelta.className = 'kpi-delta ' + (ok ? 'pos' : 'neg');
+  }
 
   // ── CPD Maturity Chart ──
   renderCPDChart(data.cpd_vencimientos || []);
