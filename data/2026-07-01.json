@@ -1,19 +1,19 @@
 {
   "meta": {
     "fecha_actual": "01/07/2026",
-    "fecha_anterior": "28/08/2026",
+    "fecha_anterior": "31/08/2026",
     "duration_dias": 3.0,
     "participes": 3
   },
   "patrimonial": {
     "activo_total": 48102554090.69,
-    "activo_total_prev": 62130723938.94,
+    "activo_total_prev": 62995575234.31,
     "pasivo_total": -408273279.96,
-    "pasivo_total_prev": -1136155143.14,
+    "pasivo_total_prev": -474003428.22,
     "patrimonio_neto": 47694280810.73,
-    "patrimonio_neto_prev": 60994568795.8,
+    "patrimonio_neto_prev": 62521571806.09,
     "creditos_totales": 1761402174.59,
-    "creditos_totales_prev": 1412074213.41,
+    "creditos_totales_prev": 1416161104.73,
     "liquidez_corriente": 117.8,
     "pct_pyme": 67.93,
     "liquidez_efectiva": 1463274660.0
@@ -29,26 +29,26 @@
   },
   "cartera": {
     "cpd_pesos": 39162765946,
-    "cpd_pesos_prev": 54597951234,
+    "cpd_pesos_prev": 53773464546,
     "cpd_usd": 2244279295.36,
-    "cpd_usd_prev": 2828885399.8,
+    "cpd_usd_prev": 2830011353.81,
     "pases_cauciones": 3655717575.12,
-    "pases_cauciones_prev": 620110730.72,
+    "pases_cauciones_prev": 2820748677.84,
     "money_market": 1360000000.0,
-    "money_market_prev": 2303000000.0,
+    "money_market_prev": 1730000000.0,
     "titulos_publicos": 237468906.0,
-    "titulos_publicos_prev": 869905440.0,
+    "titulos_publicos_prev": 873908072.0,
     "obligaciones_neg": 867196955.5,
-    "obligaciones_neg_prev": 909031156.0,
+    "obligaciones_neg_prev": 912677183.5,
     "fideicomisos": 1316620193.94,
-    "fideicomisos_prev": 1281728281.19,
+    "fideicomisos_prev": 1286455048.24,
     "titulo_provincial": 305721147.0,
-    "titulo_provincial_prev": 410996476.0,
+    "titulo_provincial_prev": 410802312.0,
     "tp_det": [
       {
         "nombre": "Lecap S30N6",
         "total": 237468906.0,
-        "total_prev": 243183744.0,
+        "total_prev": 243753182.0,
         "cierre": 1.1873,
         "cantidad": 200000000.0
       }
@@ -64,14 +64,14 @@
       {
         "nombre": "MTC3O - ON Mastellone Clase 3",
         "total": 250148537.5,
-        "total_prev": 257361820.0,
+        "total_prev": 257860037.5,
         "cierre": 1.0006,
         "cantidad": 250000000.0
       },
       {
         "nombre": "VBC3O - ON BANCO DE VALORES CL.3 24/10/26 $",
         "total": 309453918.0,
-        "total_prev": 325571880.0,
+        "total_prev": 326068467.0,
         "cierre": 1.0315,
         "cantidad": 300000000.0
       }
@@ -80,56 +80,56 @@
       {
         "nombre": "CQ08A - VD FF CENTROCARD CREDITOS 8 CL.A $",
         "total": 250414477.5,
-        "total_prev": 201977062.5,
+        "total_prev": 202385670.0,
         "cierre": 1.0017,
         "cantidad": 250000000.0
       },
       {
         "nombre": "FF AMFAyS S49 Clase A",
         "total": 26474116.0,
-        "total_prev": 20408131.0,
+        "total_prev": 20410079.0,
         "cierre": 0.2647,
         "cantidad": 100000000.0
       },
       {
         "nombre": "MY50B - VD FF AMFAYS S.50 CL.B $",
         "total": 140063395.27,
-        "total_prev": 144692127.34,
+        "total_prev": 145065578.62,
         "cierre": 1.3737,
         "cantidad": 101962042.0
       },
       {
         "nombre": "MY50C - VD FF AMFAYS S.50 CL.C $",
         "total": 436959739.78,
-        "total_prev": 460770845.05,
+        "total_prev": 462854675.18,
         "cierre": 1.1428,
         "cantidad": 382357659.0
       },
       {
         "nombre": "MY51B - VD FF AMFAYS Serie 51 Clase B",
         "total": 80708038.08,
-        "total_prev": 83020520.45,
+        "total_prev": 83154053.56,
         "cierre": 1.0678,
         "cantidad": 75584213.0
       },
       {
         "nombre": "MY51C - VD FF AMFAYS Serie 51 Clase C",
         "total": 176173339.8,
-        "total_prev": 181392188.57,
+        "total_prev": 182318659.54,
         "cierre": 0.9989,
         "cantidad": 176363163.0
       },
       {
         "nombre": "MY52B - FF AMFAYS 52 CL.B $",
         "total": 58976218.22,
-        "total_prev": 60575060.54,
+        "total_prev": 60548012.88,
         "cierre": 0.9268,
         "cantidad": 63635566.0
       },
       {
         "nombre": "MY52C - FF AMFAYS 52 CL.C $",
         "total": 127868254.12,
-        "total_prev": 128892345.73,
+        "total_prev": 129718319.46,
         "cierre": 0.8612,
         "cantidad": 148482986.0
       },
@@ -185,45 +185,45 @@
   "cuotapartes": {
     "A": {
       "vcp": 1424.557,
-      "vcp_prev": 1481.524,
+      "vcp_prev": 1482.872,
       "vcp_abril": null,
       "vcp_dic": null,
       "saldo_cp": 4266411264,
       "inversion": 6077746031,
-      "inversion_prev": 6245218714,
-      "saldo_cp_prev": 4215401650,
+      "inversion_prev": 6263961036,
+      "saldo_cp_prev": 4224208857,
       "ingresos_hoy": 33216664,
       "egresos_hoy": 50947086,
-      "ingresos_prev": 0,
-      "egresos_prev": 59140551
+      "ingresos_prev": 18804961,
+      "egresos_prev": 5745000
     },
     "B": {
       "vcp": 1707.003,
-      "vcp_prev": 1775.263,
+      "vcp_prev": 1776.878,
       "vcp_abril": null,
       "vcp_dic": null,
       "saldo_cp": 3221275230,
       "inversion": 5498726481,
-      "inversion_prev": 8279882952,
-      "saldo_cp_prev": 4664031725,
+      "inversion_prev": 8745870688,
+      "saldo_cp_prev": 4922043431,
       "ingresos_hoy": 200000000,
       "egresos_hoy": 0,
-      "ingresos_prev": 0,
+      "ingresos_prev": 458455324,
       "egresos_prev": 0
     },
     "C": {
       "vcp": 1719.68,
-      "vcp_prev": 1788.448,
+      "vcp_prev": 1790.075,
       "vcp_abril": null,
       "vcp_dic": null,
       "saldo_cp": 21002630982,
       "inversion": 36117804447,
-      "inversion_prev": 46469472095,
-      "saldo_cp_prev": 25983127323,
+      "inversion_prev": 47511746643,
+      "saldo_cp_prev": 26541763134,
       "ingresos_hoy": 1500000000,
       "egresos_hoy": 0,
-      "ingresos_prev": 0,
-      "egresos_prev": 616400000
+      "ingresos_prev": 1000000000,
+      "egresos_prev": 0
     }
   },
   "cuotapartistas_ext": [
@@ -1681,11 +1681,6 @@
   ],
   "cpd_vencimientos": [
     {
-      "fecha": "31/08",
-      "dia": "Lun",
-      "monto": 321360037
-    },
-    {
       "fecha": "01/09",
       "dia": "Mar",
       "monto": 533653998
@@ -1754,44 +1749,49 @@
       "fecha": "18/09",
       "dia": "Vie",
       "monto": 694469765
+    },
+    {
+      "fecha": "21/09",
+      "dia": "Lun",
+      "monto": 129521353
     }
   ],
   "atribucion": {
-    "delta_total": 4.7868,
-    "pn_prev": 60994568796,
+    "delta_total": 4.6699,
+    "pn_prev": 62521571806,
     "items": [
       {
         "n": "Resultado Títulos Públicos en $",
         "t": "Precio",
-        "bps": 0.4143,
+        "bps": 0.4042,
         "dp": 2.5268,
         "det": "Código 4000000000000000001"
       },
       {
         "n": "Diferencia de Cotizacion US3",
         "t": "Precio",
-        "bps": 0.5854,
+        "bps": 0.5711,
         "dp": 3.5708,
         "det": "Código 4000000000000000009"
       },
       {
         "n": "Resultado Cheque Pago diferido US3",
         "t": "Devengo",
-        "bps": 0.0823,
+        "bps": 0.0803,
         "dp": 0.5019,
         "det": "Código 4000000000000000010"
       },
       {
         "n": "Resultado de Operacion Futuro",
         "t": "MTM",
-        "bps": -1.3535,
+        "bps": -1.3204,
         "dp": -8.2554,
         "det": "Código 4000000000000000013"
       },
       {
         "n": "Gastos por negociación de Cheque de Pago Diferido",
         "t": "Costo",
-        "bps": -0.0132,
+        "bps": -0.0129,
         "dp": -0.0806,
         "det": "Código 4001001000000000013"
       },
@@ -1812,7 +1812,7 @@
       {
         "n": "Honorarios de Administración",
         "t": "Costo",
-        "bps": -0.5517,
+        "bps": -0.5383,
         "dp": -3.3653,
         "det": "Código 4001002001000000000"
       },
@@ -1826,14 +1826,14 @@
       {
         "n": "Resultado Cheques de Pago Diferido",
         "t": "Devengo",
-        "bps": 4.983,
+        "bps": 4.8613,
         "dp": 30.3937,
         "det": "Código 4002001000000000017"
       },
       {
         "n": "Rentas en $",
         "t": "Devengo",
-        "bps": 0.1078,
+        "bps": 0.1052,
         "dp": 0.6576,
         "det": "Código 4002001000000000018"
       },
@@ -1847,35 +1847,35 @@
       {
         "n": "Intereses Pase",
         "t": "Devengo",
-        "bps": 0.1103,
+        "bps": 0.1076,
         "dp": 0.6725,
         "det": "Código 4002001000000000022"
       },
       {
         "n": "Intereses Caución",
         "t": "Devengo",
-        "bps": 0.0975,
+        "bps": 0.0951,
         "dp": 0.5947,
         "det": "Código 4002001002000000002"
       },
       {
         "n": "Resultado por Tenencia Títulos Provinciales",
         "t": "Precio",
-        "bps": 0.2321,
+        "bps": 0.2264,
         "dp": 1.4158,
         "det": "Código 4002001004000000013"
       },
       {
         "n": "Gastos Soc. Depositaria",
         "t": "Costo",
-        "bps": -0.0517,
+        "bps": -0.0504,
         "dp": -0.3152,
         "det": "Neto de 4 cuenta(s)"
       },
       {
         "n": "Money Market (FCI)",
         "t": "Devengo",
-        "bps": 0.1442,
+        "bps": 0.1407,
         "dp": 0.8796,
         "det": "Neto de 2 cuenta(s)"
       }
