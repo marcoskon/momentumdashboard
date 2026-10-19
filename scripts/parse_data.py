@@ -306,13 +306,18 @@ def parse_gestion(path):
 
     lc_ratio = round(abs(activo_total) / abs(pasivo_total), 1) if activo_total and pasivo_total else None
 
-    # % Pyme (col 10 = label, col 11 = valor decimal)
+    # % Pyme — busca en toda la hoja la celda que diga '% Pyme' y toma la de la derecha
     pct_pyme = None
-    for i in range(min(50, len(df))):
-        if str(df.iloc[i, 10]).strip() == '% Pyme':
-            pct_pyme = safe(df.iloc[i, 11])
-            if pct_pyme is not None:
-                pct_pyme = round(pct_pyme * 100, 2)  # decimal → porcentaje
+    found_pyme = False
+    for i in range(len(df)):
+        for j in range(df.shape[1] - 1):
+            if str(df.iloc[i, j]).strip() == '% Pyme':
+                val = safe(df.iloc[i, j + 1])
+                if val is not None:
+                    pct_pyme = round(val * 100, 2) if val <= 1 else round(val, 2)
+                found_pyme = True
+                break
+        if found_pyme:
             break
 
     # Duration
